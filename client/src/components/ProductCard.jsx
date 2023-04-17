@@ -38,7 +38,7 @@ const Rating = ({ rating, numReviews }) => {
 
 const ProductCard = ({ product }) => {
   return (
-    <Link as={ReactLink} to={`/product${product._id}`} pt="2" cursor="pointer">
+    <Link as={ReactLink} to={`/product${product._id}`} pt="2" cursor="pointer" _hover={{ textDecoration: "none" }}>
       <Stack
         p="2"
         spacing="3px"
@@ -52,7 +52,7 @@ const ProductCard = ({ product }) => {
       >
         {product.isNew && <Circle size="10px" position="absolute" top={2} right={2} bg="green.300" />}
         {product.stock <= 0 && <Circle size="10px" position="absolute" top={2} right={2} bg="red.300" />}
-        <Image src={product.image} alt={product.name} rounded="lg" />
+        <Image src={product.image} alt={product.name} rounded="lg" h="250px" w="250px" alignSelf="center" />
         <Box flex="1" maxH="5" alignItems="baseline">
           {product.stock <= 0 && (
             <Badge rounded="full" px="2" fontSize="0.8em" colorScheme="red">
@@ -69,9 +69,9 @@ const ProductCard = ({ product }) => {
           <Box fontSize="2x1" fontWeight="semibold" lineHeight="tight">
             {product.name}
           </Box>
-          <Flex justifyContent="space-between" alignContent="center" py="2">
-            <Rating rating={product.rating} numReviews={product.numReviews} />
-          </Flex>
+        </Flex>
+        <Flex justifyContent="space-between" alignContent="center" py="2">
+          <Rating rating={product.rating} numReviews={product.numReviews} />
         </Flex>
         <Flex justify="space-between">
           <Box fontSize="2x1" color={useColorModeValue("gray.600", "white")}>
