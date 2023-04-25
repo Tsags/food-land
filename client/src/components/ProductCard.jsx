@@ -12,11 +12,15 @@ import {
   Link,
   HStack,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import { GiNotebook } from "react-icons/gi";
 import { Link as ReactLink } from "react-router-dom";
 import { StarIcon } from "@chakra-ui/icons";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addCartItem } from "../redux/actions/cartActions";
+import { useEffect } from "react";
 
 const Rating = ({ rating, numberOfReviews }) => {
   const { iconSize } = useState("14px");
@@ -37,6 +41,14 @@ const Rating = ({ rating, numberOfReviews }) => {
 };
 
 const ProductCard = ({ product }) => {
+  const dispatch = useDispatch();
+  const toast = useToast();
+  const cartInfo = useSelector((state) => state.cart);
+
+  const addItem = (id) => {
+    dispatch(addCartItem(id, 1));
+    toast({ description: "Item has been added.", status: "success", isClosable: true });
+  };
   return (
     <Link as={ReactLink} to={`/product${product._id}`} pt="2" cursor="pointer" _hover={{ textDecoration: "none" }}>
       <Stack
@@ -81,7 +93,7 @@ const ProductCard = ({ product }) => {
             </Box>
           </Box>
           <Tooltip label="Add to Cart" bg="white" placement="top" color="gray.800" fintSize="1.2em">
-            <Button variant="ghost" display="flex" disabled={product.stock <= 0}>
+            <Button variant="ghost" display="flex" disabled={product.stock <= 0} onClick={() => addItem(product._id)}>
               <Icon as={GiNotebook} h={7} w={7} alignSelf="center" />
             </Button>
           </Tooltip>
