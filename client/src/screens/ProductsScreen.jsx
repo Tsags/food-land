@@ -47,7 +47,7 @@ const ProductsScreen = () => {
         </Alert>
       ) : (
         <Box width="100%">
-          <Tabs variant="soft-rounded" isFitted scrollButtons="auto" size={{ base: "lg", md: "md" }}>
+          <Tabs variant="soft-rounded" isFitted scrollbuttons="auto" size={{ base: "lg", md: "md" }}>
             <TabList
               overflowX="auto"
               whiteSpace="nowrap"

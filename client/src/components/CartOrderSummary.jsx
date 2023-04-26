@@ -1,4 +1,4 @@
-import { Button, Flex, Heading, Stack, Text, useColorModeValue as mode, Badge } from "@chakra-ui/react";
+import { Button, Flex, Heading, Stack, Text, useColorModeValue as mode } from "@chakra-ui/react";
 import { useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { useSelector } from "react-redux";
@@ -6,9 +6,8 @@ import { Link as ReactLink, useNavigate } from "react-router-dom";
 
 const CartOrderSummary = () => {
   const [buttonLoading, setButtonLoading] = useState();
-  const standardShipping = Number(4.99).toFixed(2);
   const cartItems = useSelector((state) => state.cart);
-  const { subtotal } = cartItems;
+  const { total } = cartItems;
   const navigate = useNavigate;
 
   const checkoutHandler = () => {
@@ -20,10 +19,12 @@ const CartOrderSummary = () => {
       <Heading size="md">Order Summary</Heading>
       <Stack spacing="6">
         <Flex justify="space-between">
-          <Text fontWeight="medium" color={mode("gray.600", "gray.400")}>
-            Subtotal
+          <Text fontWeight="extrabold" fontSize="xl">
+            Total
           </Text>
-          <Text fontWeight="medium">{subtotal}</Text>
+          <Text fontWeight="extrabold" fontSize="xl">
+            {total}€
+          </Text>
         </Flex>
       </Stack>
       <Button
