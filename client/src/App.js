@@ -3,17 +3,17 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import ProductsScreen from "./screens/ProductsScreen";
 import CartScreen from "./screens/cartScreen";
-
-
+import ProductScreen from "./screens/ProductsScreen";
 
 function App() {
   return (
-    <ChakraProvider >
+    <ChakraProvider>
       <Router>
         <Navbar />
         <main>
           <Routes>
             <Route path="/products" element={<ProductsScreen />}></Route>
+            <Route path="/product/:id" element={<ProductScreen />}></Route>
             <Route path="/cart" element={<CartScreen />}></Route>
           </Routes>
         </main>
