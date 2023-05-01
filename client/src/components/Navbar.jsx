@@ -11,6 +11,7 @@ import {
   Stack,
   useColorModeValue,
   useColorMode,
+  useOutsideClick,
 } from "@chakra-ui/react";
 import { Link as ReactLink } from "react-router-dom";
 import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
@@ -39,6 +40,8 @@ const NavLink = ({ path, children }) => {
 const Navbar = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
+  
+
   return (
     <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
       <Flex h={16} alignItems="center" justifyContent="space-between">
@@ -91,7 +94,7 @@ const Navbar = () => {
         </Flex>
       </Flex>
       {isOpen ? (
-        <Box pb={4} display={{ md: "none" }}>
+        <Box pb={4} display={{ md: "none" }} onClick={onClose}>
           <Stack as="nav" spacing={4}>
             {" "}
             {links.map((link) => (
