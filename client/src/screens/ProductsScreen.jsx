@@ -35,7 +35,7 @@ const ProductsScreen = () => {
   }
 
   return (
-    <Wrap spacing="30px" justify="center" minHeight="100vh">
+    <Wrap spacing="30px" justify="center" minHeight="79vh">
       {loading ? (
         <Stack direction="row" spacing={4}>
           <Spinner mt={20} thickness="5px" speed="0.65s" emptyColor="gray.200" color="orange.500" size="xl" />

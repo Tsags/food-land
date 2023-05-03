@@ -95,7 +95,7 @@ const ProductScreen = () => {
                 {product.name}
               </Heading>
               <Text>{product.description}</Text>
-              <Text fontSize="xl">{product.price.toFixed(2)}€</Text>
+              <Text fontSize="xl">{isNaN(product.price) ? "" : product.price.toFixed(2)}€</Text>
               <Flex w="170px" p="5px" border="1px" borderRadius={7} borderColor="gray.200" alignItems="center">
                 <Button onClick={() => changeAmount("minus")}>
                   <MinusIcon />

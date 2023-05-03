@@ -16,6 +16,7 @@ import {
 import { Link as ReactLink } from "react-router-dom";
 import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { MdFastfood } from "react-icons/md";
+import { useState, useRef } from "react";
 
 const links = [
   { linkName: "Products", path: "/products" },
@@ -40,7 +41,14 @@ const NavLink = ({ path, children }) => {
 const Navbar = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
-  
+  const [isHovering, setIsHovering] = useState(false);
+
+  const ref = useRef();
+
+  useOutsideClick({
+    ref: ref,
+    handler: () => onClose(true),
+  });
 
   return (
     <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
@@ -52,10 +60,16 @@ const Navbar = () => {
           onClick={isOpen ? onClose : onOpen}
         />
         <HStack>
-          <Link as={ReactLink} to="/">
+          <Link
+            as={ReactLink}
+            to="/"
+            style={{ textDecoration: "none" }}
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+          >
             <Flex alignItems="center">
-              <Icon as={MdFastfood} h={6} w={6} color="orange.400" />
-              <Text fontWeight="extrabold">Food Land</Text>
+              <Icon as={MdFastfood} h={6} w={6} color={isHovering ? "cyan.400" : "orange.400"} />
+              <Text fontWeight="extrabold">FoodLand</Text>
             </Flex>
           </Link>
           <HStack as="nav" spacing={4} display={{ base: "none", md: "flex" }}>
@@ -94,8 +108,8 @@ const Navbar = () => {
         </Flex>
       </Flex>
       {isOpen ? (
-        <Box pb={4} display={{ md: "none" }} onClick={onClose}>
-          <Stack as="nav" spacing={4}>
+        <Box pb={4} display={{ md: "none" }} ref={ref}>
+          <Stack as="nav" spacing={4} onClick={onClose}>
             {" "}
             {links.map((link) => (
               <NavLink key={link.linkName} path={link.path}>

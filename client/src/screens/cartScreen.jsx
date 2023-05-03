@@ -65,7 +65,7 @@ const CartScreen = () => {
               </Stack>
             </Stack>
             <Flex direction="column" align="center" flex="1">
-            <CartOrderSummary/>
+              <CartOrderSummary />
               <HStack mt="6" fontWeight="semibold">
                 <p>or</p>
                 <Link as={ReactLink} to="/products" color={mode("orange.500", "orange.200")}>
