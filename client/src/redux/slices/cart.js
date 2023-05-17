@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
 const calculateTotal = (cartState) => {
   let result = 0;
@@ -25,6 +26,12 @@ export const cartSlice = createSlice({
     setLoading: (state) => {
       state.loading = true;
     },
+    setCart: (state, { payload }) => {
+      state.cart = payload;
+      state.total = calculateTotal(payload);
+      state.loading = false;
+      state.error = null;
+    },
     cartItemAdd: (state, { payload }) => {
       const existingItem = state.cart.find((item) => item.id === payload.id);
       if (existingItem) {
@@ -34,12 +41,8 @@ export const cartSlice = createSlice({
       }
       state.loading = false;
       state.error = null;
-      updateLocalStorage(state.cart);
+
       state.total = calculateTotal(state.cart);
-    },
-    setError: (state, { payload }) => {
-      state.error = payload;
-      state.loading = false;
     },
     cartItemRemoval: (state, { payload }) => {
       state.cart = [...state.cart].filter((item) => item.id !== payload);
@@ -48,9 +51,13 @@ export const cartSlice = createSlice({
       state.loading = false;
       state.error = null;
     },
+    setError: (state, { payload }) => {
+      state.error = payload;
+      state.loading = false;
+    },
   },
 });
-export const { setLoading, cartItemAdd, setError, cartItemRemoval } = cartSlice.actions;
+export const { setLoading, cartItemAdd, setError, cartItemRemoval, setCart } = cartSlice.actions;
 export default cartSlice.reducer;
 
 export const cartSelector = (state) => state.cart;

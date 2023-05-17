@@ -3,14 +3,14 @@ import { SlSocialGoogle, SlSocialInstagram, SlSocialFacebook } from "react-icons
 import { MdFastfood } from "react-icons/md";
 
 export const Footer = () => (
-  <Box w="100%" bg={useColorModeValue("gray.100", "gray.900")}>
+  <Box w="100%" bg={useColorModeValue("gray.100", "gray.900")} mt={{ base: "", md: "265" }}>
     <Container
       maxW="7xl"
       as="footer"
       role="contentinfo"
       py={{
-        base: "2",
-        md: "2",
+        base: "10",
+        md: "10",
       }}
     >
       <Stack
