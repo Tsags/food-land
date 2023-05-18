@@ -92,11 +92,11 @@ const ProductCard = ({ product }) => {
               €
             </Box>
           </Box>
-          <Tooltip label="Add to Cart" bg="white" placement="top" color="gray.800" fontSize="1.2em">
+          {/* <Tooltip label="Add to Cart" bg="white" placement="top" color="gray.800" fontSize="1.2em">
             <Button variant="ghost" display="flex" disabled={product.stock <= 0} onClick={() => addItem(product._id)}>
               <Icon as={GiNotebook} h={7} w={7} alignSelf="center" />
             </Button>
-          </Tooltip>
+          </Tooltip> */}
         </Flex>
       </Stack>
     </Link>

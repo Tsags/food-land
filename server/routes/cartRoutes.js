@@ -10,19 +10,24 @@ const cartRoutes = express.Router();
 // Create a new cart for the authenticated user
 const createCart = asyncHandler(async (req, res) => {
   const user = await User.findOne({ user: req.user._id });
-  console.log(user);
-  const cart = await Cart.create({
-    name: user.name,
-    items: [],
-  });
-  const savedCart = await cart.save();
-  res.status(201).json(savedCart);
+  const existingCart = await Cart.findOne({ name: user.name });
+  if (existingCart) {
+    res.status(200).json(existingCart);
+  } else {
+    const cart = await Cart.create({
+      name: user.name,
+      items: [],
+    });
+    const savedCart = await cart.save();
+    res.status(201).json(savedCart);
+  }
 });
 
 // GET /api/carts/:id
 // Get the cart for the authenticated user by cart ID
 const getCart = asyncHandler(async (req, res) => {
-  const cart = await Cart.findOne({ _id: req.params.id, user: req.user._id });
+  const user = await User.findOne({ user: req.user._id });
+  const cart = await Cart.findOne({ name: user.name });
   if (!cart) {
     res.status(404);
     throw new Error("Cart not found");
@@ -33,12 +38,13 @@ const getCart = asyncHandler(async (req, res) => {
 // PUT /api/carts/:id
 // Update the cart for the authenticated user by cart ID
 const updateCart = asyncHandler(async (req, res) => {
-  const cart = await Cart.findOne({ _id: req.params.id, user: req.user._id });
+  const user = await User.findOne({ user: req.user._id });
+  const cart = await Cart.findOne({ name: user.name });
   if (!cart) {
     res.status(404);
     throw new Error("Cart not found");
   }
-  cart.items = req.body.itclems;
+  cart.items = req.body.items;
   const savedCart = await cart.save();
   res.json(savedCart);
 });

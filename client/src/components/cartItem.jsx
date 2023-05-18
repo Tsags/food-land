@@ -1,20 +1,24 @@
-import { CloseButton, Flex, Select, useColorModeValue as mode, Stack, Image, Box, Text } from "@chakra-ui/react";
+import {
+  CloseButton,
+  Flex,
+  Select,
+  useColorModeValue as mode,
+  Stack,
+  Image,
+  Box,
+  Text,
+  Button,
+} from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
 import { addCartItem } from "../redux/actions/cartActions";
 import { removeCartItem } from "../redux/actions/cartActions";
 import axios from "axios";
 
 const CartItem = ({ cartItem }) => {
-  async function makePostRequest(url, data) {
-    try {
-      const response = await axios.post(url, data);
-      console.log(response.data); // log the response data to the console
-    } catch (error) {
-      console.error(error);
-    }
-  }
   const { name, image, price, stock, qty, id } = cartItem;
   const dispatch = useDispatch();
+  
+ 
   return (
     <Flex direction={{ base: "column", md: "row" }} justify="space-between" align="center">
       <Stack direction="row" spacing="5" width="full">
@@ -38,7 +42,6 @@ const CartItem = ({ cartItem }) => {
           value={qty}
           onChange={(e) => {
             dispatch(addCartItem(id, e.target.value));
-            makePostRequest("/api/carts", {});
           }}
         >
           {[...Array(stock).keys()].map((x) => (

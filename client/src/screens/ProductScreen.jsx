@@ -36,6 +36,12 @@ const ProductScreen = () => {
   const cartContent = useSelector((state) => state.cart);
   const { cart } = cartContent;
 
+  const userData = JSON.parse(localStorage.getItem("userInfo"));
+
+  useEffect(() => {
+    // Perform the fetch request when the component mounts
+  }, []);
+
   useEffect(() => {
     dispatch(getProduct(id));
   }, [dispatch, id, cart]);
@@ -48,8 +54,41 @@ const ProductScreen = () => {
       setAmount(amount - 1);
     }
   };
+
+  // //IN PRODUCTION
+  // const updateCart = async (items) => {
+  //   try {
+  //     const response = await fetch(`/api/carts/${userData._id}`, {
+  //       method: "PUT",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${userData.token}`,
+  //       },
+  //       body: JSON.stringify({ items }),
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error("Cart update failed");
+  //     }
+
+  //     const updatedCart = await response.json();
+  //     console.log(updatedCart);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
   const addItem = () => {
-    dispatch(addCartItem(product._id, amount));
+    fetch("/api/carts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userData.token}`,
+      },
+    });
+
+    // VGALE COMMENT GIA NA MPAINEI STO LOCALSTORAGE
+    // dispatch(addCartItem(product._id, amount));
     toast({ description: "Item has been added.", status: "success", isClosable: true });
   };
   return (

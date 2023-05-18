@@ -1,8 +1,8 @@
 import axios from "axios";
 // import createCart from "../thunks/cartThunk.js";
-import { setLoading, setError, cartItemAdd, cartItemRemoval, setCart } from "../slices/cart.js";
+import { setLoading, setError, cartItemAdd, cartItemRemoval } from "../slices/cart.js";
 
-export const addCartItem = (id, qty) => async (dispatch, getState) => {
+export const addCartItem = (id, qty) => async (dispatch) => {
   dispatch(setLoading(true));
 
   try {
@@ -34,3 +34,5 @@ export const removeCartItem = (id) => async (dispatch) => {
   dispatch(setLoading(true));
   dispatch(cartItemRemoval(id));
 };
+
+

@@ -26,12 +26,6 @@ export const cartSlice = createSlice({
     setLoading: (state) => {
       state.loading = true;
     },
-    setCart: (state, { payload }) => {
-      state.cart = payload;
-      state.total = calculateTotal(payload);
-      state.loading = false;
-      state.error = null;
-    },
     cartItemAdd: (state, { payload }) => {
       const existingItem = state.cart.find((item) => item.id === payload.id);
       if (existingItem) {

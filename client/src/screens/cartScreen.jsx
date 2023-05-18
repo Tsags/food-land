@@ -21,6 +21,28 @@ import CartOrderSummary from "../components/CartOrderSummary";
 const CartScreen = () => {
   const cartInfo = useSelector((state) => state.cart);
   const { loading, error, cart } = cartInfo;
+
+  const userData = JSON.parse(localStorage.getItem("userInfo"));
+  // console.log(userData);
+  fetch(`/api/carts/${userData._id}`, {
+    headers: {
+      Authorization: `Bearer ${userData.token}`,
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Cart not found");
+      }
+      return response.json();
+    })
+    .then((cart) => {
+      // Handle the cart data
+      console.log(cart);
+    })
+    .catch((error) => {
+      // Handle any errors
+      console.error(error);
+    });
   return (
     <Wrap spacing="30px" justify="center" minHeight="100vh">
       {loading ? (

@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { register } from "../redux/actions/userActions";
 import QRcodeGenerator from "../components/QRcodeGenerator";
 import randomstring from "randomstring";
+import axios from "axios";
 
 function RegisterScreen() {
   const dispatch = useDispatch();
@@ -34,6 +35,7 @@ function RegisterScreen() {
   const { loading, error, userInfo } = user;
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
 
   return (
     <Flex>
@@ -81,6 +83,7 @@ function RegisterScreen() {
                     <Button colorScheme="orange" size="lg" type="submit">
                       New Table
                     </Button>
+                    <Button>Create Cart</Button>
                   </Stack>
                 </Stack>
               </Box>
