@@ -36,7 +36,6 @@ function RegisterScreen() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-
   return (
     <Flex>
       <QRcodeGenerator username={username} password={password} />
@@ -47,7 +46,7 @@ function RegisterScreen() {
         })}
         onSubmit={(values) => {
           const randomPassword = randomstring.generate();
-          dispatch(register(values.name, randomPassword));
+          dispatch(register(values.name, 123));
           if (!loading) {
             toast({
               title: "Success!",
@@ -57,7 +56,7 @@ function RegisterScreen() {
               isClosable: true,
             });
             setUsername(values.name);
-            setPassword(randomPassword);
+            setPassword(123);
           }
         }}
       >

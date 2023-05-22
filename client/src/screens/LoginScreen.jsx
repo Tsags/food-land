@@ -43,6 +43,7 @@ const LoginScreen = () => {
       } else {
         navigate("/products");
       }
+    
       toast({ description: "Login Successful", status: "success", isClosable: true });
     }
   }, [userInfo, navigate, location.state, toast]);

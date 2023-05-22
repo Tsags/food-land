@@ -25,6 +25,7 @@ const ProductsScreen = () => {
   const productList = useSelector((state) => state.products);
   const { loading, error, products } = productList;
   const uniqueCategories = [...new Set(products.map((product) => product.category))];
+  const userData = JSON.parse(sessionStorage.getItem("userInfo"));
 
   useEffect(() => {
     dispatch(getProducts());
@@ -33,6 +34,15 @@ const ProductsScreen = () => {
   function CapitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
+
+  console.log(userData);
+  fetch("/api/carts", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${userData.token}`,
+    },
+  });
 
   return (
     <Wrap spacing="30px" justify="center" minHeight="79vh">

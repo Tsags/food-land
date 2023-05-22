@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import connectToDatabase from "./database.js";
 import express from "express";
-
+import { Server } from "socket.io";
 // Routes.
 import productRoutes from "./routes/productRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
@@ -19,6 +19,8 @@ app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/carts", cartRoutes);
 
-app.listen(port, () => {
+const expressServer = app.listen(port, () => {
   console.log(`Server runs on port ${port}.`);
 });
+const io = new Server(expressServer);
+

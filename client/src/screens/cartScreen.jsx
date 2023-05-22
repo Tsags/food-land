@@ -17,32 +17,37 @@ import { Link as ReactLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import CartItem from "../components/cartItem";
 import CartOrderSummary from "../components/CartOrderSummary";
+import { useState, useEffect } from "react";
 
 const CartScreen = () => {
   const cartInfo = useSelector((state) => state.cart);
   const { loading, error, cart } = cartInfo;
-
-  const userData = JSON.parse(localStorage.getItem("userInfo"));
+  const [cartItems, setCartItems] = useState([]);
+  const userData = JSON.parse(sessionStorage.getItem("userInfo"));
   // console.log(userData);
-  fetch(`/api/carts/${userData._id}`, {
-    headers: {
-      Authorization: `Bearer ${userData.token}`,
-    },
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Cart not found");
-      }
-      return response.json();
+
+  //TO PARAKATW PAIRNEI TO CART APO TI VASI
+
+  useEffect(() => {
+    fetch(`/api/carts/${userData._id}`, {
+      headers: {
+        Authorization: `Bearer ${userData.token}`,
+      },
     })
-    .then((cart) => {
-      // Handle the cart data
-      console.log(cart);
-    })
-    .catch((error) => {
-      // Handle any errors
-      console.error(error);
-    });
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Cart not found");
+        }
+        return response.json();
+      })
+      .then((cart) => {
+        setCartItems(cart.items);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
   return (
     <Wrap spacing="30px" justify="center" minHeight="100vh">
       {loading ? (
@@ -81,7 +86,7 @@ const CartScreen = () => {
                 Shopping Cart
               </Heading>
               <Stack spacing="6">
-                {cart.map((cartItem) => (
+                {cartItems.map((cartItem) => (
                   <CartItem key={cartItem.id} cartItem={cartItem} />
                 ))}
               </Stack>

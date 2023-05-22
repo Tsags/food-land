@@ -18,7 +18,7 @@ import {
   SimpleGrid,
   useToast,
 } from "@chakra-ui/react";
-import { MinusIcon, StarIcon, AddIcon } from "@chakra-ui/icons";
+import { MinusIcon, AddIcon } from "@chakra-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { getProduct } from "../redux/actions/productActions";
 import { addCartItem } from "../redux/actions/cartActions";
@@ -32,14 +32,32 @@ const ProductScreen = () => {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products);
   const { loading, error, product } = products;
-
   const cartContent = useSelector((state) => state.cart);
   const { cart } = cartContent;
 
-  const userData = JSON.parse(localStorage.getItem("userInfo"));
+  const userData = JSON.parse(sessionStorage.getItem("userInfo"));
+  const [cartId, setCartId] = useState("");
+
+  //GIA NA VRW TO CART ID
 
   useEffect(() => {
-    // Perform the fetch request when the component mounts
+    fetch(`/api/carts/${userData._id}`, {
+      headers: {
+        Authorization: `Bearer ${userData.token}`,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Cart not found");
+        }
+        return response.json();
+      })
+      .then((cart) => {
+        setCartId(cart._id);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, []);
 
   useEffect(() => {
@@ -55,40 +73,41 @@ const ProductScreen = () => {
     }
   };
 
-  // //IN PRODUCTION
-  // const updateCart = async (items) => {
-  //   try {
-  //     const response = await fetch(`/api/carts/${userData._id}`, {
-  //       method: "PUT",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${userData.token}`,
-  //       },
-  //       body: JSON.stringify({ items }),
-  //     });
+  const itemToAdd = {
+    id: product._id,
+    name: product.name,
+    image: product.image,
+    price: product.price,
+    qty: amount,
+  };
 
-  //     if (!response.ok) {
-  //       throw new Error("Cart update failed");
-  //     }
+  //IN PRODUCTION
+  const updateCart = async (itemToAdd) => {
+    try {
+      const response = await fetch(`/api/carts/${cartId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userData.token}`,
+        },
+        body: JSON.stringify({ items: [itemToAdd] }),
+      });
 
-  //     const updatedCart = await response.json();
-  //     console.log(updatedCart);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+      if (!response.ok) {
+        throw new Error("Cart update failed");
+      }
+
+      const updatedCart = await response.json();
+      console.log(updatedCart);
+    } catch (error) {
+      console.error("Error updating cart:", error);
+    }
+  };
 
   const addItem = () => {
-    fetch("/api/carts", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userData.token}`,
-      },
-    });
-
+    updateCart(itemToAdd);
     // VGALE COMMENT GIA NA MPAINEI STO LOCALSTORAGE
-    // dispatch(addCartItem(product._id, amount));
+    dispatch(addCartItem(product._id, amount));
     toast({ description: "Item has been added.", status: "success", isClosable: true });
   };
   return (

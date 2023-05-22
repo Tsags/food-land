@@ -1,6 +1,9 @@
 import axios from "axios";
 // import createCart from "../thunks/cartThunk.js";
 import { setLoading, setError, cartItemAdd, cartItemRemoval } from "../slices/cart.js";
+import {useState} from "react"
+
+
 
 export const addCartItem = (id, qty) => async (dispatch) => {
   dispatch(setLoading(true));
@@ -15,6 +18,7 @@ export const addCartItem = (id, qty) => async (dispatch) => {
       stock: data.stock,
       qty,
     };
+ 
     dispatch(cartItemAdd(itemToAdd));
     return itemToAdd;
   } catch (error) {
@@ -34,5 +38,3 @@ export const removeCartItem = (id) => async (dispatch) => {
   dispatch(setLoading(true));
   dispatch(cartItemRemoval(id));
 };
-
-

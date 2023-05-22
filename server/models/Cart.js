@@ -3,6 +3,7 @@ import User from "./User.js";
 
 const cartItemSchema = new mongoose.Schema(
   {
+    id: { type: String, required: true },
     name: {
       type: String,
       required: true,
@@ -15,7 +16,7 @@ const cartItemSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    qty: { type: Number, required: true, default: 1 },
+    qty: { type: Number, default: 1 },
   },
   { timestamps: true }
 );
@@ -26,7 +27,7 @@ const cartSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    items: { type: [cartItemSchema], default: [] },
+    items: { type: [cartItemSchema], default: [], required: true },
     totalPrice: { type: Number, default: 0 },
   },
   { timestamps: true }
@@ -35,9 +36,15 @@ const cartSchema = new mongoose.Schema(
 cartSchema.pre("save", function (next) {
   const cart = this;
   let totalPrice = 0;
-  cart.items.forEach((item) => {
-    totalPrice += item.qty * item.price;
-  });
+  if (!cart.items || cart.items.length === 0) {
+    // Add a check for undefined or empty array
+    totalPrice = 0;
+  } else {
+    cart.items.forEach((item) => {
+      totalPrice += item.qty * item.price;
+    });
+  }
+
   cart.totalPrice = totalPrice;
   next();
 });

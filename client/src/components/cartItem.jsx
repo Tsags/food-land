@@ -15,10 +15,9 @@ import { removeCartItem } from "../redux/actions/cartActions";
 import axios from "axios";
 
 const CartItem = ({ cartItem }) => {
-  const { name, image, price, stock, qty, id } = cartItem;
+  const { name, image, price, qty, id } = cartItem;
   const dispatch = useDispatch();
-  
- 
+  console.log(cartItem);
   return (
     <Flex direction={{ base: "column", md: "row" }} justify="space-between" align="center">
       <Stack direction="row" spacing="5" width="full">
@@ -44,11 +43,11 @@ const CartItem = ({ cartItem }) => {
             dispatch(addCartItem(id, e.target.value));
           }}
         >
-          {[...Array(stock).keys()].map((x) => (
+          {/* {[...Array(stock).keys()].map((x) => (
             <option key={x + 1} value={x + 1}>
               {x + 1}
             </option>
-          ))}
+          ))} */}
         </Select>
         <Text fontWeight="bold">{price * qty}€</Text>
         <CloseButton onClick={() => dispatch(removeCartItem(id))} />

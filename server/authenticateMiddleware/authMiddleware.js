@@ -10,7 +10,8 @@ const protectRoute = asyncHandler(async (req, res, next) => {
       token = req.headers.authorization.split(" ")[1];
       const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
 
-      req.user = User.findById(decoded.id);
+      const user = await User.findById(decoded.id);
+      req.user = user;
 
       next();
     } catch (error) {
@@ -18,9 +19,10 @@ const protectRoute = asyncHandler(async (req, res, next) => {
       throw new Error("You are not a user");
     }
   }
+
   if (!token) {
     res.status(401);
-    throw new Error("Not authrized, no token");
+    throw new Error("Not authorized, no token");
   }
 });
 

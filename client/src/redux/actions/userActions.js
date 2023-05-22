@@ -9,7 +9,7 @@ export const login = (name, password) => async (dispatch) => {
     };
     const { data } = await axios.post("/api/users/login", { name, password }, config);
     dispatch(userLogin(data));
-    localStorage.setItem("userInfo", JSON.stringify(data));
+    sessionStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
     dispatch(
       setError(
@@ -24,7 +24,7 @@ export const login = (name, password) => async (dispatch) => {
 };
 
 export const logout = () => (dispatch) => {
-  localStorage.removeItem("userInfo");
+  sessionStorage.removeItem("userInfo");
   dispatch(userLogout());
 };
 
