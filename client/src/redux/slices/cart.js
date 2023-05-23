@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
 
 const calculateTotal = (cartState) => {
   let result = 0;
@@ -10,12 +9,13 @@ const calculateTotal = (cartState) => {
 export const initialState = {
   loading: false,
   error: null,
-  cart: JSON.parse(sessionStorage.getItem("cartItems")) ?? [],
-  total: sessionStorage.getItem("cartItems") ? calculateTotal(JSON.parse(sessionStorage.getItem("cartItems"))) : 0,
+  cartId: "",
+  cart: [],
+  total: 0,
 };
 
-const updateSessionStorage = (cart) => {
-  sessionStorage.setItem("cartItems", JSON.stringify(cart));
+const updateSessionStorage = (cart, cartId) => {
+  sessionStorage.setItem("cartId", JSON.stringify(cartId));
   sessionStorage.setItem("total", JSON.stringify(calculateTotal(cart)));
 };
 
@@ -25,6 +25,13 @@ export const cartSlice = createSlice({
   reducers: {
     setLoading: (state) => {
       state.loading = true;
+    },
+    setCart: (state, { payload }) => {
+      state.cartId = payload._id;
+      state.cart = payload.items;
+      // state.total = calculateTotal(payload);
+      state.loading = false;
+      state.error = null;
     },
     cartItemAdd: (state, { payload }) => {
       const existingItem = state.cart.find((item) => item.id === payload.id);
@@ -51,7 +58,7 @@ export const cartSlice = createSlice({
     },
   },
 });
-export const { setLoading, cartItemAdd, setError, cartItemRemoval, setCart } = cartSlice.actions;
+export const { setLoading, setCart, cartItemAdd, cartItemRemoval, setError } = cartSlice.actions;
 export default cartSlice.reducer;
 
 export const cartSelector = (state) => state.cart;

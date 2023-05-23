@@ -1,3 +1,6 @@
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link as ReactLink } from "react-router-dom";
 import {
   Box,
   Flex,
@@ -5,7 +8,6 @@ import {
   HStack,
   Link,
   Stack,
-  useColorModeValue as mode,
   Spinner,
   Alert,
   AlertTitle,
@@ -13,40 +15,23 @@ import {
   AlertDescription,
   Wrap,
 } from "@chakra-ui/react";
-import { Link as ReactLink } from "react-router-dom";
-import { useSelector } from "react-redux";
+
+import { fetchCart } from "../redux/actions/cartActions";
+import { useColorModeValue as mode } from "@chakra-ui/react";
+
 import CartItem from "../components/cartItem";
 import CartOrderSummary from "../components/CartOrderSummary";
-import { useState, useEffect } from "react";
 
 const CartScreen = () => {
+  const dispatch = useDispatch();
   const cartInfo = useSelector((state) => state.cart);
   const { loading, error, cart } = cartInfo;
-  const [cartItems, setCartItems] = useState([]);
-  const userData = JSON.parse(sessionStorage.getItem("userInfo"));
-  // console.log(userData);
 
   //TO PARAKATW PAIRNEI TO CART APO TI VASI
 
   useEffect(() => {
-    fetch(`/api/carts/${userData._id}`, {
-      headers: {
-        Authorization: `Bearer ${userData.token}`,
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Cart not found");
-        }
-        return response.json();
-      })
-      .then((cart) => {
-        setCartItems(cart.items);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
+    dispatch(fetchCart());
+  }, [dispatch]);
 
   return (
     <Wrap spacing="30px" justify="center" minHeight="100vh">
@@ -86,8 +71,8 @@ const CartScreen = () => {
                 Shopping Cart
               </Heading>
               <Stack spacing="6">
-                {cartItems.map((cartItem) => (
-                  <CartItem key={cartItem.id} cartItem={cartItem} />
+                {cart.map((item) => (
+                  <CartItem key={item.id} cartItem={item} />
                 ))}
               </Stack>
             </Stack>
@@ -95,7 +80,7 @@ const CartScreen = () => {
               <CartOrderSummary />
               <HStack mt="6" fontWeight="semibold">
                 <p>or</p>
-                <Link as={ReactLink} to="/products" color={mode("orange.500", "orange.200")}>
+                <Link as={ReactLink} to="/products">
                   Continue Shopping
                 </Link>
               </HStack>

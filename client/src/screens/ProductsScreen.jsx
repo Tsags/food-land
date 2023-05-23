@@ -35,14 +35,15 @@ const ProductsScreen = () => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
-  console.log(userData);
-  fetch("/api/carts", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${userData.token}`,
-    },
-  });
+  useEffect(() => {
+    fetch("/api/carts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userData.token}`,
+      },
+    });
+  }, []);
 
   return (
     <Wrap spacing="30px" justify="center" minHeight="79vh">

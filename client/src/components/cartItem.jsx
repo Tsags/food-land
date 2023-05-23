@@ -12,12 +12,11 @@ import {
 import { useDispatch } from "react-redux";
 import { addCartItem } from "../redux/actions/cartActions";
 import { removeCartItem } from "../redux/actions/cartActions";
-import axios from "axios";
 
 const CartItem = ({ cartItem }) => {
-  const { name, image, price, qty, id } = cartItem;
   const dispatch = useDispatch();
-  console.log(cartItem);
+  const { name, image, price, qty, id } = cartItem;
+
   return (
     <Flex direction={{ base: "column", md: "row" }} justify="space-between" align="center">
       <Stack direction="row" spacing="5" width="full">

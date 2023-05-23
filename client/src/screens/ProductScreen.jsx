@@ -40,25 +40,25 @@ const ProductScreen = () => {
 
   //GIA NA VRW TO CART ID
 
-  useEffect(() => {
-    fetch(`/api/carts/${userData._id}`, {
-      headers: {
-        Authorization: `Bearer ${userData.token}`,
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Cart not found");
-        }
-        return response.json();
-      })
-      .then((cart) => {
-        setCartId(cart._id);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch(`/api/carts/${userData._id}`, {
+  //     headers: {
+  //       Authorization: `Bearer ${userData.token}`,
+  //     },
+  //   })
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error("Cart not found");
+  //       }
+  //       return response.json();
+  //     })
+  //     .then((cart) => {
+  //       setCartId(cart._id);
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // }, []);
 
   useEffect(() => {
     dispatch(getProduct(id));
@@ -82,31 +82,31 @@ const ProductScreen = () => {
   };
 
   //IN PRODUCTION
-  const updateCart = async (itemToAdd) => {
-    try {
-      const response = await fetch(`/api/carts/${cartId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userData.token}`,
-        },
-        body: JSON.stringify({ items: [itemToAdd] }),
-      });
+  // const updateCart = async (itemToAdd) => {
+  //   try {
+  //     const response = await fetch(`/api/carts/${cartId}`, {
+  //       method: "PUT",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${userData.token}`,
+  //       },
+  //       body: JSON.stringify({ items: [itemToAdd] }),
+  //     });
 
-      if (!response.ok) {
-        throw new Error("Cart update failed");
-      }
+  //     if (!response.ok) {
+  //       throw new Error("Cart update failed");
+  //     }
 
-      const updatedCart = await response.json();
-      console.log(updatedCart);
-    } catch (error) {
-      console.error("Error updating cart:", error);
-    }
-  };
+  //     const updatedCart = await response.json();
+  //     console.log(updatedCart);
+  //   } catch (error) {
+  //     console.error("Error updating cart:", error);
+  //   }
+  // };
 
   const addItem = () => {
-    updateCart(itemToAdd);
-    // VGALE COMMENT GIA NA MPAINEI STO LOCALSTORAGE
+    // updateCart(itemToAdd);
+    // // VGALE COMMENT GIA NA MPAINEI STO LOCALSTORAGE
     dispatch(addCartItem(product._id, amount));
     toast({ description: "Item has been added.", status: "success", isClosable: true });
   };
