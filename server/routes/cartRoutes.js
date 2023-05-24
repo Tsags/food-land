@@ -27,7 +27,11 @@ const createCart = asyncHandler(async (req, res) => {
 // GET /api/carts/:id
 // Get the cart for the authenticated user by cart ID
 const getCart = asyncHandler(async (req, res) => {
-  const user = await User.findOne({ _id: req.user._id });
+  const user = await User.findById(req.user._id);
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
   const cart = await Cart.findOne({ name: user.name });
   if (!cart) {
     res.status(404);
@@ -62,7 +66,7 @@ const updateCart = asyncHandler(async (req, res) => {
 });
 
 const removeItemFromCart = asyncHandler(async (req, res) => {
-  const user = await User.findOne({ _id: req.user._id });
+  const user = await User.findById(req.user._id);
   const cart = await Cart.findOne({ name: user.name });
   if (!cart) {
     res.status(404);

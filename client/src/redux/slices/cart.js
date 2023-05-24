@@ -29,7 +29,7 @@ export const cartSlice = createSlice({
     setCart: (state, { payload }) => {
       state.cartId = payload._id;
       state.cart = payload.items;
-      // state.total = calculateTotal(payload);
+      state.total = calculateTotal(payload.items);
       state.loading = false;
       state.error = null;
     },

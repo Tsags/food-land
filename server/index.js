@@ -23,4 +23,3 @@ const expressServer = app.listen(port, () => {
   console.log(`Server runs on port ${port}.`);
 });
 const io = new Server(expressServer);
-

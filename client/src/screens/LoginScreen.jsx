@@ -36,18 +36,6 @@ const LoginScreen = () => {
   const headingBR = useBreakpointValue({ base: "xs", md: "sm" });
   const boxBR = useBreakpointValue({ base: "transparent", md: "bg-surface" });
 
-  useEffect(() => {
-    if (userInfo) {
-      if (location.state?.from) {
-        navigate(location.state.from);
-      } else {
-        navigate("/products");
-      }
-    
-      toast({ description: "Login Successful", status: "success", isClosable: true });
-    }
-  }, [userInfo, navigate, location.state, toast]);
-
   const queryParams = new URLSearchParams(location.search);
   const username = queryParams.get("username");
   const password = queryParams.get("password");
@@ -57,6 +45,18 @@ const LoginScreen = () => {
       dispatch(login(username, password));
     }
   }, [dispatch, username, password]);
+
+  useEffect(() => {
+    if (userInfo) {
+      if (location.state?.from) {
+        navigate(location.state.from);
+      } else {
+        navigate("/");
+      }
+      window.location.reload();
+      toast({ description: "Login Successful", status: "success", isClosable: true });
+    }
+  }, [userInfo, navigate, location.state, toast]);
 
   return (
     <Formik

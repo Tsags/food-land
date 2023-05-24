@@ -1,5 +1,6 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { io } from "socket.io-client";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ProductsScreen from "./screens/ProductsScreen";
@@ -17,7 +18,14 @@ function App() {
         <Navbar />
         <main>
           <Routes>
-            <Route path="/" element={<LandingScreen />} />
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <LandingScreen />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/register" element={<RegisterScreen />} />
             <Route
               path="/products"
