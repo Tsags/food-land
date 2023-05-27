@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const initialState = {
   loading: false,
   error: null,
-  userInfo: JSON.parse(sessionStorage.getItem("userInfo")) ?? null,
+  userInfo: JSON.parse(sessionStorage.getItem("userInfo")) || null,
 };
 
 export const userSlice = createSlice({

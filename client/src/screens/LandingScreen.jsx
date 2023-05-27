@@ -16,9 +16,14 @@ import { FaArrowRight } from "react-icons/fa";
 import { Link as ReactLink } from "react-router-dom";
 import { MdFastfood } from "react-icons/md";
 import { useEffect } from "react";
+import { fetchCart } from "../redux/actions/cartActions";
+import { useDispatch, useSelector } from "react-redux";
 
 export const LandingScreen = () => {
+  const dispatch = useDispatch();
+  const userInfo = useSelector((state) => state.user.userInfo);
 
+  console.log(userInfo);
 
   useEffect(() => {
     const userData = JSON.parse(sessionStorage.getItem("userInfo"));
@@ -26,9 +31,10 @@ export const LandingScreen = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${userData.token}`,
+        Authorization: `Bearer ${userInfo.token}`,
       },
     });
+    dispatch(fetchCart());
   }, []);
 
   return (

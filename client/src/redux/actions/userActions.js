@@ -8,8 +8,8 @@ export const login = (name, password) => async (dispatch) => {
       headers: { "Content-Type": "application/json" },
     };
     const { data } = await axios.post("/api/users/login", { name, password }, config);
-    sessionStorage.setItem("userInfo", JSON.stringify(data));
     dispatch(userLogin(data));
+    sessionStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
     dispatch(
       setError(

@@ -1,21 +1,20 @@
 import axios from "axios";
 import { setLoading, setCart, cartItemAdd, cartItemRemoval, setError } from "../slices/cart.js";
 
-const userData = JSON.parse(sessionStorage.getItem("userInfo"));
-console.log(userData);
-export const fetchCart = () => async (dispatch) => {
+export const fetchCart = () => async (dispatch, getState) => {
+  const { userInfo } = getState().user;
+  console.log(userInfo.token);
   dispatch(setLoading(true));
   console.log(1);
   try {
-    const response = await axios.get(`/api/carts/${userData._id}`, {
+    const response = await axios.get(`/api/carts/${userInfo._id}`, {
       headers: {
-        Authorization: `Bearer ${userData.token}`,
+        Authorization: `Bearer ${userInfo.token}`,
       },
     });
 
     const cart = response.data;
     dispatch(setCart(cart));
-    console.log(2);
   } catch (error) {
     dispatch(
       setError(
@@ -30,8 +29,9 @@ export const fetchCart = () => async (dispatch) => {
 };
 
 export const addCartItem = (id, qty) => async (dispatch, getState) => {
+  const { userInfo } = getState().user;
+  console.log(userInfo.token);
   dispatch(setLoading(true));
-
   try {
     const cart = getState();
     const { cartId } = cart;
@@ -45,26 +45,17 @@ export const addCartItem = (id, qty) => async (dispatch, getState) => {
       stock: data.stock,
       qty,
     };
-
+    dispatch(cartItemAdd(itemToAdd));
     const response = await axios.put(
       `/api/carts/${cartId}`,
       { items: [itemToAdd] },
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${userData.token}`,
+          Authorization: `Bearer ${userInfo.token}`,
         },
       }
     );
-
-    if (!response.ok) {
-      throw new Error("Cart update failed");
-    }
-
-    const updatedCart = response.data;
-    console.log(updatedCart);
-
-    dispatch(setCart(updatedCart));
     return itemToAdd;
   } catch (error) {
     dispatch(
@@ -79,14 +70,16 @@ export const addCartItem = (id, qty) => async (dispatch, getState) => {
   }
 };
 
-export const removeCartItem = (itemId) => async (dispatch) => {
+export const removeCartItem = (itemId) => async (dispatch, getState) => {
+  const { userInfo } = getState().user;
+  console.log(userInfo.token);
   dispatch(setLoading(true));
-
+  dispatch(cartItemRemoval(itemId));
   try {
     const response = await axios.delete(`/api/carts/${itemId}`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${userData.token}`,
+        Authorization: `Bearer ${userInfo.token}`,
       },
     });
 
@@ -96,8 +89,6 @@ export const removeCartItem = (itemId) => async (dispatch) => {
 
     const updatedCart = response.data;
     console.log(updatedCart);
-
-    dispatch(setCart(updatedCart));
   } catch (error) {
     dispatch(
       setError(

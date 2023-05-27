@@ -29,10 +29,6 @@ const CartScreen = () => {
 
   //TO PARAKATW PAIRNEI TO CART APO TI VASI
 
-  useEffect(() => {
-    dispatch(fetchCart());
-  }, [dispatch]);
-
   return (
     <Wrap spacing="30px" justify="center" minHeight="100vh">
       {loading ? (

@@ -10,11 +10,12 @@ export const initialState = {
   loading: false,
   error: null,
   cartId: "",
-  cart: [],
-  total: 0,
+  cart: JSON.parse(sessionStorage.getItem("cartItems")) || [],
+  total: sessionStorage.getItem("cartItems") ? calculateTotal(JSON.parse(sessionStorage.getItem("cartItems"))) : 0,
 };
 
 const updateSessionStorage = (cart, cartId) => {
+  sessionStorage.setItem("cartItems", JSON.stringify(cart));
   sessionStorage.setItem("cartId", JSON.stringify(cartId));
   sessionStorage.setItem("total", JSON.stringify(calculateTotal(cart)));
 };
@@ -32,6 +33,7 @@ export const cartSlice = createSlice({
       state.total = calculateTotal(payload.items);
       state.loading = false;
       state.error = null;
+      updateSessionStorage(state.cart, state.cartId);
     },
     cartItemAdd: (state, { payload }) => {
       const existingItem = state.cart.find((item) => item.id === payload.id);
@@ -42,7 +44,7 @@ export const cartSlice = createSlice({
       }
       state.loading = false;
       state.error = null;
-
+      updateSessionStorage(state.cart);
       state.total = calculateTotal(state.cart);
     },
     cartItemRemoval: (state, { payload }) => {

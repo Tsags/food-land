@@ -53,7 +53,7 @@ const LoginScreen = () => {
       } else {
         navigate("/");
       }
-      window.location.reload();
+      // window.location.reload();
       toast({ description: "Login Successful", status: "success", isClosable: true });
     }
   }, [userInfo, navigate, location.state, toast]);

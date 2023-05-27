@@ -35,30 +35,6 @@ const ProductScreen = () => {
   const cartContent = useSelector((state) => state.cart);
   const { cart } = cartContent;
 
-  const userData = JSON.parse(sessionStorage.getItem("userInfo"));
-  const [cartId, setCartId] = useState("");
-
-  //GIA NA VRW TO CART ID
-
-  // useEffect(() => {
-  //   fetch(`/api/carts/${userData._id}`, {
-  //     headers: {
-  //       Authorization: `Bearer ${userData.token}`,
-  //     },
-  //   })
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         throw new Error("Cart not found");
-  //       }
-  //       return response.json();
-  //     })
-  //     .then((cart) => {
-  //       setCartId(cart._id);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // }, []);
 
   useEffect(() => {
     dispatch(getProduct(id));
@@ -71,14 +47,6 @@ const ProductScreen = () => {
     if (input === "minus" && amount > 1) {
       setAmount(amount - 1);
     }
-  };
-
-  const itemToAdd = {
-    id: product._id,
-    name: product.name,
-    image: product.image,
-    price: product.price,
-    qty: amount,
   };
 
   //IN PRODUCTION

@@ -22,10 +22,29 @@ import { MdFastfood, MdLogout } from "react-icons/md";
 import { useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../redux/actions/userActions";
+import { RiShoppingCart2Line } from "react-icons/ri";
+
+const LinkIcon = () => {
+  const cartInfo = useSelector((state) => state.cart);
+  const { cart } = cartInfo;
+ 
+
+  return (
+    <Flex>
+      {!!cart.length && (
+        <Text fontStyle="italic" as="sub" fontSize="xs">
+          {cart.length}
+        </Text>
+      )}
+      <Icon ml="-1.5" as={RiShoppingCart2Line} h="4" w="7" alignSelf="center" />
+      Cart
+    </Flex>
+  );
+};
 
 const links = [
   { linkName: "Products", path: "/products" },
-  { linkName: "ShoppingCart", path: "/cart" },
+  { linkName: <LinkIcon />, path: "/cart" },
 ];
 
 const NavLink = ({ path, children }) => {
@@ -47,7 +66,7 @@ const Navbar = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
   const [isHovering, setIsHovering] = useState(false);
-  const user = useSelector((state) => state.user)
+  const user = useSelector((state) => state.user);
   const { userInfo } = user;
   const dispatch = useDispatch();
   const toast = useToast();

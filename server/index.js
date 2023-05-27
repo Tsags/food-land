@@ -19,6 +19,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/carts", cartRoutes);
 
+
 const expressServer = app.listen(port, () => {
   console.log(`Server runs on port ${port}.`);
 });
