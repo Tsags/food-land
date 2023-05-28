@@ -16,7 +16,7 @@ import { removeCartItem } from "../redux/actions/cartActions";
 const CartItem = ({ cartItem }) => {
   const dispatch = useDispatch();
   const { name, image, price, qty, id, stock } = cartItem;
-
+  console.log(stock);
   return (
     <Flex direction={{ base: "column", md: "row" }} justify="space-between" align="center">
       <Stack direction="row" spacing="5" width="full">

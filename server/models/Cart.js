@@ -16,6 +16,10 @@ const cartItemSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    stock: {
+      type: String,
+      required: true,
+    },
     qty: { type: Number, default: 1 },
   },
   { timestamps: true }

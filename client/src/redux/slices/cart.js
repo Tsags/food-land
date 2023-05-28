@@ -54,13 +54,17 @@ export const cartSlice = createSlice({
       state.loading = false;
       state.error = null;
     },
+    clearCart: (state) => {
+      sessionStorage.removeItem("cartItems");
+      state.cart = [];
+    },
     setError: (state, { payload }) => {
       state.error = payload;
       state.loading = false;
     },
   },
 });
-export const { setLoading, setCart, cartItemAdd, cartItemRemoval, setError } = cartSlice.actions;
+export const { setLoading, setCart, cartItemAdd, cartItemRemoval, clearCart, setError } = cartSlice.actions;
 export default cartSlice.reducer;
 
 export const cartSelector = (state) => state.cart;

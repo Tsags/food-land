@@ -22,12 +22,24 @@ import { MdFastfood, MdLogout } from "react-icons/md";
 import { useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../redux/actions/userActions";
-import { RiShoppingCart2Line } from "react-icons/ri";
+import { RiShoppingCart2Line, RiComputerLine } from "react-icons/ri";
 
-const LinkIcon = () => {
+const AdminIcon = () => {
+  const userInfo = useSelector((state) => state.user.userInfo);
+
+  console.log(userInfo.isAdmin);
+
+  return (
+    <Flex>
+      <Icon ml="-1.5" as={RiShoppingCart2Line} h="4" w="7" alignSelf="center" />
+      Admin
+    </Flex>
+  );
+};
+
+const CartIcon = () => {
   const cartInfo = useSelector((state) => state.cart);
   const { cart } = cartInfo;
- 
 
   return (
     <Flex>
@@ -44,7 +56,7 @@ const LinkIcon = () => {
 
 const links = [
   { linkName: "Products", path: "/products" },
-  { linkName: <LinkIcon />, path: "/cart" },
+  { linkName: <CartIcon />, path: "/cart" },
 ];
 
 const NavLink = ({ path, children }) => {

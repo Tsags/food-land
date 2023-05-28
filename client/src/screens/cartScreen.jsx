@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link as ReactLink } from "react-router-dom";
 import {
   Box,
@@ -16,14 +15,12 @@ import {
   Wrap,
 } from "@chakra-ui/react";
 
-import { fetchCart } from "../redux/actions/cartActions";
 import { useColorModeValue as mode } from "@chakra-ui/react";
 
-import CartItem from "../components/cartItem";
+import CartItem from "../components/CartItem";
 import CartOrderSummary from "../components/CartOrderSummary";
 
 const CartScreen = () => {
-  const dispatch = useDispatch();
   const cartInfo = useSelector((state) => state.cart);
   const { loading, error, cart } = cartInfo;
 

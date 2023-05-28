@@ -10,6 +10,8 @@ import Footer from "./components/Footer";
 import LandingScreen from "./screens/LandingScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
+import AdminScreen from "./screens/AdminScreen";
+import CheckoutScreen from "./screens/CheckoutScreen";
 
 function App() {
   return (
@@ -52,6 +54,8 @@ function App() {
               }
             />
             <Route path="/login" element={<LoginScreen />} />
+            <Route path="/admin" element={<AdminScreen />} />
+            <Route path="/checkout" element={<CheckoutScreen />} />
           </Routes>
         </main>
         <Footer />

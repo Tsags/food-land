@@ -25,17 +25,16 @@ export const LandingScreen = () => {
 
   console.log(userInfo);
 
-  useEffect(() => {
-    const userData = JSON.parse(sessionStorage.getItem("userInfo"));
-    fetch("/api/carts", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    });
-    dispatch(fetchCart());
-  }, []);
+  // useEffect(() => {
+  //   fetch("/api/carts", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${userInfo.token}`,
+  //     },
+  //   });
+  //   dispatch(fetchCart());
+  // }, []);
 
   return (
     <Box maxW="8xl" mx="auto" px={{ base: "0", lg: "12" }} py={{ base: "0", lg: "12" }} minH="5xl" mt="5">

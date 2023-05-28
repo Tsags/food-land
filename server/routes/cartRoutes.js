@@ -1,7 +1,7 @@
 import express from "express";
 import Cart from "../models/Cart.js";
 import asyncHandler from "express-async-handler";
-import protectRoute from "../authenticateMiddleware/authMiddleware.js";
+import { protectRoute, admin } from "../authenticateMiddleware/authMiddleware.js";
 import User from "../models/User.js";
 
 const cartRoutes = express.Router();
@@ -99,7 +99,17 @@ const removeItemFromCart = asyncHandler(async (req, res) => {
 //   res.json({ message: "Cart removed" });
 // });
 
-cartRoutes.route("/").post(protectRoute, createCart);
+// Route for fetching all carts
+const fetchAllCarts = asyncHandler(async (req, res) => {
+  try {
+    const carts = await Cart.find({}); // Fetch all carts from the database
+    res.json(carts);
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+cartRoutes.route("/").post(protectRoute, createCart).get(protectRoute, admin, fetchAllCarts);
 cartRoutes
   .route("/:id")
   .get(protectRoute, getCart)
