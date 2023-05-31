@@ -26,6 +26,7 @@ import { useColorModeValue as mode } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 
 import UsersTab from "../components/UsersTab";
+import OrdersTab from "../components/OrdersTab";
 
 const AdminScreen = () => {
   const location = useLocation();
@@ -46,12 +47,14 @@ const AdminScreen = () => {
           </Heading>
           <Tabs size="md" variant="enclosed" colorScheme="orange">
             <TabList>
-              <Tab fontWeight="bold">Active Tables</Tab>
+              <Tab fontWeight="bold">Orders</Tab>
               <Tab fontWeight="bold">All Tables</Tab>
               <Tab fontWeight="bold"> Products</Tab>
             </TabList>
             <TabPanels>
-              <TabPanel>i am active table</TabPanel>
+              <TabPanel>
+                <OrdersTab />
+              </TabPanel>
               <TabPanel>
                 <UsersTab />
               </TabPanel>
