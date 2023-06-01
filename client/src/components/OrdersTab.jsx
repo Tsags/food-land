@@ -28,46 +28,27 @@ import {
   Center,
   SimpleGrid,
 } from "@chakra-ui/react";
-import { CheckCircleIcon, DeleteIcon } from "@chakra-ui/icons";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllOrders, deleteOrder, setDelivered, resetErrorAndRemoval } from "../redux/actions/adminActions";
-import ConfirmRemovalAlert from "./ConfirmRemovalAlert";
+import { getAllOrders } from "../redux/actions/adminActions";
 import OrderDetails from "./OrderDetails";
 
 const OrdersTab = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = useRef();
-  const [orderToDelete, setOrderToDelete] = useState("");
   const dispatch = useDispatch();
   const admin = useSelector((state) => state.admin);
-  const user = useSelector((state) => state.user);
-  const { userInfo } = user;
-  const { error, loading, orderRemoval, orders, deliveredFlag, userList } = admin;
-  const toast = useToast();
+  const { error, loading, orders, userList } = admin;
 
   const [selectedItem, setSelectedItem] = useState(null);
 
-  const handleItemClick = (item) => {
-    setSelectedItem(item);
-    console.log(item);
+  const handleItemClick = (user) => {
+    setSelectedItem(user);
   };
 
   useEffect(() => {
     dispatch(getAllOrders());
-    dispatch(resetErrorAndRemoval());
-    if (orderRemoval) {
-      toast({ description: "Order has been removed.", status: "success", isClosable: true });
-    }
-    if (deliveredFlag) {
-      toast({ description: "Order has been delivered.", status: "success", isClosable: true });
-    }
-  }, [orderRemoval, dispatch, toast, deliveredFlag]);
+  }, [dispatch, selectedItem]);
 
-  const openDeleteConfirmBox = (order) => {
-    setOrderToDelete(order);
-    onOpen();
-  };
+  useEffect(() => {}, [selectedItem, orders]);
 
   return (
     <Box>
@@ -86,7 +67,7 @@ const OrdersTab = () => {
         </Wrap>
       ) : (
         <Flex direction={{ base: "column", md: "row" }}>
-          <SimpleGrid columns={{ base: 1, md: 5 }} spacing={10} flex={{ base: "none", md: "2" }} minChildWidth="180px">
+          <SimpleGrid columns={{ base: 1, md: 4 }} spacing={10} flex={{ base: "none", md: "2" }} minChildWidth="180px">
             {orders &&
               [...userList]
                 .sort((a, b) => a.name.localeCompare(b.name))
@@ -96,15 +77,17 @@ const OrdersTab = () => {
                     return (
                       <WrapItem key={user._id}>
                         <Stack alignItems="center">
-                          <Center bg="orange.400">
+                          <Center>
                             <Image
                               src="/images/table.png"
                               alt="Lovely Image"
                               fallback={<Skeleton />}
-                              onClick={() => handleItemClick(user._id)}
+                              onClick={() => handleItemClick(user)}
                             />
                           </Center>
-                          <div bg="orange.400">{user.name}</div>
+                          <div>
+                            <strong>{user.name}</strong>
+                          </div>
                         </Stack>
                       </WrapItem>
                     );
@@ -112,16 +95,9 @@ const OrdersTab = () => {
                   return null;
                 })}
           </SimpleGrid>
-          <Box flex="1">{selectedItem && <OrderDetails item={selectedItem} />}</Box>
+          <Box flex="1">{selectedItem && <OrderDetails user={selectedItem} />}</Box>
         </Flex>
       )}
-      {/* <ConfirmRemovalAlert
-        isOpen={isOpen}
-        onClose={onClose}
-        cancelRef={cancelRef}
-        // itemToDelete={userToDelete}
-        // deleteAction={deleteUser}
-      /> */}
     </Box>
   );
 };

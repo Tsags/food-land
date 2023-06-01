@@ -22,21 +22,13 @@ import {
   TabPanel,
 } from "@chakra-ui/react";
 
-import { useColorModeValue as mode } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
-
 import UsersTab from "../components/UsersTab";
 import OrdersTab from "../components/OrdersTab";
 
 const AdminScreen = () => {
   const location = useLocation();
   const user = useSelector((state) => state.user);
-  const { userInfo, loading, error } = user;
-
-  const [activeTable, setActiveTable] = useState([]);
-  const [table, setTable] = useState([]);
-  console.log(table);
-  console.log(activeTable);
+  const { userInfo } = user;
 
   return userInfo && userInfo.isAdmin === "true" ? (
     <Box>

@@ -4,7 +4,7 @@ export const initialState = {
   error: null,
   userList: [],
   userRemoval: false,
-  orders: null,
+  orders: [],
   orderRemoval: false,
   deliveredFlag: false,
 };
@@ -45,6 +45,8 @@ export const adminSlice = createSlice({
       state.error = null;
       state.loading = false;
       state.userRemoval = false;
+      state.deliveredFlag = false;
+      state.orderRemoval = false;
     },
     setDeliveredFlag: (state) => {
       state.deliveredFlag = true;

@@ -23,7 +23,6 @@ export const getAllUsers = () => async (dispatch, getState) => {
       },
     };
     const { data } = await axios.get("/api/users", config);
-    console.log("response:", data);
     dispatch(getUsers(data));
   } catch (error) {
     dispatch(

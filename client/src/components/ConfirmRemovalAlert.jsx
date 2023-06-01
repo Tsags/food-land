@@ -16,7 +16,7 @@ const ConfirmRemovalAlert = ({ isOpen, onClose, cancelRef, itemToDelete, deleteA
     dispatch(deleteAction(itemToDelete._id));
     onClose();
   };
-  console.log(itemToDelete);
+
   return (
     <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
       <AlertDialogOverlay>

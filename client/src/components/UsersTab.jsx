@@ -47,7 +47,6 @@ const UsersTab = () => {
     setUserToDelete(user);
     onOpen();
   };
-  console.log(userList);
   return (
     <Box>
       {error && (
