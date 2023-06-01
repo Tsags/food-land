@@ -42,7 +42,7 @@ const CheckoutOrderSummary = () => {
         userInfo,
       })
     );
-  });
+  }, [dispatch]);
 
   return (
     <Stack spacing="4" rounded="xl" padding="8" width="full">

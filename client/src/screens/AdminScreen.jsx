@@ -1,26 +1,8 @@
 import { useSelector } from "react-redux";
-import { Link as ReactLink } from "react-router-dom";
+
 import { Navigate, useLocation } from "react-router-dom";
-import axios from "axios";
-import {
-  Box,
-  Flex,
-  Heading,
-  HStack,
-  Link,
-  Stack,
-  Spinner,
-  Alert,
-  AlertTitle,
-  AlertIcon,
-  AlertDescription,
-  Wrap,
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-} from "@chakra-ui/react";
+
+import { Box, Heading, Stack, Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 
 import UsersTab from "../components/UsersTab";
 import OrdersTab from "../components/OrdersTab";
