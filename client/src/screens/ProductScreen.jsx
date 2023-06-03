@@ -35,7 +35,6 @@ const ProductScreen = () => {
   const cartContent = useSelector((state) => state.cart);
   const { cart } = cartContent;
 
-
   useEffect(() => {
     dispatch(getProduct(id));
   }, [dispatch, id, cart]);
@@ -48,29 +47,6 @@ const ProductScreen = () => {
       setAmount(amount - 1);
     }
   };
-
-  //IN PRODUCTION
-  // const updateCart = async (itemToAdd) => {
-  //   try {
-  //     const response = await fetch(`/api/carts/${cartId}`, {
-  //       method: "PUT",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${userData.token}`,
-  //       },
-  //       body: JSON.stringify({ items: [itemToAdd] }),
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error("Cart update failed");
-  //     }
-
-  //     const updatedCart = await response.json();
-  //     console.log(updatedCart);
-  //   } catch (error) {
-  //     console.error("Error updating cart:", error);
-  //   }
-  // };
 
   const addItem = () => {
     // updateCart(itemToAdd);

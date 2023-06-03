@@ -9,6 +9,7 @@ import {
   setDeliveredFlag,
   orderDelete,
 } from "../slices/admin.js";
+import { setProducts, setProductUpdateFlag } from "../slices/products.js";
 
 export const getAllUsers = () => async (dispatch, getState) => {
   const {
@@ -153,4 +154,105 @@ export const setDelivered = (id) => async (dispatch, getState) => {
 
 export const resetErrorAndRemoval = () => async (dispatch) => {
   dispatch(resetError());
+};
+
+export const updateProduct =
+  (name, category, stock, price, id, productIsNew, description, image) => async (dispatch, getState) => {
+    const {
+      user: { userInfo },
+    } = getState();
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+          "Content-Type": "application/json",
+        },
+      };
+      const { data } = await axios.put(
+        `/api/products`,
+        {
+          name,
+          category,
+          stock,
+          price,
+          id,
+          productIsNew,
+          description,
+          image,
+        },
+        config
+      );
+
+      dispatch(setProducts(data));
+      dispatch(setProductUpdateFlag());
+    } catch (error) {
+      dispatch(
+        setError(
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message
+            ? error.message
+            : "Product could not be updated."
+        )
+      );
+    }
+  };
+
+export const deleteProduct = (id) => async (dispatch, getState) => {
+  const {
+    user: { userInfo },
+  } = getState();
+
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+        "Content-Type": "application/json",
+      },
+    };
+
+    const { data } = await axios.delete(`/api/products/${id}`, config);
+    dispatch(setProducts(data));
+    dispatch(setProductUpdateFlag());
+    dispatch(resetError());
+  } catch (error) {
+    dispatch(
+      setError(
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+          ? error.message
+          : "Product could not be removed."
+      )
+    );
+  }
+};
+
+export const uploadProduct = (newProduct) => async (dispatch, getState) => {
+  const {
+    user: { userInfo },
+  } = getState();
+
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+        "Content-Type": "application/json",
+      },
+    };
+
+    const { data } = await axios.post("/api/products", newProduct, config);
+    dispatch(setProducts(data));
+    dispatch(setProductUpdateFlag());
+  } catch (error) {
+    dispatch(
+      setError(
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+          ? error.message
+          : "Product could not be uploaded."
+      )
+    );
+  }
 };
