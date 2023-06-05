@@ -3,12 +3,14 @@ import { setLoading, setError, userLogin, userLogout } from "../slices/user";
 
 export const login = (name, password) => async (dispatch) => {
   dispatch(setLoading(true));
+
   try {
     const config = {
       headers: { "Content-Type": "application/json" },
     };
     const { data } = await axios.post("/api/users/login", { name, password }, config);
     dispatch(userLogin(data));
+    localStorage.removeItem("cartItems");
     sessionStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
     dispatch(

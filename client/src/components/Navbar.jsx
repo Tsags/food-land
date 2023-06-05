@@ -15,14 +15,18 @@ import {
   useToast,
   MenuItem,
   Menu,
+  MenuDivider,
+  MenuButton,
+  MenuList,
 } from "@chakra-ui/react";
 import { Link as ReactLink } from "react-router-dom";
-import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
+import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { MdFastfood, MdLogout } from "react-icons/md";
 import { useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../redux/actions/userActions";
 import { RiShoppingCart2Line, RiComputerLine } from "react-icons/ri";
+import { CgProfile } from "react-icons/cg";
 
 const AdminIcon = () => {
   const userInfo = useSelector((state) => state.user.userInfo);
@@ -123,6 +127,12 @@ const Navbar = () => {
                 {link.linkName}
               </NavLink>
             ))}
+            {userInfo && userInfo.isAdmin === "true" && (
+              <Link as={ReactLink} to="/admin" px={2} rounded="md" _hover={{ textDecoration: "none" }}>
+                <Icon ml="-1.5" as={RiComputerLine} h="4" w="7" alignSelf="center" />
+                Admin-Console
+              </Link>
+            )}
           </HStack>
         </HStack>
         <Flex alignItems="center">
@@ -135,9 +145,20 @@ const Navbar = () => {
           </NavLink>
           {userInfo ? (
             <Menu>
-              <MenuItem onClick={logoutHandler}>
-                <MdLogout />
-              </MenuItem>
+              <MenuButton px="4" py="2" transition="all 0.3s" as={Button}>
+                {userInfo.name} <ChevronDownIcon />
+              </MenuButton>
+              <MenuList>
+                <MenuItem as={ReactLink} to="/your-orders">
+                  <Text ml="2">Your Orders</Text>
+                </MenuItem>
+
+                <MenuDivider />
+                <MenuItem onClick={logoutHandler}>
+                  <MdLogout />
+                  <Text ml="2">Logout</Text>
+                </MenuItem>
+              </MenuList>
             </Menu>
           ) : (
             <>
@@ -164,7 +185,6 @@ const Navbar = () => {
       {isOpen ? (
         <Box pb={4} display={{ md: "none" }} ref={ref}>
           <Stack as="nav" spacing={4} onClick={onClose}>
-            {" "}
             {links.map((link) => (
               <NavLink key={link.linkName} path={link.path}>
                 {link.linkName}

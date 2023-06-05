@@ -10,13 +10,12 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
-import { addCartItem } from "../redux/actions/cartActions";
-import { removeCartItem } from "../redux/actions/cartActions";
+import { addCartItem, removeCartItem, updateCartItemQuantity } from "../redux/actions/cartActions";
+import {} from "../redux/actions/cartActions";
 
 const CartItem = ({ cartItem }) => {
   const dispatch = useDispatch();
   const { name, image, price, qty, id, stock } = cartItem;
-  console.log(stock);
   return (
     <Flex direction={{ base: "column", md: "row" }} justify="space-between" align="center">
       <Stack direction="row" spacing="5" width="full">
@@ -39,7 +38,7 @@ const CartItem = ({ cartItem }) => {
           focusBorderColor={mode("orange.500", "orange.200")}
           value={qty}
           onChange={(e) => {
-            dispatch(addCartItem(id, e.target.value));
+            dispatch(updateCartItemQuantity(id, e.target.value));
           }}
         >
           {[...Array(stock).keys()].map((x) => (

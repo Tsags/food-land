@@ -23,8 +23,7 @@ import CartOrderSummary from "../components/CartOrderSummary";
 const CartScreen = () => {
   const cartInfo = useSelector((state) => state.cart);
   const { loading, error, cart } = cartInfo;
-
-  //TO PARAKATW PAIRNEI TO CART APO TI VASI
+  console.log(cart);
 
   return (
     <Wrap spacing="30px" justify="center" minHeight="100vh">

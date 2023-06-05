@@ -9,15 +9,13 @@ const calculateTotal = (cartState) => {
 export const initialState = {
   loading: false,
   error: null,
-  cartId: "",
-  cart: JSON.parse(sessionStorage.getItem("cartItems")) || [],
-  total: sessionStorage.getItem("cartItems") ? calculateTotal(JSON.parse(sessionStorage.getItem("cartItems"))) : 0,
+  cart: JSON.parse(localStorage.getItem("cartItems")) || [],
+  total: localStorage.getItem("cartItems") ? calculateTotal(JSON.parse(localStorage.getItem("cartItems"))) : 0,
 };
 
-const updateSessionStorage = (cart, cartId) => {
-  sessionStorage.setItem("cartItems", JSON.stringify(cart));
-  sessionStorage.setItem("cartId", JSON.stringify(cartId));
-  sessionStorage.setItem("total", JSON.stringify(calculateTotal(cart)));
+const updateLocalStorage = (cart) => {
+  localStorage.setItem("cartItems", JSON.stringify(cart));
+  localStorage.setItem("total", JSON.stringify(calculateTotal(cart)));
 };
 
 export const cartSlice = createSlice({
@@ -28,12 +26,11 @@ export const cartSlice = createSlice({
       state.loading = true;
     },
     setCart: (state, { payload }) => {
-      state.cartId = payload._id;
-      state.cart = payload.items;
-      state.total = calculateTotal(payload.items);
+      state.cart = payload;
+      updateLocalStorage(state.cart);
+      state.total = calculateTotal(state.cart);
       state.loading = false;
       state.error = null;
-      updateSessionStorage(state.cart, state.cartId);
     },
     cartItemAdd: (state, { payload }) => {
       const existingItem = state.cart.find((item) => item.id === payload.id);
@@ -44,18 +41,28 @@ export const cartSlice = createSlice({
       }
       state.loading = false;
       state.error = null;
-      updateSessionStorage(state.cart);
+      updateLocalStorage(state.cart);
+      state.total = calculateTotal(state.cart);
+    },
+    updateQuantity: (state, { payload }) => {
+      const existingItem = state.cart.find((item) => item.id === payload.id);
+      if (existingItem) {
+        existingItem.qty = payload.qty;
+      }
+      state.loading = false;
+      state.error = null;
+      updateLocalStorage(state.cart);
       state.total = calculateTotal(state.cart);
     },
     cartItemRemoval: (state, { payload }) => {
       state.cart = [...state.cart].filter((item) => item.id !== payload);
-      updateSessionStorage(state.cart);
+      updateLocalStorage(state.cart);
       state.total = calculateTotal(state.cart);
       state.loading = false;
       state.error = null;
     },
     clearCart: (state) => {
-      sessionStorage.removeItem("cartItems");
+      localStorage.removeItem("cartItems");
       state.cart = [];
     },
     setError: (state, { payload }) => {
@@ -64,7 +71,8 @@ export const cartSlice = createSlice({
     },
   },
 });
-export const { setLoading, setCart, cartItemAdd, cartItemRemoval, clearCart, setError } = cartSlice.actions;
+export const { setLoading, setCart, cartItemAdd, cartItemRemoval, updateQuantity, clearCart, setError } =
+  cartSlice.actions;
 export default cartSlice.reducer;
 
 export const cartSelector = (state) => state.cart;
