@@ -31,13 +31,16 @@ const io = new Server(expressServer, {
   },
 });
 
-let cart = [];
+let carts = {};
 
 io.on("connection", (socket) => {
   console.log("connected to socket.io");
 
-  socket.on("cart/add", ({ item, userId }) => {
-    console.log("item:", item);
+  socket.on("cart/addItem", ({ item, userId }) => {
+    if (!carts[userId]) {
+      carts[userId] = [];
+    }
+    const cart = carts[userId];
     const existingItem = cart.find((cartItem) => cartItem.id === item.id);
     if (existingItem) {
       existingItem.qty += item.qty;
@@ -46,8 +49,34 @@ io.on("connection", (socket) => {
     }
     io.emit("cart/update", { cart, userId });
   });
-  // socket.on("cart/remove", ({ itemId, userId }) => {
-  //   cart = [...cart].filter((item) => item.id !== itemId);
-  //   io.emit("cart/update", { itemId, userId });
-  // });
+
+  socket.on("cart/removeItem", ({ itemId, userId }) => {
+    const cart = carts[userId];
+    if (cart) {
+      const updatedCart = cart.filter((item) => item.id !== itemId);
+      carts[userId] = updatedCart;
+      io.emit("cart/update", { cart: updatedCart, userId });
+    }
+  });
+
+  socket.on("cart/updateQty", ({ itemId, quantity, userId }) => {
+    const cart = carts[userId];
+    if (cart) {
+      const updatedCart = cart.map((item) => {
+        if (item.id === itemId) {
+          return { ...item, qty: quantity };
+        }
+        return item;
+      });
+      carts[userId] = updatedCart;
+      io.emit("cart/update", { cart: updatedCart, userId });
+    }
+  });
+
+  socket.on("cart/removeCart", (userId) => {
+    if (carts[userId]) {
+      carts[userId] = [];
+      io.emit("cart/update", { cart: [], userId });
+    }
+  });
 });

@@ -1,6 +1,5 @@
 import axios from "axios";
 import { setLoading, clearOrder, setError, orderCreate } from "../slices/order";
-import { clearCart } from "../slices/cart";
 
 export const createOrder = (order) => async (dispatch, getState) => {
   dispatch(setLoading(true));
@@ -18,7 +17,6 @@ export const createOrder = (order) => async (dispatch, getState) => {
     };
     dispatch(orderCreate(order.orderItems));
     await axios.post("/api/orders", order, config);
-    await axios.delete("/api/carts", config);
   } catch (error) {
     dispatch(
       setError(

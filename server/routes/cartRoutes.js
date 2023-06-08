@@ -78,13 +78,15 @@ const getCart = asyncHandler(async (req, res) => {
 });
 
 const deleteCart = asyncHandler(async (req, res) => {
-  const cart = await Cart.findOneAndDelete({ user: req.user._id });
-  if (cart) {
-    res.json(cart);
-  } else {
+  const cart = await Cart.findOne({ user: req.user._id });
+  if (!cart) {
     res.status(404);
     throw new Error("Cart not found");
   }
+  cart.cartItems = [];
+  const updatedCart = await cart.save();
+
+  res.json(updatedCart);
 });
 
 const deleteCartItem = asyncHandler(async (req, res) => {

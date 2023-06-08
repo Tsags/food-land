@@ -20,6 +20,11 @@ const Socket = () => {
       socket.off("cart/update");
     };
   }, [dispatch, currentUserId]);
+
+  useEffect(() => {
+    // Associate the user ID or session ID with the socket connection
+    socket.emit("user/connect", { userId: currentUserId });
+  }, [currentUserId]);
 };
 
 export default Socket;

@@ -16,7 +16,7 @@ import { PhoneIcon, EmailIcon, ChatIcon } from "@chakra-ui/icons";
 import { useEffect, useState, useCallback } from "react";
 import CheckoutItem from "./CheckoutItem";
 import { createOrder } from "../redux/actions/orderActions";
-import { clearCart } from "../redux/slices/cart";
+import { resetCart } from "../redux/actions/cartActions";
 
 const CheckoutOrderSummary = () => {
   const colorMode = mode("gray.600", "gray.400");
@@ -41,14 +41,13 @@ const CheckoutOrderSummary = () => {
           userInfo,
         })
       );
-      dispatch(clearCart());
+      dispatch(resetCart());
     };
 
     if (cartToOrder.length > 0) {
       createOrderAndClearCart();
     }
   }, [dispatch, userInfo, cartToOrder, orderTotal]);
-  console.log(localStorage.getItem("orderItems"));
   const moneyFromLocalStorage = localStorage.getItem("totalOrder");
   const money = JSON.parse(moneyFromLocalStorage);
 

@@ -35,8 +35,7 @@ export const addCartItem = (id, qty) => async (dispatch, getState) => {
     };
     dispatch(cartItemAdd(itemToAdd));
     await axios.put("/api/carts", { itemToAdd }, config);
-    socket.emit("cart/add", { item: itemToAdd, userId: userInfo._id });
-    console.log(localStorage.getItem("cartItems"));
+    socket.emit("cart/addItem", { item: itemToAdd, userId: userInfo._id });
     return itemToAdd;
   } catch (error) {
     dispatch(
@@ -64,13 +63,9 @@ export const removeCartItem = (itemId) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-
-    // Make the delete request to remove the item from the cart
     await axios.delete(`/api/carts/${itemId}`, config);
-
-    // Dispatch the cartItemRemoval action with the item ID
     dispatch(cartItemRemoval(itemId));
-    // socket.emit("cart/remove", { itemId: itemId, userId: userInfo._id });
+    socket.emit("cart/removeItem", { itemId: itemId, userId: userInfo._id });
   } catch (error) {
     dispatch(
       setError(
@@ -82,10 +77,30 @@ export const removeCartItem = (itemId) => async (dispatch, getState) => {
   }
 };
 
-export const resetCart = (dispatch) => {
-  dispatch(clearCart());
-};
+export const resetCart = () => async (dispatch, getState) => {
+  try {
+    const {
+      user: { userInfo },
+    } = getState();
 
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    await axios.delete("/api/carts", config);
+    dispatch(clearCart());
+    socket.emit("cart/removeCart", userInfo._id);
+  } catch (error) {
+    dispatch(
+      setError(
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message || "Something unexpected happened!"
+      )
+    );
+  }
+};
 export const updateCartItemQuantity = (id, qty) => async (dispatch, getState) => {
   dispatch(setLoading(true));
 
@@ -100,19 +115,13 @@ export const updateCartItemQuantity = (id, qty) => async (dispatch, getState) =>
       },
     };
 
-    const { data } = await axios.get(`/api/products/${id}`);
-    const itemToAdd = {
-      id: data._id,
-      name: data.name,
-      image: data.image,
-      price: data.price,
-      stock: data.stock,
-      qty,
-    };
     await axios.put(`/api/carts/${id}/quantity`, { quantity: qty }, config);
-    dispatch(updateQuantity(itemToAdd));
-    console.log(localStorage.getItem("cartItems"));
-    return itemToAdd;
+    dispatch(updateQuantity({ id, qty }));
+    socket.emit("cart/updateQty", {
+      itemId: id,
+      quantity: qty,
+      userId: userInfo._id,
+    });
   } catch (error) {
     dispatch(
       setError(

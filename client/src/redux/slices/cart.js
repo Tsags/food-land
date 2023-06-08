@@ -45,7 +45,8 @@ export const cartSlice = createSlice({
       updateLocalStorage(state.cart);
       state.total = calculateTotal(state.cart);
     },
-    updateQuantity: (state, { payload }) => {
+    updateQuantity: (state, action) => {
+      const payload = action.payload;
       const existingItem = state.cart.find((item) => item.id === payload.id);
       if (existingItem) {
         existingItem.qty = payload.qty;
@@ -55,7 +56,8 @@ export const cartSlice = createSlice({
       updateLocalStorage(state.cart);
       state.total = calculateTotal(state.cart);
     },
-    cartItemRemoval: (state, { payload }) => {
+    cartItemRemoval: (state, action) => {
+      const payload = action.payload;
       state.cart = [...state.cart].filter((item) => item.id !== payload);
       updateLocalStorage(state.cart);
       state.total = calculateTotal(state.cart);
@@ -63,9 +65,9 @@ export const cartSlice = createSlice({
       state.error = null;
     },
     clearCart: (state) => {
-      localStorage.removeItem("cartItems");
       state.cart = [];
       state.total = 0;
+      localStorage.removeItem("cartItems");
       localStorage.removeItem("total");
     },
     setError: (state, { payload }) => {
