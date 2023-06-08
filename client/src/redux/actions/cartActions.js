@@ -9,6 +9,9 @@ import {
   updateQuantity,
 } from "../slices/cart.js";
 
+import { io } from "socket.io-client";
+const socket = io("/");
+
 export const addCartItem = (id, qty) => async (dispatch, getState) => {
   dispatch(setLoading(true));
   const {
@@ -32,6 +35,8 @@ export const addCartItem = (id, qty) => async (dispatch, getState) => {
     };
     dispatch(cartItemAdd(itemToAdd));
     await axios.put("/api/carts", { itemToAdd }, config);
+    socket.emit("cart/add", { item: itemToAdd, userId: userInfo._id });
+    console.log(localStorage.getItem("cartItems"));
     return itemToAdd;
   } catch (error) {
     dispatch(
@@ -48,7 +53,33 @@ export const addCartItem = (id, qty) => async (dispatch, getState) => {
 
 export const removeCartItem = (itemId) => async (dispatch, getState) => {
   dispatch(setLoading(true));
-  dispatch(cartItemRemoval(itemId));
+
+  try {
+    const {
+      user: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    // Make the delete request to remove the item from the cart
+    await axios.delete(`/api/carts/${itemId}`, config);
+
+    // Dispatch the cartItemRemoval action with the item ID
+    dispatch(cartItemRemoval(itemId));
+    // socket.emit("cart/remove", { itemId: itemId, userId: userInfo._id });
+  } catch (error) {
+    dispatch(
+      setError(
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message || "Something unexpected happened!"
+      )
+    );
+  }
 };
 
 export const resetCart = (dispatch) => {
@@ -59,6 +90,16 @@ export const updateCartItemQuantity = (id, qty) => async (dispatch, getState) =>
   dispatch(setLoading(true));
 
   try {
+    const {
+      user: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
     const { data } = await axios.get(`/api/products/${id}`);
     const itemToAdd = {
       id: data._id,
@@ -68,8 +109,9 @@ export const updateCartItemQuantity = (id, qty) => async (dispatch, getState) =>
       stock: data.stock,
       qty,
     };
+    await axios.put(`/api/carts/${id}/quantity`, { quantity: qty }, config);
     dispatch(updateQuantity(itemToAdd));
-
+    console.log(localStorage.getItem("cartItems"));
     return itemToAdd;
   } catch (error) {
     dispatch(

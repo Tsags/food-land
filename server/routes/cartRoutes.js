@@ -32,6 +32,32 @@ const createOrUpdateCart = asyncHandler(async (req, res) => {
   res.status(201).json(updatedCart);
 });
 
+const updateCartItemQuantity = asyncHandler(async (req, res) => {
+  const { productId } = req.params;
+  const { quantity } = req.body;
+
+  const cart = await Cart.findOne({ user: req.user._id });
+
+  if (!cart) {
+    res.status(404);
+    throw new Error("Cart not found");
+  }
+
+  // Find the cart item with the matching product ID
+  const cartItem = cart.cartItems.find((item) => item.id === productId);
+
+  if (!cartItem) {
+    res.status(404);
+    throw new Error("Cart item not found");
+  }
+
+  // Update the quantity of the cart item
+  cartItem.qty = quantity;
+
+  const updatedCart = await cart.save();
+  res.json(updatedCart);
+});
+
 const getCart = asyncHandler(async (req, res) => {
   const cart = await Cart.findOne({ user: req.user._id });
   if (!cart) {
@@ -51,7 +77,44 @@ const getCart = asyncHandler(async (req, res) => {
   res.json(updatedCart);
 });
 
+const deleteCart = asyncHandler(async (req, res) => {
+  const cart = await Cart.findOneAndDelete({ user: req.user._id });
+  if (cart) {
+    res.json(cart);
+  } else {
+    res.status(404);
+    throw new Error("Cart not found");
+  }
+});
+
+const deleteCartItem = asyncHandler(async (req, res) => {
+  const { productId } = req.params;
+  const cart = await Cart.findOne({ user: req.user._id });
+
+  if (!cart) {
+    res.status(404);
+    throw new Error("Cart not found");
+  }
+
+  // Find the index of the cart item with the matching product ID
+  const itemIndex = cart.cartItems.findIndex((item) => item.id.toString() === productId);
+
+  if (itemIndex === -1) {
+    res.status(404);
+    throw new Error("Cart item not found");
+  }
+
+  // Remove the cart item from the cart array
+  cart.cartItems.splice(itemIndex, 1);
+
+  const updatedCart = await cart.save();
+  res.json(updatedCart);
+});
+
 cartRoutes.route("/").get(protectRoute, getCart);
 cartRoutes.route("/").put(protectRoute, createOrUpdateCart);
+cartRoutes.route("/").delete(protectRoute, deleteCart);
+cartRoutes.route("/:productId/quantity").put(protectRoute, updateCartItemQuantity);
+cartRoutes.route("/:productId").delete(protectRoute, deleteCartItem);
 
 export default cartRoutes;

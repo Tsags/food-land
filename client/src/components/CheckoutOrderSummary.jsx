@@ -16,39 +16,47 @@ import { PhoneIcon, EmailIcon, ChatIcon } from "@chakra-ui/icons";
 import { useEffect, useState, useCallback } from "react";
 import CheckoutItem from "./CheckoutItem";
 import { createOrder } from "../redux/actions/orderActions";
+import { clearCart } from "../redux/slices/cart";
 
 const CheckoutOrderSummary = () => {
   const colorMode = mode("gray.600", "gray.400");
+  const orderItems = useSelector((state) => state.order);
+  const { order } = orderItems;
   const cartItems = useSelector((state) => state.cart);
   const { cart, total } = cartItems;
-  console.log(cart);
   const user = useSelector((state) => state.user);
   const { userInfo } = user;
-  console.log(userInfo);
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const dispatch = useDispatch();
-  const obj = {
-    orderItems: cart,
-    totalPrice: total,
-    userInfo,
-  };
-  console.log(obj);
+
+  const [cartToOrder, setCartToOrder] = useState(cart);
+  const [orderTotal, setOrderTotal] = useState(total);
 
   useEffect(() => {
-    dispatch(
-      createOrder({
-        orderItems: cart,
-        totalPrice: total,
-        userInfo,
-      })
-    );
-  }, [dispatch]);
+    const createOrderAndClearCart = async () => {
+      dispatch(
+        createOrder({
+          orderItems: cartToOrder,
+          totalPrice: orderTotal,
+          userInfo,
+        })
+      );
+      dispatch(clearCart());
+    };
+
+    if (cartToOrder.length > 0) {
+      createOrderAndClearCart();
+    }
+  }, [dispatch, userInfo, cartToOrder, orderTotal]);
+  console.log(localStorage.getItem("orderItems"));
+  const moneyFromLocalStorage = localStorage.getItem("totalOrder");
+  const money = JSON.parse(moneyFromLocalStorage);
 
   return (
     <Stack spacing="4" rounded="xl" padding="8" width="full">
       <Heading size="md">Order Summary</Heading>
-      {cart.map((item) => (
-        <CheckoutItem key={item.id} cartItem={item} />
+      {order.map((item) => (
+        <CheckoutItem key={item.id} orderItem={item} />
       ))}
       <Stack spacing="6">
         <Flex justify="space-between">
@@ -56,7 +64,7 @@ const CheckoutOrderSummary = () => {
             Total
           </Text>
           <Text fontSize="xl" fontWeight="extrabold">
-            $ {total}
+            {money}€
           </Text>
         </Flex>
       </Stack>

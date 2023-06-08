@@ -32,7 +32,8 @@ export const cartSlice = createSlice({
       state.loading = false;
       state.error = null;
     },
-    cartItemAdd: (state, { payload }) => {
+    cartItemAdd: (state, action) => {
+      const payload = action.payload;
       const existingItem = state.cart.find((item) => item.id === payload.id);
       if (existingItem) {
         existingItem.qty++;
@@ -64,6 +65,8 @@ export const cartSlice = createSlice({
     clearCart: (state) => {
       localStorage.removeItem("cartItems");
       state.cart = [];
+      state.total = 0;
+      localStorage.removeItem("total");
     },
     setError: (state, { payload }) => {
       state.error = payload;

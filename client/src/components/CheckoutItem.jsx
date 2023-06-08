@@ -2,8 +2,8 @@ import { Flex, Select, useColorModeValue as mode, Image, Box, Text, Spacer, Divi
 import { useDispatch } from "react-redux";
 import { addCartItem } from "../redux/actions/cartActions";
 
-const CheckoutItem = ({ cartItem }) => {
-  const { name, image, price, stock, qty, id } = cartItem;
+const CheckoutItem = ({ orderItem }) => {
+  const { name, image, price, stock, qty, id } = orderItem;
   const dispatch = useDispatch();
 
   return (
@@ -21,10 +21,10 @@ const CheckoutItem = ({ cartItem }) => {
         />
         <Flex direction="column" align="stretch" flex="1" mx="2" spacing="4">
           <Text noOfLines={2} maxW="150px">
-            {name}
+            {qty}x {name}
           </Text>
           <Spacer />
-          <Select
+          {/* <Select
             maxW="64px"
             focusBorderColor={mode("orange.500", "orange.200")}
             value={qty}
@@ -37,10 +37,10 @@ const CheckoutItem = ({ cartItem }) => {
                 {x + 1}
               </option>
             ))}
-          </Select>
+          </Select> */}
         </Flex>
         <Box>
-          <Text fontWeight="bold">${price}</Text>
+          <Text fontWeight="bold">{(price * qty).toFixed(2)}€</Text>
         </Box>
       </Flex>
       <Divider bg={mode("gray.400", "gray.800")} />

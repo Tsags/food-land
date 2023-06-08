@@ -47,7 +47,7 @@ const CartItem = ({ cartItem }) => {
             </option>
           ))}
         </Select>
-        <Text fontWeight="bold">{price * qty}€</Text>
+        <Text fontWeight="bold">{(price * qty).toFixed(2)}€</Text>
         <CloseButton onClick={() => dispatch(removeCartItem(id))} />
       </Flex>
     </Flex>

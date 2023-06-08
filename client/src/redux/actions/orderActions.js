@@ -1,11 +1,12 @@
 import axios from "axios";
-import { setLoading, clearOrder, setError } from "../slices/order";
+import { setLoading, clearOrder, setError, orderCreate } from "../slices/order";
+import { clearCart } from "../slices/cart";
 
 export const createOrder = (order) => async (dispatch, getState) => {
   dispatch(setLoading(true));
+  console.log(order.orderItems);
   const {
     user: { userInfo },
-    order: { orderInfo },
   } = getState();
 
   try {
@@ -15,9 +16,9 @@ export const createOrder = (order) => async (dispatch, getState) => {
         "Content-Type": "application/json",
       },
     };
-
-    const { data } = await axios.post("/api/orders", order, config);
-    console.log(data);
+    dispatch(orderCreate(order.orderItems));
+    await axios.post("/api/orders", order, config);
+    await axios.delete("/api/carts", config);
   } catch (error) {
     dispatch(
       setError(
