@@ -20,30 +20,12 @@ const QRCodeGenerator = ({ username, password }) => {
 
   return (
     <Box mx="auto" w="200px" h="200px">
-      <Image ref={imageRef} mx="auto" src={qrCodeData} alt="QR Code" />
+      <Image ref={imageRef} mx="auto" src={qrCodeData} alt="QR Code" w="100%" h="100%" />
       <ReactToPrint
         trigger={() => <button>Print this out!</button>}
         content={() => imageRef.current}
         documentTitle="QR Code"
-        bodyClass="print-body"
       />
-      <style>
-        {`
-          @media print {
-            .print-body {
-              margin: 0;
-              padding: 0;
-              width: 100%;
-              height: 100%;
-              position: fixed;
-              top: 0;
-              left: 0;
-              transform: scale(1);
-              transform-origin: top left;
-            }
-          }
-        `}
-      </style>
     </Box>
   );
 };
