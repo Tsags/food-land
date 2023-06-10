@@ -2,19 +2,23 @@ import express from "express";
 import Order from "../models/Order.js";
 import asyncHandler from "express-async-handler";
 import { protectRoute, admin } from "../authenticateMiddleware/authMiddleware.js";
-import User from "../models/User.js";
+import mongoose from "mongoose";
 
+const { ObjectId } = mongoose.Types;
 const orderRoutes = express.Router();
 
 // POST /api/orders
 // Create a new order for the authenticated user
 const createOrder = asyncHandler(async (req, res) => {
-  const { orderItems, totalPrice, userInfo } = req.body;
+  const { orderItems, totalPrice, userInfo, orderId } = req.body;
+  console.log(orderId)
   if (!orderItems || orderItems.length === 0) {
     res.status(400);
     throw new Error("No order items");
   } else {
+    const myCustomId = new ObjectId(orderId);
     const order = new Order({
+      _id: myCustomId,
       orderItems,
       user: userInfo._id,
       username: userInfo.name,

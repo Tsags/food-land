@@ -1,10 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const storedOrders = localStorage.getItem("orders");
+const initialOrders = storedOrders ? JSON.parse(storedOrders) : [];
+
 export const initialState = {
   error: null,
   userList: [],
   userRemoval: false,
-  orders: [],
+  orders: initialOrders,
   orderRemoval: false,
   deliveredFlag: false,
 };
@@ -26,12 +29,17 @@ export const adminSlice = createSlice({
       state.error = null;
       state.orders = payload;
     },
+    orderUpdate: (state, { payload }) => {
+      state.orders.push(payload);
+      localStorage.setItem("orders", JSON.stringify(state.orders));
+    },
     userDelete: (state) => {
       state.userRemoval = true;
       state.loading = false;
       state.error = null;
     },
-    orderDelete: (state) => {
+    orderDelete: (state, { payload }) => {
+      state.orders = state.orders.filter((order) => order.orderId !== payload._id);
       state.orderRemoval = true;
       state.loading = false;
       state.error = null;
@@ -48,14 +56,27 @@ export const adminSlice = createSlice({
       state.deliveredFlag = false;
       state.orderRemoval = false;
     },
-    setDeliveredFlag: (state) => {
+    setDeliveredFlag: (state, { payload }) => {
+      const orderToUpdate = state.orders.find((order) => order.orderId === payload);
+      if (orderToUpdate) {
+        orderToUpdate.isDelivered = true;
+      }
       state.deliveredFlag = true;
       state.loading = false;
     },
   },
 });
-export const { setLoading, getUsers, userDelete, setError, resetError, getOrders, setDeliveredFlag, orderDelete } =
-  adminSlice.actions;
+export const {
+  setLoading,
+  getUsers,
+  userDelete,
+  orderUpdate,
+  setError,
+  resetError,
+  getOrders,
+  setDeliveredFlag,
+  orderDelete,
+} = adminSlice.actions;
 export default adminSlice.reducer;
 
 export const adminSelector = (state) => state.admin;

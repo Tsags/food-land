@@ -13,7 +13,7 @@ const ConfirmRemovalAlert = ({ isOpen, onClose, cancelRef, itemToDelete, deleteA
   const dispatch = useDispatch();
 
   const onDeleteItem = () => {
-    dispatch(deleteAction(itemToDelete._id));
+    itemToDelete.orderId ? dispatch(deleteAction(itemToDelete.orderId)) : dispatch(deleteAction(itemToDelete._id));
     onClose();
   };
 

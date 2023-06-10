@@ -54,7 +54,7 @@ export const getAllOrders = () => async (dispatch, getState) => {
     };
 
     const { data } = await axios.get("/api/orders", config);
-    dispatch(getOrders(data));
+    // dispatch(getOrders(data));
   } catch (error) {
     dispatch(
       setError(
@@ -138,7 +138,7 @@ export const setDelivered = (id) => async (dispatch, getState) => {
     };
 
     await axios.put(`/api/orders/${id}`, {}, config);
-    dispatch(setDeliveredFlag());
+    dispatch(setDeliveredFlag(id));
   } catch (error) {
     dispatch(
       setError(

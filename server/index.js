@@ -32,6 +32,7 @@ const io = new Server(expressServer, {
 });
 
 let carts = {};
+let orders = [];
 
 io.on("connection", (socket) => {
   console.log("connected to socket.io");
@@ -78,5 +79,10 @@ io.on("connection", (socket) => {
       carts[userId] = [];
       io.emit("cart/update", { cart: [], userId });
     }
+  });
+
+  socket.on("order/create", (order) => {
+    console.log("order in index:",order);
+    io.emit("order/update", order);
   });
 });

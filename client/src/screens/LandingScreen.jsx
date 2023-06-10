@@ -15,15 +15,10 @@ import {
 import { FaArrowRight } from "react-icons/fa";
 import { Link as ReactLink } from "react-router-dom";
 import { MdFastfood } from "react-icons/md";
-import { useEffect } from "react";
-import { fetchCart } from "../redux/actions/cartActions";
 import { useDispatch, useSelector } from "react-redux";
 
 export const LandingScreen = () => {
-  const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user.userInfo);
-
-  console.log(userInfo);
 
   return (
     <Box maxW="8xl" mx="auto" px={{ base: "0", lg: "12" }} py={{ base: "0", lg: "12" }} minH="5xl" mt="5">
