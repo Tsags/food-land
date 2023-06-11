@@ -1,31 +1,29 @@
 import QRCode from "qrcode";
 import { useState, useEffect, useRef } from "react";
-import { Box, Image } from "@chakra-ui/react";
+import { Box, Image, Text, Stack, Button } from "@chakra-ui/react";
 import ReactToPrint from "react-to-print";
 
-const QRCodeGenerator = ({ username, password }) => {
-  const [qrCodeData, setQRCodeData] = useState("");
+const QRCodeGenerator = ({ username, password, qrCodeData }) => {
+  
   const imageRef = useRef();
 
-  useEffect(() => {
-    const url = `192.168.68.52:3000/login?username=${username}&password=${password}`;
-    QRCode.toDataURL(url, (err, dataUrl) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      setQRCodeData(dataUrl);
-    });
-  }, [username, password]);
-
   return (
-    <Box mx="auto" w="200px" h="200px">
-      <Image ref={imageRef} mx="auto" src={qrCodeData} alt="QR Code" w="100%" h="100%" />
-      <ReactToPrint
-        trigger={() => <button>Print this out!</button>}
-        content={() => imageRef.current}
-        documentTitle="QR Code"
-      />
+    <Box>
+      <Stack textAlign="center" justifyContent="center">
+        <Stack ref={imageRef} alignItems="center" justifyContent="center">
+          <Image src={qrCodeData} alt="QR Code" w="200px" h="200px" />
+          {username && (
+            <Text>
+              Table: <strong>{username}</strong>
+            </Text>
+          )}
+        </Stack>
+        <ReactToPrint
+          trigger={() => <Button>Print this out!</Button>}
+          content={() => imageRef.current}
+          documentTitle="QR Code"
+        />
+      </Stack>
     </Box>
   );
 };

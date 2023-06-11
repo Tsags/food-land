@@ -16,6 +16,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: false,
     },
+    qrCodeData: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

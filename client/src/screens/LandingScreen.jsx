@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 export const LandingScreen = () => {
   const userInfo = useSelector((state) => state.user.userInfo);
-
+  console.log(userInfo);
   return (
     <Box maxW="8xl" mx="auto" px={{ base: "0", lg: "12" }} py={{ base: "0", lg: "12" }} minH="5xl" mt="5">
       <Stack direction={{ base: "column-reverse", lg: "row" }} spacing={{ base: "0", lg: "20" }}>

@@ -17,12 +17,15 @@ import {
   AlertDescription,
   Wrap,
   useToast,
+  Image,
+  HStack,
 } from "@chakra-ui/react";
 import { CheckCircleIcon, DeleteIcon } from "@chakra-ui/icons";
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllUsers, deleteUser, resetErrorAndRemoval } from "../redux/actions/adminActions";
 import ConfirmRemovalAlert from "./ConfirmRemovalAlert";
+import ReactToPrint from "react-to-print";
 
 const UsersTab = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -34,6 +37,9 @@ const UsersTab = () => {
   const { error, loading, userRemoval, userList } = admin;
   const { userInfo } = user;
   const toast = useToast();
+
+  const imageRef = useRef();
+  const [showPreview, setShowPreview] = useState(true);
 
   useEffect(() => {
     dispatch(getAllUsers());
@@ -72,6 +78,7 @@ const UsersTab = () => {
                   <Th>Registered</Th>
                   <Th>Admin</Th>
                   <Th>Action</Th>
+                  <Th>QR Code</Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -94,6 +101,38 @@ const UsersTab = () => {
                           <DeleteIcon mr="5px" />
                           Remove User
                         </Button>
+                      </Td>
+                      <Td>
+                        <HStack>
+                          {showPreview && (
+                            <Image
+                              src={user.qrCodeData}
+                              alt="QR Code Preview"
+                              style={{
+                                width: "100px", // Adjust the width of the preview image as needed
+                                height: "auto",
+                              }}
+                            />
+                          )}
+                          <div style={{ display: "none" }}>
+                            {/* Hidden image used for printing */}
+                            <Image
+                              src={user.qrCodeData}
+                              alt="QR Code"
+                              ref={imageRef}
+                              style={{
+                                width: "100%",
+                                height: "100vh",
+                                objectFit: "cover",
+                              }}
+                            />
+                          </div>
+                          <ReactToPrint
+                            trigger={() => <Button onClick={() => setShowPreview(false)}>Print this out!</Button>}
+                            content={() => imageRef.current}
+                            documentTitle="QR Code"
+                          />
+                        </HStack>
                       </Td>
                     </Tr>
                   ))}

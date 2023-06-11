@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Flex,
   Box,
@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { register } from "../redux/actions/userActions";
 import QRcodeGenerator from "../components/QRcodeGenerator";
 import randomstring from "randomstring";
+import QRCode from "qrcode";
 import axios from "axios";
 
 function RegisterScreen() {
@@ -35,61 +36,64 @@ function RegisterScreen() {
   const { loading, error, userInfo } = user;
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [qrCodeData, setQRCodeData] = useState("");
+
+  const handleRegister = async (values) => {
+    try {
+      const randomPassword = randomstring.generate(10);
+      const url = `192.168.68.52:3000/login?username=${values.name}&password=${randomPassword}`;
+      const qrCodeInfo = await QRCode.toDataURL(url);
+      setQRCodeData(qrCodeInfo);
+      dispatch(register(values.name, randomPassword, qrCodeInfo));
+      toast({
+        title: "Success!",
+        description: "Table created!",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      setUsername(values.name);
+      setPassword(randomPassword);
+    } catch (error) {
+      console.error(error);
+      // Handle error
+    }
+  };
 
   return (
-    <Flex>
-      <QRcodeGenerator username={username} password={password} />
+    <Flex direction="row-reverse" alignItems="center" justifyContent="center" minHeight="50vh" width="100%">
       <Formik
         initialValues={{ name: "", password: "" }}
         validationSchema={Yup.object({
           name: Yup.string().label("Invalid user").required("A table is required"),
         })}
-        onSubmit={(values) => {
-          const randomPassword = randomstring.generate();
-          dispatch(register(values.name, 123));
-          if (!loading) {
-            toast({
-              title: "Success!",
-              description: "Table created!",
-              status: "success",
-              duration: 5000,
-              isClosable: true,
-            });
-            setUsername(values.name);
-            setPassword(123);
-          }
-        }}
+        onSubmit={handleRegister}
       >
         {(formik) => (
-          <Container>
-            <Stack justifyContent="center" textAlign="center">
-              <Heading size={headingBR}>Register Table</Heading>
-              <Box py={{ base: "0", md: "8" }} px={{ base: "4", md: "10" }} bg={{ boxBR }}>
-                <Stack spacing="6" as="form" onSubmit={formik.handleSubmit}>
-                  {error && (
-                    <Alert status="error" alignItems="center" justifyContent="center" textAlign="center">
-                      <AlertIcon />
-                      <AlertTitle>We are sorry!</AlertTitle>
-                      <AlertDescription>{error}</AlertDescription>
-                    </Alert>
-                  )}
-                  <Stack spacing="5">
-                    <FormControl>
-                      <TextField type="text" name="name" placeholder="" label="table number" />
-                    </FormControl>
-                  </Stack>
-                  <Stack spacing="6">
-                    <Button colorScheme="orange" size="lg" type="submit">
-                      New Table
-                    </Button>
-                    <Button>Create Cart</Button>
-                  </Stack>
-                </Stack>
-              </Box>
+          <Box px={{ base: "4", md: "32" }} bg={mode("transparent", "bg-surface")}>
+            <Stack spacing="6" as="form" onSubmit={formik.handleSubmit}>
+              {error && (
+                <Alert status="error" alignItems="center" justifyContent="center" textAlign="center">
+                  <AlertIcon />
+                  <AlertTitle>We are sorry!</AlertTitle>
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+              )}
+              <Stack spacing="5">
+                <FormControl w="150%">
+                  <TextField type="text" name="name" placeholder="" label="Table number" />
+                </FormControl>
+              </Stack>
+              <Stack spacing="6">
+                <Button colorScheme="orange" size="lg" type="submit" w="150%">
+                  New Table
+                </Button>
+              </Stack>
             </Stack>
-          </Container>
+          </Box>
         )}
       </Formik>
+      <QRcodeGenerator username={username} password={password} qrCodeData={qrCodeData} px={{ base: "4", md: "20" }} />
     </Flex>
   );
 }

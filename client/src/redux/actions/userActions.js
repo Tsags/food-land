@@ -11,6 +11,7 @@ export const login = (name, password) => async (dispatch) => {
     const { data } = await axios.post("/api/users/login", { name, password }, config);
     dispatch(userLogin(data));
     localStorage.removeItem("cartItems");
+    localStorage.removeItem("orders");
     localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
     dispatch(
@@ -30,15 +31,16 @@ export const logout = () => (dispatch) => {
   dispatch(userLogout());
 };
 
-export const register = (name, password) => async (dispatch) => {
+export const register = (name, password, qrCodeData) => async (dispatch) => {
   dispatch(setLoading(true));
+  console.log(qrCodeData);
   try {
     const config = {
       headers: {
         "Content-Type": "application/json",
       },
     };
-    await axios.post("/api/users/register", { name, password }, config);
+    await axios.post("/api/users/register", { name, password, qrCodeData }, config);
   } catch (error) {
     dispatch(
       setError(

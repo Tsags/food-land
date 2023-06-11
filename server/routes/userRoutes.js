@@ -29,7 +29,7 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, password } = req.body;
+  const { name, password, qrCodeData } = req.body;
 
   const userExists = await User.findOne({ name });
   if (userExists) {
@@ -40,6 +40,7 @@ const registerUser = asyncHandler(async (req, res) => {
   const user = await User.create({
     name,
     password,
+    qrCodeData,
   });
 
   if (user) {
