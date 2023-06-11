@@ -16,6 +16,7 @@ import CheckoutScreen from "./screens/CheckoutScreen";
 import Socket from "./components/Socket";
 import YourOrdersScreen from "./screens/YourOrdersScreen";
 import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
+import RequestsScreen from "./screens/RequestsScreen";
 
 // var socket;
 
@@ -82,7 +83,7 @@ function App() {
               }
             />
             <Route path="/login" element={<LoginScreen />} />
-
+            <Route path="/requests" element={<RequestsScreen />} />
             <Route
               path="/admin"
               element={

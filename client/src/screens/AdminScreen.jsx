@@ -7,12 +7,15 @@ import { Box, Heading, Stack, Tabs, TabList, TabPanels, Tab, TabPanel } from "@c
 import UsersTab from "../components/UsersTab";
 import OrdersTab from "../components/OrdersTab";
 import ProductsTab from "../components/ProductsTab";
+import NotificationsTab from "../components/NotificationsTab";
 
 const AdminScreen = () => {
   const location = useLocation();
   const user = useSelector((state) => state.user);
   const { userInfo } = user;
-
+  const admin = useSelector((state) => state.admin);
+  const { requests } = admin;
+  console.log(requests);
   return userInfo && userInfo.isAdmin === "true" ? (
     <Box>
       <Stack direction={{ base: "column", lg: "row" }} align={{ lg: "flex-start" }}>
@@ -25,6 +28,9 @@ const AdminScreen = () => {
               <Tab fontWeight="bold">Orders</Tab>
               <Tab fontWeight="bold">All Tables</Tab>
               <Tab fontWeight="bold"> Products</Tab>
+              <Tab fontWeight="bold" marginLeft="auto">
+                Notifications
+              </Tab>
             </TabList>
             <TabPanels>
               <TabPanel>
@@ -35,6 +41,9 @@ const AdminScreen = () => {
               </TabPanel>
               <TabPanel>
                 <ProductsTab />
+              </TabPanel>
+              <TabPanel>
+                <NotificationsTab requests={requests} />
               </TabPanel>
             </TabPanels>
           </Tabs>

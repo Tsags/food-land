@@ -6,6 +6,7 @@ const initialOrders = storedOrders ? JSON.parse(storedOrders) : [];
 export const initialState = {
   error: null,
   userList: [],
+  requests: [],
   userRemoval: false,
   orders: initialOrders,
   orderRemoval: false,
@@ -56,6 +57,12 @@ export const adminSlice = createSlice({
       state.deliveredFlag = false;
       state.orderRemoval = false;
     },
+    setRequests: (state, { payload }) => {
+      console.log(payload);
+      state.requests.push(payload);
+      state.error = null;
+      state.loading = false;
+    },
     setDeliveredFlag: (state, { payload }) => {
       const orderToUpdate = state.orders.find((order) => order.orderId === payload);
       if (orderToUpdate) {
@@ -76,6 +83,7 @@ export const {
   getOrders,
   setDeliveredFlag,
   orderDelete,
+  setRequests,
 } = adminSlice.actions;
 export default adminSlice.reducer;
 

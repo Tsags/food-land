@@ -2,14 +2,14 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { io } from "socket.io-client";
 import { setCart } from "../redux/slices/cart";
-import { orderUpdate } from "../redux/slices/admin";
+import { orderUpdate, setRequests } from "../redux/slices/admin";
 
 const socket = io("/");
 
 const Socket = () => {
   const dispatch = useDispatch();
   const currentUserId = useSelector((state) => state.user.userInfo?._id);
-  console.log(currentUserId);
+
   useEffect(() => {
     socket.on("cart/update", ({ cart, userId }) => {
       if (userId === currentUserId) {
@@ -24,7 +24,6 @@ const Socket = () => {
 
   useEffect(() => {
     socket.on("order/update", (order) => {
-      console.log("order in socket:", order);
       dispatch(orderUpdate(order));
     });
 
@@ -32,6 +31,16 @@ const Socket = () => {
       socket.off("order/update");
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    socket.on("admin-notification", ({ request, userInfo }) => {
+      dispatch(setRequests({ request, userInfo }));
+    });
+
+    return () => {
+      socket.off("admin-notification");
+    };
+  }, []);
 
   useEffect(() => {
     // Associate the user ID or session ID with the socket connection

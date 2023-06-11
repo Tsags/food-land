@@ -82,7 +82,11 @@ io.on("connection", (socket) => {
   });
 
   socket.on("order/create", (order) => {
-    console.log("order in index:",order);
+    console.log("order in index:", order);
     io.emit("order/update", order);
+  });
+  socket.on("request", ({ request, userInfo }) => {
+    // Broadcast the request to all admin clients
+    io.emit("admin-notification", { request, userInfo });
   });
 });

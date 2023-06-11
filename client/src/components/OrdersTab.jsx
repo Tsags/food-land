@@ -1,13 +1,5 @@
 import {
   Box,
-  TableContainer,
-  Th,
-  Tr,
-  Table,
-  Td,
-  Thead,
-  Tbody,
-  Button,
   useDisclosure,
   Alert,
   Stack,
@@ -23,43 +15,23 @@ import {
   Flex,
   Center,
   SimpleGrid,
-  Heading,
-  Text,
 } from "@chakra-ui/react";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllOrders, deleteOrder, setDelivered, resetErrorAndRemoval } from "../redux/actions/adminActions";
-import ConfirmRemovalAlert from "./ConfirmRemovalAlert";
-import { CheckCircleIcon, DeleteIcon } from "@chakra-ui/icons";
+import { setDelivered, resetErrorAndRemoval } from "../redux/actions/adminActions";
+
 import OrderDetails from "./OrderDetails";
 
 const OrdersTab = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = useRef();
-  const dispatch = useDispatch();
   const admin = useSelector((state) => state.admin);
   const { error, loading, orders, userList, orderRemoval, deliveredFlag } = admin;
-  const [orderToDelete, setOrderToDelete] = useState("");
+
   const [selectedUser, setSelectedUser] = useState(null);
-  const toast = useToast();
-  console.log(orders);
+
   const handleItemClick = (user) => {
     setSelectedUser(user);
   };
 
-  const onSetToDelivered = (order) => {
-    dispatch(resetErrorAndRemoval());
-    dispatch(setDelivered(order._id));
-  };
-
-  const openDeleteConfirmBox = (order) => {
-    setOrderToDelete(order);
-    onOpen();
-  };
-
- 
-
- 
   return (
     <Box>
       {error && (
@@ -77,7 +49,7 @@ const OrdersTab = () => {
         </Wrap>
       ) : (
         <Flex direction={{ base: "column", md: "row" }}>
-          <SimpleGrid columns={{ base: 1, md: 4 }} spacing={10} flex={{ base: "none", md: "2" }} minChildWidth="180px">
+          <SimpleGrid columns={{ base: 1, md: 4 }} spacing={10} flex={{ base: "none", md: "2" }} minChildWidth="100px">
             {orders &&
               [...userList]
                 .sort((a, b) => a.name.localeCompare(b.name))
@@ -91,6 +63,7 @@ const OrdersTab = () => {
                             <Image
                               src="/images/table.png"
                               alt="Lovely Image"
+                              width="50%"
                               fallback={<Skeleton />}
                               onClick={() => handleItemClick(user)}
                             />
@@ -105,7 +78,7 @@ const OrdersTab = () => {
                   return null;
                 })}
           </SimpleGrid>
-          <OrderDetails orders={orders} user={selectedUser} orderRemoval={orderRemoval} deliveredFlag={deliveredFlag}/>
+          <OrderDetails orders={orders} user={selectedUser} orderRemoval={orderRemoval} deliveredFlag={deliveredFlag} />
         </Flex>
       )}
     </Box>
