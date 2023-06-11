@@ -14,6 +14,7 @@ import RegisterScreen from "./screens/RegisterScreen";
 import AdminScreen from "./screens/AdminScreen";
 import CheckoutScreen from "./screens/CheckoutScreen";
 import Socket from "./components/Socket";
+import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
 
 // var socket;
 
@@ -39,7 +40,14 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route path="/register" element={<RegisterScreen />} />
+            <Route
+              path="/register"
+              element={
+                <ProtectedAdminRoute>
+                  <RegisterScreen />
+                </ProtectedAdminRoute>
+              }
+            />
             <Route
               path="/products"
               element={
@@ -65,7 +73,15 @@ function App() {
               }
             />
             <Route path="/login" element={<LoginScreen />} />
-            <Route path="/admin" element={<AdminScreen />} />
+
+            <Route
+              path="/admin"
+              element={
+                <ProtectedAdminRoute>
+                  <AdminScreen />
+                </ProtectedAdminRoute>
+              }
+            />
             <Route path="/checkout" element={<CheckoutScreen />} />
           </Routes>
         </main>

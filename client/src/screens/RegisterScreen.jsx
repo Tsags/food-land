@@ -24,10 +24,10 @@ import { register } from "../redux/actions/userActions";
 import QRcodeGenerator from "../components/QRcodeGenerator";
 import randomstring from "randomstring";
 import QRCode from "qrcode";
-import axios from "axios";
 
 function RegisterScreen() {
   const dispatch = useDispatch();
+
   const toast = useToast();
   const headingBR = useBreakpointValue({ base: "xs", md: "sm" });
   const boxBR = useBreakpointValue({ base: "transparent", md: "bg-surface" });
@@ -41,7 +41,7 @@ function RegisterScreen() {
   const handleRegister = async (values) => {
     try {
       const randomPassword = randomstring.generate(10);
-      const url = `192.168.68.52:3000/login?username=${values.name}&password=${randomPassword}`;
+      const url = `http://192.168.68.52:3000/login?username=${values.name}&password=${randomPassword}`;
       const qrCodeInfo = await QRCode.toDataURL(url);
       setQRCodeData(qrCodeInfo);
       dispatch(register(values.name, randomPassword, qrCodeInfo));

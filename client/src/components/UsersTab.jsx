@@ -26,12 +26,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllUsers, deleteUser, resetErrorAndRemoval } from "../redux/actions/adminActions";
 import ConfirmRemovalAlert from "./ConfirmRemovalAlert";
 import ReactToPrint from "react-to-print";
+import { useNavigate } from "react-router-dom";
 
 const UsersTab = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
   const [userToDelete, setUserToDelete] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const admin = useSelector((state) => state.admin);
   const user = useSelector((state) => state.user);
   const { error, loading, userRemoval, userList } = admin;
@@ -139,6 +141,11 @@ const UsersTab = () => {
               </Tbody>
             </Table>
           </TableContainer>
+          <Box px="auto">
+            <Button onClick={() => navigate("/register")} bg="orange.400">
+              Create New Table
+            </Button>
+          </Box>
           <ConfirmRemovalAlert
             isOpen={isOpen}
             onClose={onClose}
