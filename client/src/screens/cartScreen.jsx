@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Link as ReactLink } from "react-router-dom";
+import { Link as ReactLink, Navigate, useLocation } from "react-router-dom";
 import {
   Box,
   Flex,
@@ -21,11 +21,14 @@ import CartItem from "../components/CartItem";
 import CartOrderSummary from "../components/CartOrderSummary";
 
 const CartScreen = () => {
+  const location = useLocation();
   const cartInfo = useSelector((state) => state.cart);
+  const user = useSelector((state) => state.user);
+  const { userInfo } = user;
   const { loading, error, cart } = cartInfo;
   console.log(cart);
 
-  return (
+  return userInfo ? (
     <Wrap spacing="30px" justify="center" minHeight="100vh">
       {loading ? (
         <Stack direction="row" spacing={4}>
@@ -81,6 +84,8 @@ const CartScreen = () => {
         </Box>
       )}
     </Wrap>
+  ) : (
+    <Navigate to="/login" replace={true} state={{ from: location }} />
   );
 };
 

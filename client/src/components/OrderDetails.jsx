@@ -9,22 +9,12 @@ import {
   Tbody,
   Button,
   useDisclosure,
-  Alert,
-  Stack,
-  Spinner,
-  AlertIcon,
-  AlertTitle,
-  AlertDescription,
   useToast,
-  Image,
-  Skeleton,
-  Wrap,
-  WrapItem,
   Flex,
-  Center,
-  SimpleGrid,
   Heading,
   Text,
+  ListItem,
+  UnorderedList,
 } from "@chakra-ui/react";
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -69,16 +59,15 @@ const OrderDetails = ({ orders, user, orderRemoval, deliveredFlag }) => {
   return (
     <Box flex="1">
       {user && (
-        <TableContainer border="1px" borderRadius="10%">
+        <TableContainer border="1px" borderRadius="10%" boxShadow="#ccc 3px 3px 5px 6px">
           <Heading textAlign="center">{user && user.name}</Heading>
-          <Table variant="unstyled">
+          <Table variant="striped">
             <Thead>
               <Tr>
                 <Th>Time of order</Th>
                 <Th>Items ordered</Th>
-                <Th>Delivered</Th>
                 <Th>Price</Th>
-                <Th></Th>
+                <Th>Delivered</Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -96,20 +85,24 @@ const OrderDetails = ({ orders, user, orderRemoval, deliveredFlag }) => {
                           </Td>
                           <Td>
                             {order.orderItems.map((item) => (
-                              <Text key={item.id}>
-                                {item.qty} x {item.name}
+                              <UnorderedList key={item.id}>
+                                <ListItem>
+                                  {item.qty} x {item.name}
+                                </ListItem>
+                              </UnorderedList>
+                            ))}
+                          </Td>
+                          <Td>
+                            {order.orderItems.map((item) => (
+                              <Text key={item.id} textAlign="right">
+                                {(item.price * item.qty).toFixed(2)}€
                               </Text>
                             ))}
                           </Td>
                           <Td>
                             <Flex direction="column">
-                              {order.isDelivered ? <CheckCircleIcon color="green.300" /> : "Pending"}
+                              {order.isDelivered ? <CheckCircleIcon color="green.300" mx="25px" /> : "Pending"}
                             </Flex>
-                          </Td>
-                          <Td>
-                            {order.orderItems.map((item) => (
-                              <Text key={item.id}> {(item.price * item.qty).toFixed(2)}€</Text>
-                            ))}
                           </Td>
                           <Td>
                             <Flex direction="column">

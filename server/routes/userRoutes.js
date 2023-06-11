@@ -1,5 +1,6 @@
 import express from "express";
 import User from "../models/User.js";
+import Order from "../models/Order.js";
 import asyncHandler from "express-async-handler";
 import jwt from "jsonwebtoken";
 import { protectRoute, admin } from "../authenticateMiddleware/authMiddleware.js";
@@ -74,10 +75,19 @@ const fetchAllUsers = asyncHandler(async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+const getUserOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find({ user: req.params.id });
+  if (orders) {
+    res.json(orders);
+  } else {
+    res.status(404).json({ message: "No Orders found" });
+  }
+});
 
 userRoutes.route("/").get(protectRoute, admin, fetchAllUsers);
 userRoutes.route("/:id").delete(protectRoute, admin, deleteUser);
 userRoutes.route("/login").post(loginUser);
 userRoutes.route("/register").post(registerUser);
+userRoutes.route("/:id").get(protectRoute, getUserOrders);
 
 export default userRoutes;

@@ -14,6 +14,7 @@ import RegisterScreen from "./screens/RegisterScreen";
 import AdminScreen from "./screens/AdminScreen";
 import CheckoutScreen from "./screens/CheckoutScreen";
 import Socket from "./components/Socket";
+import YourOrdersScreen from "./screens/YourOrdersScreen";
 import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
 
 // var socket;
@@ -69,6 +70,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <CartScreen />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/your-orders"
+              element={
+                <ProtectedRoute>
+                  <YourOrdersScreen />
                 </ProtectedRoute>
               }
             />

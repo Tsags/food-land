@@ -2,11 +2,9 @@ import { ButtonGroup, Container, IconButton, Stack, Text, Box, Icon, useColorMod
 import { SlSocialGoogle, SlSocialInstagram, SlSocialFacebook } from "react-icons/sl";
 import { MdFastfood } from "react-icons/md";
 
-
-
 export const Footer = () => {
   return (
-    <Box w="100%" bg={useColorModeValue("gray.100", "gray.900")} mt={{ base: "", md: "265" }}>
+    <Box w="100%" bg={useColorModeValue("gray.100", "gray.900")}>
       <Container
         maxW="7xl"
         as="footer"
