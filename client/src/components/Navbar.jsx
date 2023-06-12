@@ -18,14 +18,17 @@ import {
   MenuDivider,
   MenuButton,
   MenuList,
+  Spacer,
+  Badge,
 } from "@chakra-ui/react";
 import { Link as ReactLink } from "react-router-dom";
-import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon, ChevronDownIcon } from "@chakra-ui/icons";
+import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon, ChevronDownIcon, BellIcon } from "@chakra-ui/icons";
 import { MdFastfood, MdLogout } from "react-icons/md";
 import { useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../redux/actions/userActions";
 import { RiShoppingCart2Line, RiComputerLine } from "react-icons/ri";
+import Notifications from "./Notifications";
 
 const CartIcon = () => {
   const cartInfo = useSelector((state) => state.cart);
@@ -72,7 +75,7 @@ const Navbar = () => {
   const { userInfo } = user;
   const dispatch = useDispatch();
   const toast = useToast();
-
+  const supTextColor = useColorModeValue("gray.100", "gray.900");
   const ref = useRef();
 
   useOutsideClick({
@@ -114,21 +117,47 @@ const Navbar = () => {
               </NavLink>
             ))}
             {userInfo && userInfo.isAdmin === "true" && (
-              <Link as={ReactLink} to="/admin" px={2} rounded="md" _hover={{ textDecoration: "none" }}>
-                <Icon ml="-1.5" as={RiComputerLine} h="4" w="7" alignSelf="center" />
-                Admin-Console
-              </Link>
+              <NavLink>
+                <Link as={ReactLink} to="/admin" px={2} rounded="md" _hover={{ textDecoration: "none" }}>
+                  <Icon ml="-1.5" as={RiComputerLine} h="4" w="7" alignSelf="center" />
+                  Admin-Console
+                </Link>
+              </NavLink>
             )}
           </HStack>
         </HStack>
-        <Flex alignItems="center">
+        <HStack spacing={3}>
           <NavLink>
-            <Icon
-              as={colorMode === "light" ? MoonIcon : SunIcon}
-              alignSelf="center"
-              onClick={() => toggleColorMode()}
-            />
+            <Icon as={colorMode === "light" ? MoonIcon : SunIcon} onClick={() => toggleColorMode()} />
           </NavLink>
+
+          <Menu>
+            <NavLink alignItems="center">
+              <MenuButton>
+                <BellIcon boxSize={5} />
+                {userInfo && (
+                  <Box
+                    as="sup"
+                    display="inline-block"
+                    position="relative"
+                    backgroundColor="red"
+                    color={supTextColor}
+                    borderRadius="50%"
+                    width="22px"
+                    height="22px"
+                    textAlign="center"
+                    lineHeight="20px"
+                    fontWeight="bold"
+                    whiteSpace="nowrap"
+                    top="-0.5rem" 
+                    left="-0.3rem" 
+                  >20</Box>
+                )}
+              </MenuButton>
+            </NavLink>
+            <MenuList></MenuList>
+          </Menu>
+
           {userInfo ? (
             <Menu>
               <MenuButton px="4" py="2" transition="all 0.3s" as={Button}>
@@ -166,7 +195,7 @@ const Navbar = () => {
               </Button>
             </>
           )}
-        </Flex>
+        </HStack>
       </Flex>
       {isOpen ? (
         <Box pb={4} display={{ md: "none" }} ref={ref}>
@@ -176,7 +205,14 @@ const Navbar = () => {
                 {link.linkName}
               </NavLink>
             ))}
-            <NavLink path="/registration">Sign Up</NavLink>
+            {userInfo && userInfo.isAdmin === "true" && (
+              <NavLink>
+                <Link as={ReactLink} to="/admin" px={2} rounded="md" _hover={{ textDecoration: "none" }}>
+                  <Icon ml="-1.5" as={RiComputerLine} h="4" w="7" alignSelf="center" />
+                  Admin-Console
+                </Link>
+              </NavLink>
+            )}
           </Stack>
         </Box>
       ) : null}
