@@ -28,6 +28,7 @@ import { useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../redux/actions/userActions";
 import { RiShoppingCart2Line, RiComputerLine } from "react-icons/ri";
+import { useEffect } from "react";
 import Notifications from "./Notifications";
 
 const CartIcon = () => {
@@ -60,7 +61,10 @@ const NavLink = ({ path, children }) => {
       px={2}
       py={2}
       rounded="md"
-      _hover={{ textDecoration: "none", bg: useColorModeValue("gray.200", "gray.700") }}
+      _hover={{
+        textDecoration: "none",
+        bg: useColorModeValue("gray.200", "gray.700"),
+      }}
     >
       {children}
     </Link>
@@ -77,6 +81,7 @@ const Navbar = () => {
   const toast = useToast();
   const supTextColor = useColorModeValue("gray.100", "gray.900");
   const ref = useRef();
+  const admin = useSelector((state) => state.admin);
 
   useOutsideClick({
     ref: ref,
@@ -85,7 +90,11 @@ const Navbar = () => {
 
   const logoutHandler = () => {
     dispatch(logout());
-    toast({ description: "You have been logged out.", status: "success", isClosable: true });
+    toast({
+      description: "You have been logged out.",
+      status: "success",
+      isClosable: true,
+    });
   };
 
   return (
@@ -126,54 +135,31 @@ const Navbar = () => {
             )}
           </HStack>
         </HStack>
-        <HStack spacing={3}>
+        <HStack>
           <NavLink>
             <Icon as={colorMode === "light" ? MoonIcon : SunIcon} onClick={() => toggleColorMode()} />
           </NavLink>
 
-          <Menu>
-            <NavLink alignItems="center">
-              <MenuButton>
-                <BellIcon boxSize={5} />
-                {userInfo && (
-                  <Box
-                    as="sup"
-                    display="inline-block"
-                    position="relative"
-                    backgroundColor="red"
-                    color={supTextColor}
-                    borderRadius="50%"
-                    width="22px"
-                    height="22px"
-                    textAlign="center"
-                    lineHeight="20px"
-                    fontWeight="bold"
-                    whiteSpace="nowrap"
-                    top="-0.5rem" 
-                    left="-0.3rem" 
-                  >20</Box>
-                )}
-              </MenuButton>
-            </NavLink>
-            <MenuList></MenuList>
-          </Menu>
+          <Notifications />
 
           {userInfo ? (
             <Menu>
-              <MenuButton px="4" py="2" transition="all 0.3s" as={Button}>
-                {userInfo.name} <ChevronDownIcon />
-              </MenuButton>
-              <MenuList>
-                <MenuItem as={ReactLink} to="/your-orders">
-                  <Text ml="2">Your Orders</Text>
-                </MenuItem>
+              <Box>
+                <MenuButton px="4" py="2" transition="all 0.3s" as={Button}>
+                  {userInfo.name} <ChevronDownIcon />
+                </MenuButton>
+                <MenuList>
+                  <MenuItem as={ReactLink} to="/your-orders">
+                    <Text ml="2">Your Orders</Text>
+                  </MenuItem>
 
-                <MenuDivider />
-                <MenuItem onClick={logoutHandler}>
-                  <MdLogout />
-                  <Text ml="2">Logout</Text>
-                </MenuItem>
-              </MenuList>
+                  <MenuDivider />
+                  <MenuItem onClick={logoutHandler}>
+                    <MdLogout />
+                    <Text ml="2">Logout</Text>
+                  </MenuItem>
+                </MenuList>
+              </Box>
             </Menu>
           ) : (
             <>

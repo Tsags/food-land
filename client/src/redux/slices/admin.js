@@ -11,6 +11,7 @@ export const initialState = {
   orders: initialOrders,
   orderRemoval: false,
   deliveredFlag: false,
+  notifications: [],
 };
 
 export const adminSlice = createSlice({
@@ -32,6 +33,7 @@ export const adminSlice = createSlice({
     },
     orderUpdate: (state, { payload }) => {
       state.orders.push(payload);
+      state.notifications.push(payload);
       localStorage.setItem("orders", JSON.stringify(state.orders));
     },
     userDelete: (state) => {
@@ -60,8 +62,13 @@ export const adminSlice = createSlice({
     setRequests: (state, { payload }) => {
       console.log(payload);
       state.requests.push(payload);
+      state.notifications.push(payload);
       state.error = null;
       state.loading = false;
+    },
+    deleteNotification: (state, action) => {
+      const index = action.payload;
+      state.notifications.splice(index, 1);
     },
     setDeliveredFlag: (state, { payload }) => {
       const orderToUpdate = state.orders.find((order) => order.orderId === payload);
@@ -84,6 +91,7 @@ export const {
   setDeliveredFlag,
   orderDelete,
   setRequests,
+  deleteNotification,
 } = adminSlice.actions;
 export default adminSlice.reducer;
 
