@@ -18,6 +18,11 @@ export const adminSlice = createSlice({
   name: "admin",
   initialState,
   reducers: {
+    markAllAsRead: (state) => {
+      state.notifications.forEach((notification) => {
+        notification.read = true;
+      });
+    },
     setLoading: (state) => {
       state.loading = true;
     },
@@ -33,7 +38,9 @@ export const adminSlice = createSlice({
     },
     orderUpdate: (state, { payload }) => {
       state.orders.push(payload);
-      state.notifications.push(payload);
+      const newNotification = { ...payload, read: false };
+      state.notifications.push(newNotification);
+
       localStorage.setItem("orders", JSON.stringify(state.orders));
     },
     userDelete: (state) => {
@@ -60,9 +67,9 @@ export const adminSlice = createSlice({
       state.orderRemoval = false;
     },
     setRequests: (state, { payload }) => {
-      console.log(payload);
       state.requests.push(payload);
-      state.notifications.push(payload);
+      const newNotification = { ...payload, read: false };
+      state.notifications.push(newNotification);
       state.error = null;
       state.loading = false;
     },
@@ -92,6 +99,7 @@ export const {
   orderDelete,
   setRequests,
   deleteNotification,
+  markAllAsRead,
 } = adminSlice.actions;
 export default adminSlice.reducer;
 

@@ -15,7 +15,10 @@ const AdminScreen = () => {
   const { userInfo } = user;
   const admin = useSelector((state) => state.admin);
   const { requests } = admin;
-  console.log(requests);
+  const { state } = location;
+
+  // Access the data
+  console.log(state);
   return userInfo && userInfo.isAdmin === "true" ? (
     <Box>
       <Stack direction={{ base: "column", lg: "row" }} align={{ lg: "flex-start" }}>
@@ -34,7 +37,7 @@ const AdminScreen = () => {
             </TabList>
             <TabPanels>
               <TabPanel>
-                <OrdersTab />
+                <OrdersTab data={state} />
               </TabPanel>
               <TabPanel>
                 <UsersTab />

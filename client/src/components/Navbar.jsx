@@ -70,7 +70,6 @@ const NavLink = ({ path, children }) => {
     </Link>
   );
 };
-
 const Navbar = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
@@ -79,7 +78,7 @@ const Navbar = () => {
   const { userInfo } = user;
   const dispatch = useDispatch();
   const toast = useToast();
-  const supTextColor = useColorModeValue("gray.100", "gray.900");
+  const adminLinkColor = useColorModeValue("gray.200", "gray.700");
   const ref = useRef();
   const admin = useSelector((state) => state.admin);
 
@@ -126,12 +125,17 @@ const Navbar = () => {
               </NavLink>
             ))}
             {userInfo && userInfo.isAdmin === "true" && (
-              <NavLink>
-                <Link as={ReactLink} to="/admin" px={2} rounded="md" _hover={{ textDecoration: "none" }}>
-                  <Icon ml="-1.5" as={RiComputerLine} h="4" w="7" alignSelf="center" />
-                  Admin-Console
-                </Link>
-              </NavLink>
+              <Box
+                as={ReactLink}
+                to="/admin"
+                px={2}
+                py={2}
+                rounded="md"
+                _hover={{ textDecoration: "none", bg: adminLinkColor }}
+              >
+                <Icon ml="-1.5" as={RiComputerLine} h="4" w="7" alignSelf="center" />
+                Admin-Console
+              </Box>
             )}
           </HStack>
         </HStack>

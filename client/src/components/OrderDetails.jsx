@@ -59,7 +59,7 @@ const OrderDetails = ({ orders, user, orderRemoval, deliveredFlag }) => {
   return (
     <Box flex="1">
       {user && (
-        <TableContainer   boxShadow="#ccc 5px 5px 5px 6px">
+        <TableContainer boxShadow="#ccc 5px 5px 5px 6px">
           <Heading textAlign="center">{user && user.name}</Heading>
           <Table variant="striped">
             <Thead>

@@ -1,13 +1,11 @@
 import {
   Box,
-  useDisclosure,
   Alert,
   Stack,
   Spinner,
   AlertIcon,
   AlertTitle,
   AlertDescription,
-  useToast,
   Image,
   Skeleton,
   Wrap,
@@ -16,17 +14,22 @@ import {
   Center,
   SimpleGrid,
 } from "@chakra-ui/react";
-import React, { useState, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setDelivered, resetErrorAndRemoval } from "../redux/actions/adminActions";
-
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import OrderDetails from "./OrderDetails";
 
-const OrdersTab = () => {
+const OrdersTab = ({ data }) => {
   const admin = useSelector((state) => state.admin);
   const { error, loading, orders, userList, orderRemoval, deliveredFlag } = admin;
 
   const [selectedUser, setSelectedUser] = useState(null);
+
+  useEffect(() => {
+    if (data && data.data) {
+      const userSelected = userList.find((user) => user._id === data.data._id);
+      setSelectedUser(userSelected);
+    }
+  }, [data, userList]);
 
   const handleItemClick = (user) => {
     setSelectedUser(user);
