@@ -1,5 +1,7 @@
 import axios from "axios";
 import { setLoading, setError, userLogin, userLogout, setUserOrders } from "../slices/user";
+import { io } from "socket.io-client";
+const socket = io("/");
 
 export const login = (name, password) => async (dispatch) => {
   dispatch(setLoading(true));
@@ -12,7 +14,9 @@ export const login = (name, password) => async (dispatch) => {
     dispatch(userLogin(data));
     localStorage.removeItem("cartItems");
     localStorage.removeItem("orders");
+    localStorage.removeItem("allergies");
     localStorage.setItem("userInfo", JSON.stringify(data));
+    socket.emit("user/connected", name);
   } catch (error) {
     dispatch(
       setError(

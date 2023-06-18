@@ -25,7 +25,7 @@ const ProductsScreen = () => {
   const productList = useSelector((state) => state.products);
   const { loading, error, products } = productList;
   const uniqueCategories = [...new Set(products.map((product) => product.category))];
- 
+  console.log(localStorage.getItem("allergies"));
 
   useEffect(() => {
     dispatch(getProducts());

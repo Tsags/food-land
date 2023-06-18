@@ -3,7 +3,7 @@ import { Input } from "@chakra-ui/input";
 import { Field, useField } from "formik";
 import { useState } from "react";
 import { InputRightElement, Button, InputGroup } from "@chakra-ui/react";
-import { ViewIcon, ViewOffIcon, ViewoffIcon } from "@chakra-ui/icons";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
 const PasswordTextField = ({ label, type, name, placeholder }) => {
   const [showPassword, setShowPassword] = useState(false);

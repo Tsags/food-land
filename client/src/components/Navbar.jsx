@@ -22,14 +22,18 @@ import {
   Badge,
 } from "@chakra-ui/react";
 import { Link as ReactLink } from "react-router-dom";
-import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon, ChevronDownIcon, BellIcon } from "@chakra-ui/icons";
+import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { MdFastfood, MdLogout } from "react-icons/md";
+import { BsPersonLinesFill } from "react-icons/bs";
+import { TbReportMoney } from "react-icons/tb";
 import { useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../redux/actions/userActions";
 import { RiShoppingCart2Line, RiComputerLine } from "react-icons/ri";
 import { useEffect } from "react";
 import Notifications from "./Notifications";
+import randomstring from "randomstring";
+import { getUserOrders } from "../redux/actions/userActions";
 
 const CartIcon = () => {
   const cartInfo = useSelector((state) => state.cart);
@@ -48,9 +52,19 @@ const CartIcon = () => {
   );
 };
 
+const ServicesIcon = () => {
+  return (
+    <Flex>
+      <Icon ml="-1.5" as={BsPersonLinesFill} h="4" w="7" alignSelf="center" />
+      Services
+    </Flex>
+  );
+};
+
 const links = [
   { linkName: "Products", path: "/products" },
   { linkName: <CartIcon />, path: "/cart" },
+  { linkName: <ServicesIcon />, path: "/services" },
 ];
 
 const NavLink = ({ path, children }) => {
@@ -75,12 +89,11 @@ const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const [isHovering, setIsHovering] = useState(false);
   const user = useSelector((state) => state.user);
-  const { userInfo } = user;
+  const { loading, error, orders, userInfo } = user;
   const dispatch = useDispatch();
   const toast = useToast();
   const adminLinkColor = useColorModeValue("gray.200", "gray.700");
   const ref = useRef();
-  const admin = useSelector((state) => state.admin);
 
   useOutsideClick({
     ref: ref,
@@ -95,6 +108,12 @@ const Navbar = () => {
       isClosable: true,
     });
   };
+
+  useEffect(() => {
+    if (userInfo) {
+      dispatch(getUserOrders());
+    }
+  }, [dispatch, userInfo]);
 
   return (
     <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
@@ -120,10 +139,11 @@ const Navbar = () => {
           </Link>
           <HStack as="nav" spacing={4} display={{ base: "none", md: "flex" }}>
             {links.map((link) => (
-              <NavLink key={link.linkName} path={link.path}>
+              <NavLink key={randomstring.generate(10)} path={link.path}>
                 {link.linkName}
               </NavLink>
             ))}
+
             {userInfo && userInfo.isAdmin === "true" && (
               <Box
                 as={ReactLink}
@@ -191,17 +211,22 @@ const Navbar = () => {
         <Box pb={4} display={{ md: "none" }} ref={ref}>
           <Stack as="nav" spacing={4} onClick={onClose}>
             {links.map((link) => (
-              <NavLink key={link.linkName} path={link.path}>
+              <NavLink key={randomstring.generate(10)} path={link.path}>
                 {link.linkName}
               </NavLink>
             ))}
             {userInfo && userInfo.isAdmin === "true" && (
-              <NavLink>
-                <Link as={ReactLink} to="/admin" px={2} rounded="md" _hover={{ textDecoration: "none" }}>
-                  <Icon ml="-1.5" as={RiComputerLine} h="4" w="7" alignSelf="center" />
-                  Admin-Console
-                </Link>
-              </NavLink>
+              <Box
+                as={ReactLink}
+                to="/admin"
+                px={2}
+                py={2}
+                rounded="md"
+                _hover={{ textDecoration: "none", bg: adminLinkColor }}
+              >
+                <Icon ml="-1.5" as={RiComputerLine} h="4" w="7" alignSelf="center" />
+                Admin-Console
+              </Box>
             )}
           </Stack>
         </Box>

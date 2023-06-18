@@ -2,11 +2,13 @@ import dotenv from "dotenv";
 import connectToDatabase from "./database.js";
 import express from "express";
 import { Server } from "socket.io";
+
 // Routes.
 import productRoutes from "./routes/productRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
+import uploadRoutes from "./routes/uploadRoutes.js";
 
 dotenv.config();
 connectToDatabase();
@@ -20,6 +22,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/carts", cartRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/uploads", uploadRoutes);
 
 const expressServer = app.listen(port, () => {
   console.log(`Server runs on port ${port}.`);
@@ -86,7 +89,10 @@ io.on("connection", (socket) => {
     io.emit("order/update", order);
   });
   socket.on("request", ({ request, userInfo }) => {
-    // Broadcast the request to all admin clients
     io.emit("admin-notification", { request, userInfo });
+  });
+  socket.on("user/connected", (name) => {
+   
+    io.emit("user/update", { name: name });
   });
 });

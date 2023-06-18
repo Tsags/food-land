@@ -43,7 +43,9 @@ const Rating = ({ rating, numberOfReviews }) => {
 const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
   const toast = useToast();
-  const cartInfo = useSelector((state) => state.cart);
+
+  const userAllergies = JSON.parse(localStorage.getItem("allergies")) || [];
+  const matchingAllergies = product.allergies.filter((allergy) => userAllergies.includes(allergy));
 
   const addItem = (id) => {
     dispatch(addCartItem(id, 1));
@@ -61,6 +63,7 @@ const ProductCard = ({ product }) => {
         rounded="lg"
         shadow="lg"
         position="relative"
+        border={matchingAllergies.length > 0 ? "2px solid red" : "none"}
       >
         {product.productIsNew && <Circle size="10px" position="absolute" top={2} right={2} bg="green.300" />}
         {product.stock <= 0 && <Circle size="10px" position="absolute" top={2} right={2} bg="red.300" />}
@@ -91,6 +94,17 @@ const ProductCard = ({ product }) => {
             <Box as="span" color={useColorModeValue("gray.600", "white")} fontSize="md">
               €
             </Box>
+            {matchingAllergies.length > 0 && (
+              <Text color="red" fontWeight="bold">
+                The product contains:&nbsp;
+                {matchingAllergies.map((allergy, index) => (
+                  <span key={allergy}>
+                    {allergy}
+                    {index !== matchingAllergies.length - 1 && ", "}
+                  </span>
+                ))}
+              </Text>
+            )}
           </Box>
           {/* <Tooltip label="Add to Cart" bg="white" placement="top" color="gray.800" fontSize="1.2em">
             <Button variant="ghost" display="flex" disabled={product.stock <= 0} onClick={() => addItem(product._id)}>

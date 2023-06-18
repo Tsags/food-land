@@ -1,7 +1,5 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { io } from "socket.io-client";
-import { useEffect } from "react";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ProductsScreen from "./screens/ProductsScreen";
@@ -16,17 +14,9 @@ import CheckoutScreen from "./screens/CheckoutScreen";
 import Socket from "./components/Socket";
 import YourOrdersScreen from "./screens/YourOrdersScreen";
 import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
-import RequestsScreen from "./screens/RequestsScreen";
-
-// var socket;
+import ServicesScreen from "./screens/ServicesScreen";
 
 function App() {
-  // useEffect(() => {
-  //   socket = io("/");
-  //   socket.emit("setup", "skata");
-
-  // }, []);
-
   return (
     <ChakraProvider>
       <Router>
@@ -83,7 +73,7 @@ function App() {
               }
             />
             <Route path="/login" element={<LoginScreen />} />
-            <Route path="/requests" element={<RequestsScreen />} />
+            <Route path="/services" element={<ServicesScreen />} />
             <Route
               path="/admin"
               element={

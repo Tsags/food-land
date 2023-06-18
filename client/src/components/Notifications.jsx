@@ -6,18 +6,22 @@ import { useNavigate } from "react-router-dom";
 import randomstring from "randomstring";
 import { deleteNotification, markAllAsRead } from "../redux/slices/admin";
 import { GrFormClose } from "react-icons/gr";
+import { getAllUsers } from "../redux/actions/adminActions";
 
 const Notifications = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const supTextColor = useColorModeValue("gray.200", "gray.700");
   const admin = useSelector((state) => state.admin);
-  const { notifications } = admin;
+  const { notifications, userList } = admin;
   const user = useSelector((state) => state.user);
   const { userInfo } = user;
   const [unreadNotifications, setUnreadNotifications] = useState([]);
 
   const IconButtonWrapper = forwardRef(({ as: Component, ...rest }, ref) => <Component ref={ref} {...rest} />);
+  useEffect(() => {
+    userInfo && userInfo.isAdmin === "true" && dispatch(getAllUsers());
+  }, [dispatch]);
 
   useEffect(() => {
     const unread = notifications.filter((item) => !item.read);
@@ -46,24 +50,25 @@ const Notifications = () => {
           borderRadius="md"
           px={2}
           py={2}
+          position="relative"
         >
           <BellIcon boxSize={5} />
           {userInfo && userInfo.isAdmin === "true" && unreadNotifications.length > 0 && (
             <Box
               as="sup"
               display="inline-block"
-              position="relative"
+              position="absolute"
+              top="-0.3rem"
+              right="-0.3rem"
               backgroundColor="red"
               color={supTextColor}
               borderRadius="50%"
-              width="22px"
-              height="22px"
+              width="1.5rem"
+              height="1.5rem"
               textAlign="center"
-              lineHeight="20px"
+              lineHeight="1.5rem"
               fontWeight="bold"
-              whiteSpace="nowrap"
-              top="-0.5rem"
-              left="-0.3rem"
+              fontSize="xs"
             >
               {unreadNotifications.length}
             </Box>
@@ -71,36 +76,52 @@ const Notifications = () => {
         </MenuButton>
 
         <MenuList>
-          {notifications.map((item, index) => {
-            return (
-              <MenuItem key={randomstring.generate(10)}>
-                {item.request && (
-                  <Box>
-                    <Text>
-                      Table: <strong>{item.userInfo.name}</strong> requested <strong>{item.request}</strong>
-                    </Text>
-                    <Divider />
+          {userInfo &&
+            userInfo.isAdmin === "true" &&
+            notifications.map((item, index) => {
+              const matchingUser = userList.find((user) => user.name === item.name);
+              return (
+                <MenuItem key={randomstring.generate(10)}>
+                  {item.request && (
+                    <Box>
+                      <Text>
+                        Table: <strong>{item.userInfo.name}</strong> requested <strong>{item.request}</strong>
+                      </Text>
+                      <Divider />
+                    </Box>
+                  )}
+                  {item.orderItems && (
+                    <Box onClick={() => handleButtonClick(item.userInfo)}>
+                      <Text>
+                        Table: <strong>{item.userInfo.name}</strong> added an order
+                      </Text>
+                      <Divider />
+                    </Box>
+                  )}
+                  {item.name && (
+                    <Box>
+                      {matchingUser && matchingUser.isAdmin === "true" ? (
+                        <Text> {item.name} just Logged In</Text>
+                      ) : (
+                        <Text>
+                          Customers arrived at table:<strong>{item.name} </strong>
+                        </Text>
+                      )}
+
+                      <Divider />
+                    </Box>
+                  )}
+                  <Box position="relative">
+                    <IconButtonWrapper
+                      as={GrFormClose}
+                      bg="white"
+                      height="25px"
+                      onClick={(event) => handleDelete(index, event)}
+                    />
                   </Box>
-                )}
-                {item.orderItems && (
-                  <Box onClick={() => handleButtonClick(item.userInfo)}>
-                    <Text>
-                      Table: <strong>{item.userInfo.name}</strong> added an order
-                    </Text>
-                    <Divider />
-                  </Box>
-                )}
-                <Box position="relative">
-                  <IconButtonWrapper
-                    as={GrFormClose}
-                    bg="white"
-                    height="25px"
-                    onClick={(event) => handleDelete(index, event)}
-                  />
-                </Box>
-              </MenuItem>
-            );
-          })}
+                </MenuItem>
+              );
+            })}
         </MenuList>
       </Menu>
     </Box>

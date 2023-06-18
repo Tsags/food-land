@@ -31,6 +31,10 @@ const productSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    allergies: {
+      type: [String],
+      default: [],
+    },
   },
   { timestamp: true }
 );

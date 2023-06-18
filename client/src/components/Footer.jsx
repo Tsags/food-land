@@ -41,10 +41,6 @@ export const Footer = () => {
           <Text fontSize="sm" color="subtle">
             &copy; {new Date().getFullYear()} Food Land, Inc. All rights reserved.
           </Text>
-          <Stack spacing="0" color={useColorModeValue("gray.100", "white")}>
-            <Text fontSize="0.4rem">Everything is frozen.</Text>
-            <Text fontSize="0.4rem">Eat with your own responsibility.</Text>
-          </Stack>
         </Stack>
       </Container>
     </Box>

@@ -17,7 +17,7 @@ import {
   UnorderedList,
 } from "@chakra-ui/react";
 import React, { useEffect, useState, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getAllOrders, deleteOrder, setDelivered, resetErrorAndRemoval } from "../redux/actions/adminActions";
 import ConfirmRemovalAlert from "./ConfirmRemovalAlert";
 import { CheckCircleIcon, DeleteIcon } from "@chakra-ui/icons";

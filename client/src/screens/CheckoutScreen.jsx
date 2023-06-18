@@ -19,9 +19,9 @@ const CheckoutScreen = () => {
       <Stack direction={{ base: "column", lg: "row" }} align={{ lg: "flex-start" }}>
         <Stack spacing={{ base: "8", md: "10" }} flex="1.5" mb={{ base: "12", md: "none" }}>
           <Heading fontSize="2xl" fontWeight="extrabold">
-            Shipping Information
+           Order Information
           </Heading>
-          {/* <ShippingInfo /> */}
+          {/* <OrderInfo /> */}
         </Stack>
         <Flex direction="column" align="center" flex="1">
           <CheckoutOrderSummary />

@@ -40,7 +40,6 @@ export const adminSlice = createSlice({
       state.orders.push(payload);
       const newNotification = { ...payload, read: false };
       state.notifications.push(newNotification);
-
       localStorage.setItem("orders", JSON.stringify(state.orders));
     },
     userDelete: (state) => {
@@ -73,6 +72,13 @@ export const adminSlice = createSlice({
       state.error = null;
       state.loading = false;
     },
+    setNotifications: (state, { payload }) => {
+      const newNotification = { ...payload, read: false };
+      state.notifications.push(newNotification);
+      console.log(newNotification);
+      state.error = null;
+      state.loading = false;
+    },
     deleteNotification: (state, action) => {
       const index = action.payload;
       state.notifications.splice(index, 1);
@@ -100,6 +106,7 @@ export const {
   setRequests,
   deleteNotification,
   markAllAsRead,
+  setNotifications,
 } = adminSlice.actions;
 export default adminSlice.reducer;
 

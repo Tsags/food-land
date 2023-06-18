@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { io } from "socket.io-client";
 import { setCart } from "../redux/slices/cart";
-import { orderUpdate, setRequests } from "../redux/slices/admin";
+import { orderUpdate, setRequests, setNotifications } from "../redux/slices/admin";
 
 const socket = io("/");
 
@@ -40,7 +40,18 @@ const Socket = () => {
     return () => {
       socket.off("admin-notification");
     };
-  }, []);
+  }, [dispatch]);
+
+  useEffect(() => {
+    socket.on("user/update", (name) => {
+      console.log(name);
+      dispatch(setNotifications(name));
+    });
+
+    return () => {
+      socket.off("user/update");
+    };
+  }, [dispatch]);
 
   useEffect(() => {
     // Associate the user ID or session ID with the socket connection

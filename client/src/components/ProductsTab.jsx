@@ -98,8 +98,9 @@ const ProductsTab = () => {
             <Thead>
               <Tr>
                 <Th>Image</Th>
-                <Th>Description</Th>
                 <Th>Name</Th>
+                <Th>Description</Th>
+                <Th>Allergies</Th>
                 <Th>Category & Price</Th>
                 <Th>Stock & New Badge</Th>
               </Tr>

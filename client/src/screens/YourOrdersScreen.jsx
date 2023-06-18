@@ -33,7 +33,7 @@ const YourOrdersScreen = () => {
       dispatch(getUserOrders());
     }
   }, [dispatch, userInfo]);
-  console.log(orders);
+
   return userInfo ? (
     <>
       {loading ? (

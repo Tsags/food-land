@@ -1,35 +1,14 @@
-import {
-  Box,
-  TableContainer,
-  Th,
-  Tr,
-  Table,
-  Td,
-  Thead,
-  Tbody,
-  Button,
-  useDisclosure,
-  useToast,
-  Flex,
-  Heading,
-  Text,
-  ListItem,
-  UnorderedList,
-  SimpleGrid,
-} from "@chakra-ui/react";
-import React, { useEffect, useState, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getAllOrders, deleteOrder, setDelivered, resetErrorAndRemoval } from "../redux/actions/adminActions";
-import { CheckCircleIcon, DeleteIcon } from "@chakra-ui/icons";
+import { Box, Button, SimpleGrid } from "@chakra-ui/react";
+
+import { useSelector } from "react-redux";
 
 import { io } from "socket.io-client";
 const socket = io("/");
 
-const RequestsScreen = () => {
+const ServicesScreen = () => {
   const user = useSelector((state) => state.user);
-  const { loading, error, userInfo } = user;
+  const { userInfo } = user;
   const handleRequest = (request) => {
-    // Emit the request event to the server
     socket.emit("request", { request, userInfo });
   };
   return (
@@ -49,4 +28,4 @@ const RequestsScreen = () => {
   );
 };
 
-export default RequestsScreen;
+export default ServicesScreen;

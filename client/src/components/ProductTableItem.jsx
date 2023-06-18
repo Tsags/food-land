@@ -15,8 +15,13 @@ import {
   Switch,
   Badge,
   useDisclosure,
+  Select,
+  SimpleGrid,
+  Box,
+  IconButton,
 } from "@chakra-ui/react";
 import { MdOutlineDataSaverOn } from "react-icons/md";
+import { FaTimes } from "react-icons/fa";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { useDispatch } from "react-redux";
 import { updateProduct, deleteProduct } from "../redux/actions/adminActions";
@@ -33,10 +38,21 @@ const ProductTableItem = ({ product }) => {
   const [productIsNew, setProductIsNew] = useState(product.productIsNew);
   const [description, setDescription] = useState(product.description);
   const [image, setImage] = useState(product.image.substring(8));
+  const [allergies, setAllergies] = useState(product.allergies);
+  const [selectedAllergy, setSelectedAllergy] = useState("");
   const dispatch = useDispatch();
 
   const onSaveProduct = () => {
-    dispatch(updateProduct(name, category, stock, price, product._id, productIsNew, description, image));
+    dispatch(updateProduct(name, category, stock, price, product._id, productIsNew, description, image, allergies));
+  };
+  const handleAllergyDelete = (allergy) => {
+    setAllergies((prevAllergies) => prevAllergies.filter((a) => a !== allergy));
+  };
+  const handleAllergySubmit = () => {
+    if (selectedAllergy !== "" && !allergies.includes(selectedAllergy)) {
+      setAllergies((prevAllergies) => [...prevAllergies, selectedAllergy]);
+      setSelectedAllergy("");
+    }
   };
 
   const openDeleteConfirmBox = () => {
@@ -53,6 +69,11 @@ const ProductTableItem = ({ product }) => {
           </Tooltip>
         </Td>
         <Td>
+          <Flex direction="column" gap="2">
+            <Input size="sm" value={name} onChange={(e) => setName(e.target.value)} />
+          </Flex>
+        </Td>
+        <Td>
           <Textarea
             w="270px"
             h="120px"
@@ -62,9 +83,45 @@ const ProductTableItem = ({ product }) => {
           />
         </Td>
         <Td>
-          <Flex direction="column" gap="2">
-            <Input size="sm" value={name} onChange={(e) => setName(e.target.value)} />
-          </Flex>
+          <VStack>
+            <Select value={selectedAllergy} onChange={(e) => setSelectedAllergy(e.target.value)} width={60}>
+              <option value="" disabled>
+                Select an option
+              </option>
+              <option value="Nuts">Nuts</option>
+              <option value="Wheat">Wheat</option>
+              <option value="Milk">Milk</option>
+              <option value="Eggs">Eggs</option>
+              <option value="Fish">Fish</option>
+              <option value="Shellfish">Shellfish</option>
+            </Select>
+            <Button colorScheme="orange" onClick={handleAllergySubmit}>
+              Submit
+            </Button>
+          </VStack>
+          <SimpleGrid columns={4} spacing={1}>
+            {allergies.map((allergy) => (
+              <Box
+                key={allergy}
+                bg="blue.50"
+                height="30px"
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+                px="2"
+                borderRadius="md"
+                color="black"
+              >
+                {allergy}
+                <IconButton
+                  icon={<FaTimes />}
+                  size="xs"
+                  colorScheme="red"
+                  onClick={() => handleAllergyDelete(allergy)}
+                />
+              </Box>
+            ))}
+          </SimpleGrid>
         </Td>
         <Td>
           <Flex direction="column" gap="2">
