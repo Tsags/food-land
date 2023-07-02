@@ -91,6 +91,18 @@ export const adminSlice = createSlice({
       state.deliveredFlag = true;
       state.loading = false;
     },
+    itemDeliveredFlag: (state, { payload }) => {
+      const { orderId, itemId } = payload;
+      const order = state.orders.find((order) => order.orderId === orderId);
+      if (order) {
+        const itemToUpdate = order.orderItems.find((item) => item.id === itemId);
+        if (itemToUpdate) {
+          itemToUpdate.isDelivered = true;
+        }
+        localStorage.setItem("orders", JSON.stringify(state.orders));
+      }
+      state.loading = false;
+    },
   },
 });
 export const {
@@ -107,6 +119,7 @@ export const {
   deleteNotification,
   markAllAsRead,
   setNotifications,
+  itemDeliveredFlag,
 } = adminSlice.actions;
 export default adminSlice.reducer;
 

@@ -15,10 +15,17 @@ import {
   Text,
   ListItem,
   UnorderedList,
+  Checkbox,
 } from "@chakra-ui/react";
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch } from "react-redux";
-import { getAllOrders, deleteOrder, setDelivered, resetErrorAndRemoval } from "../redux/actions/adminActions";
+import {
+  getAllOrders,
+  deleteOrder,
+  setDelivered,
+  resetErrorAndRemoval,
+  itemDelivered,
+} from "../redux/actions/adminActions";
 import ConfirmRemovalAlert from "./ConfirmRemovalAlert";
 import { CheckCircleIcon, DeleteIcon } from "@chakra-ui/icons";
 
@@ -36,6 +43,18 @@ const OrderDetails = ({ orders, user, orderRemoval, deliveredFlag }) => {
   const openDeleteConfirmBox = (order) => {
     setOrderToDelete(order);
     onOpen();
+  };
+
+  const handleCheckboxClick = (orderId, itemId) => {
+    // Check if the checkbox is already checked
+    const isChecked = orders.some(
+      (order) => order.orderId === orderId && order.orderItems.some((item) => item.id === itemId && item.isDelivered)
+    );
+
+    // Dispatch the itemDelivered action only if the checkbox is not already checked
+    if (!isChecked) {
+      dispatch(itemDelivered(orderId, itemId));
+    }
   };
 
   useEffect(() => {
@@ -86,8 +105,17 @@ const OrderDetails = ({ orders, user, orderRemoval, deliveredFlag }) => {
                           <Td>
                             {order.orderItems.map((item) => (
                               <UnorderedList key={item.id}>
-                                <ListItem>
-                                  {item.qty} x {item.name}
+                                <ListItem style={{ display: "flex", alignItems: "center" }}>
+                                  <span>
+                                    {item.qty} x {item.name}
+                                  </span>
+                                  <Checkbox
+                                    colorScheme="green"
+                                    ml={2}
+                                    onChange={() => handleCheckboxClick(order.orderId, item.id)}
+                                    isChecked={item.isDelivered}
+                                    isDisabled={item.isDelivered}
+                                  />
                                 </ListItem>
                               </UnorderedList>
                             ))}

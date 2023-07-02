@@ -8,6 +8,7 @@ import {
   resetError,
   setDeliveredFlag,
   orderDelete,
+  itemDeliveredFlag,
 } from "../slices/admin.js";
 import { setProducts, setProductUpdateFlag } from "../slices/products.js";
 
@@ -256,4 +257,9 @@ export const uploadProduct = (newProduct) => async (dispatch, getState) => {
       )
     );
   }
+};
+
+export const itemDelivered = (orderId, itemId) => async (dispatch, getState) => {
+  dispatch(setLoading(true));
+  dispatch(itemDeliveredFlag({ orderId, itemId }));
 };

@@ -32,6 +32,7 @@ export const addCartItem = (id, qty) => async (dispatch, getState) => {
       price: data.price,
       stock: data.stock,
       qty,
+      isDelivered: false,
     };
     dispatch(cartItemAdd(itemToAdd));
     await axios.put("/api/carts", { itemToAdd }, config);
