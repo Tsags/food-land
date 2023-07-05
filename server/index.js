@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import connectToDatabase from "./database.js";
 import express from "express";
 import { Server } from "socket.io";
+import cookieParser from "cookie-parser";
 
 // Routes.
 import productRoutes from "./routes/productRoutes.js";
@@ -13,7 +14,7 @@ import uploadRoutes from "./routes/uploadRoutes.js";
 dotenv.config();
 connectToDatabase();
 const app = express();
-
+app.use(cookieParser());
 app.use(express.json());
 
 const port = process.env.PORT || 5000;
@@ -92,7 +93,6 @@ io.on("connection", (socket) => {
     io.emit("admin-notification", { request, userInfo });
   });
   socket.on("user/connected", (name) => {
-   
     io.emit("user/update", { name: name });
   });
 });

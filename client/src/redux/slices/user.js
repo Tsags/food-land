@@ -35,7 +35,6 @@ export const userSlice = createSlice({
     },
   },
 });
-console.log(localStorage.getItem("allergies"));
 export const { setLoading, setError, userLogin, userLogout, setUserOrders, addAllergy, removeAllergy } =
   userSlice.actions;
 export default userSlice.reducer;
