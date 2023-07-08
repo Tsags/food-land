@@ -9,10 +9,11 @@ const socket = io("/");
 const Socket = () => {
   const dispatch = useDispatch();
   const currentUserId = useSelector((state) => state.user.userInfo?._id);
+  const currentCustomerId = JSON.parse(localStorage.getItem("customerId"));
 
   useEffect(() => {
-    socket.on("cart/update", ({ cart, userId }) => {
-      if (userId === currentUserId) {
+    socket.on("cart/update", ({ cart, userId, customerId }) => {
+      if (userId === currentUserId && customerId !== currentCustomerId) {
         dispatch(setCart(cart));
       }
     });
@@ -20,7 +21,7 @@ const Socket = () => {
     return () => {
       socket.off("cart/update");
     };
-  }, [dispatch, currentUserId]);
+  }, [dispatch, currentUserId, currentCustomerId]);
 
   useEffect(() => {
     socket.on("order/update", (order) => {

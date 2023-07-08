@@ -32,6 +32,13 @@ const loginUser = asyncHandler(async (req, res) => {
       req.headers["accept"] +
       req.headers["connection"];
     const customerId = generateHash(fingerprint);
+
+    res.cookie("customerId", customerId, {
+      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // Cookie expiration (30 days)
+      httpOnly: true, // Make the cookie inaccessible from JavaScript
+      secure: true, // Serve the cookie only over HTTPS if your application uses SSL/TLS
+    });
+
     let customer = await Customer.findOne({ customerId });
 
     if (!customer) {
@@ -49,12 +56,6 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 
     // Set the customerId cookie in the response
-    res.cookie("customerId", customerId, {
-      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // Cookie expiration (30 days)
-      httpOnly: true, // Make the cookie inaccessible from JavaScript
-      // secure: true, // Serve the cookie only over HTTPS if your application uses SSL/TLS
-      sameSite: "none",
-    });
 
     const customerIdFromCookie = req.cookies.customerId;
 
@@ -64,8 +65,8 @@ const loginUser = asyncHandler(async (req, res) => {
       isPresent: true,
     });
 
-    otherCustomers.forEach((otherCustomer) => {
-      const otherCustomerId = otherCustomer.customerId;
+    for (const otherCustomer of otherCustomers) {
+      const otherCustomerId = otherCustomer.customerId.toString(); // Ensure it's a string
 
       const existingCustomer = customer.session.find((s) => s.table === name);
       if (
@@ -73,15 +74,15 @@ const loginUser = asyncHandler(async (req, res) => {
         !existingCustomer.otherCustomers.some((item) => item.otherCustomerId === otherCustomerId)
       ) {
         existingCustomer.otherCustomers.push({ otherCustomerId: otherCustomerId });
-        customer.save();
+        await customer.save();
       }
 
       const session = otherCustomer.session.find((s) => s.table === name);
       if (session && !session.otherCustomers.some((item) => item.otherCustomerId === customerIdFromCookie)) {
         session.otherCustomers.push({ otherCustomerId: customerIdFromCookie });
-        otherCustomer.save();
+        await otherCustomer.save();
       }
-    });
+    }
 
     res.json({
       _id: user._id,

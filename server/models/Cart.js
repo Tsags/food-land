@@ -20,6 +20,7 @@ const cartSchema = new mongoose.Schema(
         price: { type: Number, required: true },
         stock: { type: Number, required: true },
         qty: { type: Number, required: true },
+        customerId: { type: [String], required: true },
       },
     ],
     totalPrice: {

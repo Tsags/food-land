@@ -35,6 +35,7 @@ export const adminSlice = createSlice({
       state.loading = false;
       state.error = null;
       state.orders = payload;
+      localStorage.setItem("orders", JSON.stringify(payload));
     },
     orderUpdate: (state, { payload }) => {
       state.orders.push(payload);
@@ -52,6 +53,7 @@ export const adminSlice = createSlice({
       state.orderRemoval = true;
       state.loading = false;
       state.error = null;
+      localStorage.setItem("orders", JSON.stringify(state.orders));
     },
     setError: (state, { payload }) => {
       state.error = payload;
@@ -103,6 +105,18 @@ export const adminSlice = createSlice({
       }
       state.loading = false;
     },
+    orderSetCompleted: (state, { payload }) => {
+      state.orders = state.orders.filter((order) => order.orderId !== payload._id);
+      state.orderSetCompleted = true;
+      state.loading = false;
+      state.error = null;
+    },
+    setOrders: (state, { payload }) => {
+      state.orders = payload;
+      localStorage.setItem("orders", JSON.stringify(payload));
+      state.loading = false;
+      state.error = null;
+    },
   },
 });
 export const {
@@ -120,6 +134,8 @@ export const {
   markAllAsRead,
   setNotifications,
   itemDeliveredFlag,
+  orderSetCompleted,
+  setOrders,
 } = adminSlice.actions;
 export default adminSlice.reducer;
 

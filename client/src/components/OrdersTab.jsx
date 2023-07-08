@@ -15,15 +15,17 @@ import {
   SimpleGrid,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import OrderDetails from "./OrderDetails";
+import { getAllOrders } from "../redux/actions/adminActions";
 
 const OrdersTab = ({ data }) => {
+  const dispatch = useDispatch();
   const admin = useSelector((state) => state.admin);
-  const { error, loading, orders, userList, orderRemoval, deliveredFlag } = admin;
+  const { error, loading, orders, userList, orderRemoval, deliveredFlag, orderSetCompleted } = admin;
 
   const [selectedUser, setSelectedUser] = useState(null);
-
+  console.log(orders);
   useEffect(() => {
     if (data && data.data) {
       const userSelected = userList.find((user) => user._id === data.data._id);
@@ -57,7 +59,7 @@ const OrdersTab = ({ data }) => {
               [...userList]
                 .sort((a, b) => a.name.localeCompare(b.name))
                 .map((user) => {
-                  const hasOrder = orders.some((order) => order.userInfo._id === user._id);
+                  const hasOrder = orders.some((order) => order.userInfo ? order.userInfo._id === user._id : order.user === user._id);
                   if (hasOrder) {
                     return (
                       <WrapItem key={user._id}>
@@ -81,7 +83,13 @@ const OrdersTab = ({ data }) => {
                   return null;
                 })}
           </SimpleGrid>
-          <OrderDetails orders={orders} user={selectedUser} orderRemoval={orderRemoval} deliveredFlag={deliveredFlag} />
+          <OrderDetails
+            orders={orders}
+            user={selectedUser}
+            orderRemoval={orderRemoval}
+            deliveredFlag={deliveredFlag}
+            orderSetCompleted={orderSetCompleted}
+          />
         </Flex>
       )}
     </Box>

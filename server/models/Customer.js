@@ -25,8 +25,7 @@ const customerSchema = new mongoose.Schema(
         otherCustomers: [
           {
             otherCustomerId: {
-              type: String,
-              required: true,
+              type: String, // Remove `default: []` and `required: true`
             },
             otherCustomerItems: {
               type: [String],

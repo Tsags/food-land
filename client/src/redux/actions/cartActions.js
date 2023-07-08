@@ -24,6 +24,8 @@ export const addCartItem = (id, qty) => async (dispatch, getState) => {
         "Content-Type": "application/json",
       },
     };
+    const customerId = JSON.parse(localStorage.getItem("customerId"));
+
     const { data } = await axios.get(`/api/products/${id}`);
     const itemToAdd = {
       id: data._id,
@@ -33,10 +35,12 @@ export const addCartItem = (id, qty) => async (dispatch, getState) => {
       stock: data.stock,
       qty,
       isDelivered: false,
+      customerId: [customerId],
     };
+
     dispatch(cartItemAdd(itemToAdd));
     await axios.put("/api/carts", { itemToAdd }, config);
-    socket.emit("cart/addItem", { item: itemToAdd, userId: userInfo._id });
+    socket.emit("cart/addItem", { item: itemToAdd, userId: userInfo._id, customerId: customerId });
     return itemToAdd;
   } catch (error) {
     dispatch(

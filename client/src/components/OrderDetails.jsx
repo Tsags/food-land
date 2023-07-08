@@ -25,16 +25,29 @@ import {
   setDelivered,
   resetErrorAndRemoval,
   itemDelivered,
+  // setCompleted as renamedSetCompleted,
 } from "../redux/actions/adminActions";
 import ConfirmRemovalAlert from "./ConfirmRemovalAlert";
 import { CheckCircleIcon, DeleteIcon } from "@chakra-ui/icons";
+import randomstring from "randomstring";
 
-const OrderDetails = ({ orders, user, orderRemoval, deliveredFlag }) => {
+const OrderDetails = ({ orders, user, orderRemoval, deliveredFlag, orderSetCompleted }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
   const dispatch = useDispatch();
   const [orderToDelete, setOrderToDelete] = useState("");
+  const [completedOrders, setCompletedOrders] = useState([]);
   const toast = useToast();
+  const setCompleted = () => {
+    // const completed = orders.filter((order) => order.userInfo._id === user._id);
+    // setCompletedOrders([...completedOrders, ...completed]);
+    // completed.forEach((order) => {
+    //   // Dispatch an action for each completed order
+    //   dispatch(renamedSetCompleted(order.orderId));
+    // });
+  };
+  console.log(completedOrders);
+
   const onSetToDelivered = (order) => {
     dispatch(resetErrorAndRemoval());
     dispatch(setDelivered(order.orderId));
@@ -58,8 +71,11 @@ const OrderDetails = ({ orders, user, orderRemoval, deliveredFlag }) => {
   };
 
   useEffect(() => {
-    dispatch(getAllOrders());
+    // dispatch(getAllOrders());
     dispatch(resetErrorAndRemoval());
+    if (orderSetCompleted) {
+      toast({ description: "Order set to Completed.", status: "success", isClosable: true });
+    }
     if (orderRemoval) {
       toast({ description: "Order has been removed.", status: "success", isClosable: true });
     }
@@ -70,7 +86,7 @@ const OrderDetails = ({ orders, user, orderRemoval, deliveredFlag }) => {
 
   let totalTotalPrice = 0;
   orders.forEach((order) => {
-    if (user && user._id === order.userInfo._id) {
+    if (user && (order.userInfo ? order.userInfo._id === user._id : order.user === user._id)) {
       totalTotalPrice += parseFloat(order.totalPrice);
     }
   });
@@ -92,9 +108,10 @@ const OrderDetails = ({ orders, user, orderRemoval, deliveredFlag }) => {
             <Tbody>
               {orders &&
                 orders.map((order) => {
-                  if (user && user._id === order.userInfo._id) {
+                  const key = randomstring.generate(10);
+                  if (user && (order.userInfo ? order.userInfo._id === user._id : order.user === user._id)) {
                     return (
-                      <React.Fragment key={order.orderId}>
+                      <React.Fragment key={key}>
                         <Tr>
                           <Td>
                             {new Date(order.createdAt).toLocaleString("el-GR", {
@@ -164,6 +181,11 @@ const OrderDetails = ({ orders, user, orderRemoval, deliveredFlag }) => {
                   <Td></Td>
                   <Td colSpan={3} textAlign="right">
                     <strong>Total Price: {totalTotalPrice.toFixed(2)}€ </strong>
+                  </Td>
+                  <Td>
+                    <Button bg="green.300" ml="10px" variant="outline" onClick={() => setCompleted()}>
+                      Set Completed
+                    </Button>
                   </Td>
                 </Tr>
               </tfoot>

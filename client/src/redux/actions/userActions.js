@@ -13,14 +13,15 @@ export const login = (name, password) => async (dispatch) => {
     const { data } = await axios.post("/api/users/login", { name, password }, config);
 
     const customerId = data.customerId;
-    console.log(customerId);
+
     dispatch(userLogin(data));
     localStorage.removeItem("cartItems");
     localStorage.removeItem("orders");
     localStorage.removeItem("allergies");
     localStorage.removeItem("customerInfo");
     localStorage.setItem("userInfo", JSON.stringify(data));
-    localStorage.setItem("customerInfo", JSON.stringify(customerId));
+    localStorage.setItem("customerId", JSON.stringify(customerId));
+
     socket.emit("user/connected", name);
   } catch (error) {
     dispatch(

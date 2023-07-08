@@ -9,6 +9,8 @@ import {
   setDeliveredFlag,
   orderDelete,
   itemDeliveredFlag,
+  orderSetCompleted,
+  setOrders,
 } from "../slices/admin.js";
 import { setProducts, setProductUpdateFlag } from "../slices/products.js";
 
@@ -55,7 +57,7 @@ export const getAllOrders = () => async (dispatch, getState) => {
     };
 
     const { data } = await axios.get("/api/orders", config);
-    // dispatch(getOrders(data));
+    dispatch(getOrders(data));
   } catch (error) {
     dispatch(
       setError(
@@ -259,7 +261,35 @@ export const uploadProduct = (newProduct) => async (dispatch, getState) => {
   }
 };
 
-export const itemDelivered = (orderId, itemId) => async (dispatch, getState) => {
+export const itemDelivered = (orderId, itemId) => async (dispatch) => {
   dispatch(setLoading(true));
   dispatch(itemDeliveredFlag({ orderId, itemId }));
+};
+
+export const setCompleted = (id) => async (dispatch, getState) => {
+  const {
+    user: { userInfo },
+  } = getState();
+
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+        "Content-Type": "application/json",
+      },
+    };
+    const { data } = await axios.delete(`/api/orders/${id}`, config);
+
+    dispatch(orderSetCompleted(data));
+  } catch (error) {
+    dispatch(
+      setError(
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+          ? error.message
+          : "Order could not be removed."
+      )
+    );
+  }
 };

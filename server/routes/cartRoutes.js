@@ -21,8 +21,12 @@ const createOrUpdateCart = asyncHandler(async (req, res) => {
     });
   } else {
     const existingItem = cart.cartItems.find((item) => item.id === itemToAdd.id);
+    const customerIdFromCookie = req.cookies.customerId;
     if (existingItem) {
       existingItem.qty++;
+      if (!existingItem.customerId.includes(customerIdFromCookie)) {
+        existingItem.customerId.push(customerIdFromCookie);
+      }
     } else {
       cart.cartItems = [...cart.cartItems, itemToAdd];
     }

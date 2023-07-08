@@ -29,7 +29,7 @@ const expressServer = app.listen(port, () => {
   console.log(`Server runs on port ${port}.`);
 });
 const io = new Server(expressServer, {
-  pingTimeout: 5000,
+  pingTimeout: 60000,
   cors: {
     origin: "http://localhost:3000",
   },
@@ -41,7 +41,7 @@ let orders = [];
 io.on("connection", (socket) => {
   console.log("connected to socket.io");
 
-  socket.on("cart/addItem", ({ item, userId }) => {
+  socket.on("cart/addItem", ({ item, userId, customerId }) => {
     if (!carts[userId]) {
       carts[userId] = [];
     }
@@ -52,7 +52,7 @@ io.on("connection", (socket) => {
     } else {
       cart.push(item);
     }
-    io.emit("cart/update", { cart, userId });
+    io.emit("cart/update", { cart, userId, customerId });
   });
 
   socket.on("cart/removeItem", ({ itemId, userId }) => {
