@@ -3,6 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 const storedOrders = localStorage.getItem("orders");
 const initialOrders = storedOrders ? JSON.parse(storedOrders) : [];
 
+const storedCompletedOrders = localStorage.getItem("completedOrders");
+const initialCompletedOrders = storedCompletedOrders ? JSON.parse(storedCompletedOrders) : [];
+
 export const initialState = {
   error: null,
   userList: [],
@@ -12,6 +15,7 @@ export const initialState = {
   orderRemoval: false,
   deliveredFlag: false,
   notifications: [],
+  completedOrders: initialCompletedOrders,
 };
 
 export const adminSlice = createSlice({
@@ -49,7 +53,7 @@ export const adminSlice = createSlice({
       state.error = null;
     },
     orderDelete: (state, { payload }) => {
-      state.orders = state.orders.filter((order) => order.orderId !== payload._id);
+      state.orders = state.orders.filter((order) => order._id !== payload._id);
       state.orderRemoval = true;
       state.loading = false;
       state.error = null;
@@ -86,7 +90,7 @@ export const adminSlice = createSlice({
       state.notifications.splice(index, 1);
     },
     setDeliveredFlag: (state, { payload }) => {
-      const orderToUpdate = state.orders.find((order) => order.orderId === payload);
+      const orderToUpdate = state.orders.find((order) => order._id === payload);
       if (orderToUpdate) {
         orderToUpdate.isDelivered = true;
       }
@@ -110,10 +114,12 @@ export const adminSlice = createSlice({
       state.orderSetCompleted = true;
       state.loading = false;
       state.error = null;
+      localStorage.setItem("orders", JSON.stringify(state.orders));
     },
-    setOrders: (state, { payload }) => {
-      state.orders = payload;
-      localStorage.setItem("orders", JSON.stringify(payload));
+    getCompletedOrders: (state, { payload }) => {
+      state.completedOrders = payload;
+
+      localStorage.setItem("completedOrders", JSON.stringify(payload));
       state.loading = false;
       state.error = null;
     },
@@ -135,7 +141,7 @@ export const {
   setNotifications,
   itemDeliveredFlag,
   orderSetCompleted,
-  setOrders,
+  getCompletedOrders,
 } = adminSlice.actions;
 export default adminSlice.reducer;
 

@@ -54,26 +54,26 @@ const customerSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-customerSchema.methods.addItemsToSession = function (table, items) {
-  if (!this.newSessionFlag) {
-    // Add items to the current session
-    const currentSession = this.session[this.session.length - 1];
-    currentSession.table = table;
-    currentSession.items.push(...items);
-  } else {
-    // Add a new session with the provided items
-    const newSession = {
-      table,
-      items,
-      otherCustomers: {
-        otherCustomersId: [],
-        otherCustomersItems: [],
-      },
-    };
-    this.session.push(newSession);
-    // this.newSessionFlag = false; // Set newSessionFlag flag to false for the new session
-  }
-};
+// customerSchema.methods.addItemsToSession = function (table, items) {
+//   if (!this.newSessionFlag) {
+//     // Add items to the current session
+//     const currentSession = this.session[this.session.length - 1];
+//     currentSession.table = table;
+//     currentSession.items.push(...items);
+//   } else {
+//     // Add a new session with the provided items
+//     const newSession = {
+//       table,
+//       items,
+//       otherCustomers: {
+//         otherCustomersId: [],
+//         otherCustomersItems: [],
+//       },
+//     };
+//     this.session.push(newSession);
+//     // this.newSessionFlag = false; // Set newSessionFlag flag to false for the new session
+//   }
+// };
 
 const Customer = mongoose.model("Customer", customerSchema);
 

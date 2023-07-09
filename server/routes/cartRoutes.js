@@ -7,7 +7,7 @@ const cartRoutes = express.Router();
 
 const createOrUpdateCart = asyncHandler(async (req, res) => {
   const { itemToAdd } = req.body;
-  console.log(itemToAdd);
+  
   if (!itemToAdd) {
     res.status(400);
     throw new Error("No cart items");

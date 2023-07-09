@@ -10,7 +10,7 @@ import {
   orderDelete,
   itemDeliveredFlag,
   orderSetCompleted,
-  setOrders,
+  getCompletedOrders,
 } from "../slices/admin.js";
 import { setProducts, setProductUpdateFlag } from "../slices/products.js";
 
@@ -126,6 +126,7 @@ export const deleteOrder = (id) => async (dispatch, getState) => {
 };
 
 export const setDelivered = (id) => async (dispatch, getState) => {
+  console.log(id);
   dispatch(setLoading(true));
 
   const {
@@ -278,7 +279,7 @@ export const setCompleted = (id) => async (dispatch, getState) => {
         "Content-Type": "application/json",
       },
     };
-    const { data } = await axios.delete(`/api/orders/${id}`, config);
+    const { data } = await axios.put(`/api/completedOrders/${id}`, config);
 
     dispatch(orderSetCompleted(data));
   } catch (error) {
@@ -289,6 +290,35 @@ export const setCompleted = (id) => async (dispatch, getState) => {
           : error.message
           ? error.message
           : "Order could not be removed."
+      )
+    );
+  }
+};
+
+export const getAllCompletedOrders = () => async (dispatch, getState) => {
+  dispatch(setLoading(true));
+
+  const {
+    user: { userInfo },
+  } = getState();
+
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+        "Content-Type": "application/json",
+      },
+    };
+
+    const { data } = await axios.get("/api/completedOrders", config);
+
+    dispatch(getCompletedOrders(data));
+  } catch (error) {
+    dispatch(
+      setError(
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message || "Orders could not be fetched."
       )
     );
   }

@@ -7,7 +7,7 @@ import { Box, Heading, Stack, Tabs, TabList, TabPanels, Tab, TabPanel } from "@c
 import UsersTab from "../components/UsersTab";
 import OrdersTab from "../components/OrdersTab";
 import ProductsTab from "../components/ProductsTab";
-import NotificationsTab from "../components/NotificationsTab";
+import OrderHistoryTab from "../components/OrderHistoryTab";
 
 const AdminScreen = () => {
   const location = useLocation();
@@ -18,7 +18,7 @@ const AdminScreen = () => {
   const { state } = location;
 
   // Access the data
-  console.log(state);
+
   return userInfo && userInfo.isAdmin === "true" ? (
     <Box>
       <Stack direction={{ base: "column", lg: "row" }} align={{ lg: "flex-start" }}>
@@ -32,7 +32,7 @@ const AdminScreen = () => {
               <Tab fontWeight="bold">All Tables</Tab>
               <Tab fontWeight="bold"> Products</Tab>
               <Tab fontWeight="bold" marginLeft="auto">
-                Notifications
+                Orders History
               </Tab>
             </TabList>
             <TabPanels>
@@ -46,7 +46,7 @@ const AdminScreen = () => {
                 <ProductsTab />
               </TabPanel>
               <TabPanel>
-                <NotificationsTab requests={requests} />
+                <OrderHistoryTab />
               </TabPanel>
             </TabPanels>
           </Tabs>

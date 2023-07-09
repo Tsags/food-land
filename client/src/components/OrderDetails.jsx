@@ -25,7 +25,7 @@ import {
   setDelivered,
   resetErrorAndRemoval,
   itemDelivered,
-  // setCompleted as renamedSetCompleted,
+  setCompleted as renamedSetCompleted,
 } from "../redux/actions/adminActions";
 import ConfirmRemovalAlert from "./ConfirmRemovalAlert";
 import { CheckCircleIcon, DeleteIcon } from "@chakra-ui/icons";
@@ -38,19 +38,22 @@ const OrderDetails = ({ orders, user, orderRemoval, deliveredFlag, orderSetCompl
   const [orderToDelete, setOrderToDelete] = useState("");
   const [completedOrders, setCompletedOrders] = useState([]);
   const toast = useToast();
+
   const setCompleted = () => {
-    // const completed = orders.filter((order) => order.userInfo._id === user._id);
-    // setCompletedOrders([...completedOrders, ...completed]);
-    // completed.forEach((order) => {
-    //   // Dispatch an action for each completed order
-    //   dispatch(renamedSetCompleted(order.orderId));
-    // });
+    const completed = orders.filter((order) =>
+      order.userInfo ? order.userInfo._id === user._id : order.user === user._id
+    );
+    setCompletedOrders([...completedOrders, ...completed]);
+    completed.forEach((order) => {
+      // Dispatch an action for each completed order
+      dispatch(renamedSetCompleted(order._id));
+    });
   };
-  console.log(completedOrders);
 
   const onSetToDelivered = (order) => {
     dispatch(resetErrorAndRemoval());
-    dispatch(setDelivered(order.orderId));
+
+    dispatch(setDelivered(order._id));
   };
 
   const openDeleteConfirmBox = (order) => {
@@ -82,7 +85,7 @@ const OrderDetails = ({ orders, user, orderRemoval, deliveredFlag, orderSetCompl
     if (deliveredFlag) {
       toast({ description: "Order has been set to delivered.", status: "success", isClosable: true });
     }
-  }, [dispatch, orderRemoval, deliveredFlag, toast]);
+  }, [dispatch, orderRemoval, deliveredFlag, toast, orderSetCompleted]);
 
   let totalTotalPrice = 0;
   orders.forEach((order) => {
@@ -129,7 +132,7 @@ const OrderDetails = ({ orders, user, orderRemoval, deliveredFlag, orderSetCompl
                                   <Checkbox
                                     colorScheme="green"
                                     ml={2}
-                                    onChange={() => handleCheckboxClick(order.orderId, item.id)}
+                                    onChange={() => handleCheckboxClick(order._id, item.id)}
                                     isChecked={item.isDelivered}
                                     isDisabled={item.isDelivered}
                                   />
@@ -163,7 +166,7 @@ const OrderDetails = ({ orders, user, orderRemoval, deliveredFlag, orderSetCompl
                             </Flex>
                           </Td>
                         </Tr>
-                        <Tr key={`price-${order.orderId}`}>
+                        <Tr key={`price-${order._id}`}>
                           <Td></Td>
                           <Td colSpan={3} textAlign="right">
                             Order Price: {parseFloat(order.totalPrice).toFixed(2)}€<hr></hr>
@@ -175,21 +178,23 @@ const OrderDetails = ({ orders, user, orderRemoval, deliveredFlag, orderSetCompl
                   return null;
                 })}
             </Tbody>
-            {orders.length > 1 && (
-              <tfoot>
-                <Tr>
-                  <Td></Td>
+
+            <tfoot>
+              <Tr>
+                <Td></Td>
+                {orders.length > 1 && (
                   <Td colSpan={3} textAlign="right">
                     <strong>Total Price: {totalTotalPrice.toFixed(2)}€ </strong>
                   </Td>
-                  <Td>
-                    <Button bg="green.300" ml="10px" variant="outline" onClick={() => setCompleted()}>
-                      Set Completed
-                    </Button>
-                  </Td>
-                </Tr>
-              </tfoot>
-            )}
+                )}
+                <Td style={{ textAlign: "right", marginLeft: "auto" }}>
+                  {/* Added 'textAlign="right"' */}
+                  <Button bg="green.300" m="auto" variant="outline" onClick={() => setCompleted()}>
+                    Set Completed
+                  </Button>
+                </Td>
+              </Tr>
+            </tfoot>
           </Table>
         </TableContainer>
       )}

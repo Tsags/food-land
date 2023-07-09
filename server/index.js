@@ -10,6 +10,7 @@ import userRoutes from "./routes/userRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
+import completedOrderRoutes from "./routes/completedOrderRoutes.js";
 
 dotenv.config();
 connectToDatabase();
@@ -24,6 +25,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/carts", cartRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/uploads", uploadRoutes);
+app.use("/api/completedOrders", completedOrderRoutes);
 
 const expressServer = app.listen(port, () => {
   console.log(`Server runs on port ${port}.`);
@@ -86,7 +88,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("order/create", (order) => {
-    console.log("order in index:", order);
+   
     io.emit("order/update", order);
   });
   socket.on("request", ({ request, userInfo }) => {

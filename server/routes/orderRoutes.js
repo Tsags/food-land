@@ -10,13 +10,13 @@ const orderRoutes = express.Router();
 // POST /api/orders
 // Create a new order for the authenticated user
 const createOrder = asyncHandler(async (req, res) => {
-  const { orderItems, totalPrice, userInfo, orderId } = req.body;
-  console.log(orderId)
+  const { orderItems, totalPrice, userInfo, _id } = req.body;
+  
   if (!orderItems || orderItems.length === 0) {
     res.status(400);
     throw new Error("No order items");
   } else {
-    const myCustomId = new ObjectId(orderId);
+    const myCustomId = new ObjectId(_id);
     const order = new Order({
       _id: myCustomId,
       orderItems,
@@ -36,7 +36,8 @@ const getOrders = async (req, res) => {
 };
 
 const deleteOrder = asyncHandler(async (req, res) => {
-  const order = await Order.findByIdAndDelete(req.params.id);
+  const { id } = req.params;
+  const order = await Order.findByIdAndDelete(id);
   if (order) {
     res.json(order);
   } else {
@@ -46,7 +47,9 @@ const deleteOrder = asyncHandler(async (req, res) => {
 });
 
 const setDelivered = asyncHandler(async (req, res) => {
-  const order = await Order.findById(req.params.id);
+  const { id } = req.params;
+  
+  const order = await Order.findById(id);
   if (order) {
     order.isDelivered = true;
     const updatedOrder = await order.save();

@@ -25,7 +25,7 @@ const OrdersTab = ({ data }) => {
   const { error, loading, orders, userList, orderRemoval, deliveredFlag, orderSetCompleted } = admin;
 
   const [selectedUser, setSelectedUser] = useState(null);
-  console.log(orders);
+
   useEffect(() => {
     if (data && data.data) {
       const userSelected = userList.find((user) => user._id === data.data._id);
@@ -59,7 +59,9 @@ const OrdersTab = ({ data }) => {
               [...userList]
                 .sort((a, b) => a.name.localeCompare(b.name))
                 .map((user) => {
-                  const hasOrder = orders.some((order) => order.userInfo ? order.userInfo._id === user._id : order.user === user._id);
+                  const hasOrder = orders.some((order) =>
+                    order.userInfo ? order.userInfo._id === user._id : order.user === user._id
+                  );
                   if (hasOrder) {
                     return (
                       <WrapItem key={user._id}>
