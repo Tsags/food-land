@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { FaTimes } from "react-icons/fa";
 import { addAllergy, removeAllergy } from "../redux/slices/user";
 import { useDispatch } from "react-redux";
+import axios from "axios";
 
 const Allergies = () => {
   const dispatch = useDispatch();
@@ -20,6 +21,7 @@ const Allergies = () => {
       const updatedAllergies = [...selectedAllergies, selectedAllergy];
       localStorage.setItem("allergies", JSON.stringify(updatedAllergies));
       setSelectedAllergy("");
+      axios.put("/api/customers",  updatedAllergies );
     }
   };
 
@@ -27,6 +29,7 @@ const Allergies = () => {
     setSelectedAllergies((prevAllergies) => prevAllergies.filter((a) => a !== allergy));
     const updatedAllergies = selectedAllergies.filter((a) => a !== allergy);
     localStorage.setItem("allergies", JSON.stringify(updatedAllergies));
+    axios.put("/api/customers", updatedAllergies );
   };
 
   return (

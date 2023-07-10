@@ -46,11 +46,19 @@ const loginUser = asyncHandler(async (req, res) => {
       customer = await Customer.create({ customerId: customerId, session: [{ table: name }] });
     } else {
       // Check if the desired session exists
-      const sessionExists = customer.session.some((s) => s.table === name);
+      // const sessionExists = customer.session.some((s) => s.table === name);
+      const latestSession = customer.session[customer.session.length - 1];
 
+      const sessionExists =
+        customer.session.length > 0 &&
+        latestSession &&
+        latestSession.table === name &&
+        Date.now() - latestSession.createdAt.getTime() <= 6 * 60 * 60 * 1000; // 6 ωρες
+      console.log(Date.now() - latestSession.createdAt.getTime());
       if (!sessionExists) {
         // Create a new session object in the session array
         customer.session.push({ table: name, items: [], otherCustomers: [] });
+        customer.isPresent === true;
         await customer.save();
       }
     }
@@ -64,6 +72,36 @@ const loginUser = asyncHandler(async (req, res) => {
       "session.table": { $eq: name },
       isPresent: true,
     });
+
+    // const otherCustomers = await Customer.aggregate([
+    //   {
+    //     $match: {
+    //       customerId: { $ne: customerIdFromCookie },
+    //       "session.table": name,
+    //       isPresent: true,
+    //     },
+    //   },
+    //   {
+    //     $addFields: {
+    //       lastSession: {
+    //         $arrayElemAt: [
+    //           {
+    //             $filter: {
+    //               input: "$session",
+    //               cond: { $eq: ["$$this.table", name] },
+    //             },
+    //           },
+    //           -1,
+    //         ],
+    //       },
+    //     },
+    //   },
+    //   {
+    //     $project: {
+    //       otherCustomers: "$lastSession.otherCustomers",
+    //     },
+    //   },
+    // ]);
 
     for (const otherCustomer of otherCustomers) {
       const otherCustomerId = otherCustomer.customerId.toString(); // Ensure it's a string

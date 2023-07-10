@@ -23,14 +23,20 @@ const moveOrder = asyncHandler(async (req, res) => {
     const customers = await Customer.find({});
 
     for (const item of items) {
-      console.log(item.name);
       for (const customer of customers) {
-        const customerItems = customer.session[0].items;
+        const customerItems = customer.session[customer.session.length - 1].items;
         if (item.customerId.includes(customer.customerId) && !customerItems.includes(item.name)) {
           customerItems.push(item.name);
+          customer.isPresent = false;
+          for (let i = 0; i < customer.session[customer.session.length - 1].otherCustomers.length; i++) {
+            const associatedCustomersId =
+              customer.session[customer.session.length - 1].otherCustomers[i].otherCustomerId;
+            await Customer.updateOne({ customerId: associatedCustomersId }, { $set: { isPresent: false } });
+          }
         }
 
-        const otherCustomers = customer.session[0].otherCustomers;
+        const otherCustomers = customer.session[customer.session.length - 1].otherCustomers;
+
         for (const otherCustomer of otherCustomers) {
           if (
             item.customerId.includes(otherCustomer.otherCustomerId) &&
