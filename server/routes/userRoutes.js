@@ -25,25 +25,28 @@ const loginUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ name });
 
   if (user && (await user.matchPasswords(password))) {
-    const fingerprint =
-      req.headers["user-agent"] +
-      req.headers["accept-language"] +
-      req.headers["accept-encoding"] +
-      req.headers["accept"] +
-      req.headers["connection"];
-    const customerId = generateHash(fingerprint);
+    const customerIdFromCookie = req.cookies.customerId;
+    console.log(customerIdFromCookie);
 
-    res.cookie("customerId", customerId, {
-      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // Cookie expiration (30 days)
-      httpOnly: true, // Make the cookie inaccessible from JavaScript
-      secure: true, // Serve the cookie only over HTTPS if your application uses SSL/TLS
-    });
-
-    let customer = await Customer.findOne({ customerId });
+    let customer = await Customer.findOne({ customerId: customerIdFromCookie });
 
     if (!customer) {
+      const fingerprint =
+        req.headers["user-agent"] +
+        req.headers["accept-language"] +
+        req.headers["accept-encoding"] +
+        req.headers["accept"] +
+        req.headers["connection"];
+      const customerId = generateHash(fingerprint);
+
+      res.cookie("customerId", customerId, {
+        expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // Cookie expiration (30 days)
+        httpOnly: true, // Make the cookie inaccessible from JavaScript
+        secure: true, // Serve the cookie only over HTTPS if your application uses SSL/TLS
+      });
+
       // Create a new customer entry if it doesn't exist
-      customer = await Customer.create({ customerId: customerId, session: [{ table: name }] });
+      customer = await Customer.create({ customerId: customerIdFromCookie, session: [{ table: name }] });
     } else {
       // Check if the desired session exists
       // const sessionExists = customer.session.some((s) => s.table === name);
@@ -58,14 +61,12 @@ const loginUser = asyncHandler(async (req, res) => {
       if (!sessionExists) {
         // Create a new session object in the session array
         customer.session.push({ table: name, items: [], otherCustomers: [] });
-        customer.isPresent === true;
+        customer.isPresent = true;
         await customer.save();
       }
     }
 
     // Set the customerId cookie in the response
-
-    const customerIdFromCookie = req.cookies.customerId;
 
     const otherCustomers = await Customer.find({
       customerId: { $ne: customerIdFromCookie },
@@ -127,7 +128,7 @@ const loginUser = asyncHandler(async (req, res) => {
       name: user.name,
       isAdmin: user.isAdmin,
       token: genToken(user._id),
-      customerId: customerId,
+      customerId: customerIdFromCookie,
     });
   } else {
     res.status(401);

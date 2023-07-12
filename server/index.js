@@ -13,6 +13,8 @@ import uploadRoutes from "./routes/uploadRoutes.js";
 import completedOrderRoutes from "./routes/completedOrderRoutes.js";
 import customerRoutes from "./routes/customerRoutes.js";
 
+import { retrieveCustomersData, calculateWeights } from "./recommendation.js";
+
 dotenv.config();
 connectToDatabase();
 const app = express();
@@ -38,6 +40,26 @@ const io = new Server(expressServer, {
     origin: "http://localhost:3000",
   },
 });
+
+async function exampleUsage() {
+  try {
+    const customers = await retrieveCustomersData();
+    const itemWeights = await calculateWeights(customers);
+
+    console.log(itemWeights);
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+exampleUsage();
+// .then((customers) => {
+//   console.log(customers);
+//   // Handle the retrieved customers data here
+// })
+// .catch((error) => {
+//   console.error("Error retrieving customers data:", error);
+// });
 
 let carts = {};
 let orders = [];
