@@ -36,6 +36,8 @@ const AddNewProduct = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [allergies, setAllergies] = useState([]);
   const [selectedAllergy, setSelectedAllergy] = useState("");
+  const [features, setFeatures] = useState([]);
+  const [selectedFeatures, setSelectedFeature] = useState("");
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -58,6 +60,16 @@ const AddNewProduct = () => {
     setAllergies((prevAllergies) => prevAllergies.filter((a) => a !== allergy));
   };
 
+  const handleFeatureDelete = (feature) => {
+    setFeatures((prevFeatures) => prevFeatures.filter((a) => a !== feature));
+  };
+  const handleFeatureSubmit = () => {
+    if (selectedFeatures !== "" && !features.includes(selectedFeatures)) {
+      setFeatures((prevFeatures) => [...prevFeatures, selectedFeatures]);
+      setSelectedFeature("");
+    }
+  };
+
   const createNewProduct = () => {
     if (image) {
       const formData = new FormData();
@@ -78,6 +90,7 @@ const AddNewProduct = () => {
               productIsNew,
               description,
               allergies,
+              features,
             })
           );
         })
@@ -86,7 +99,7 @@ const AddNewProduct = () => {
         });
     } else {
       //NA FTIAXW TOAST OTI DEN EXEI VALEI TA APARAITITA FIELDS
-      dispatch(uploadProduct({ name, category, stock, price, image, productIsNew, description, allergies }));
+      dispatch(uploadProduct({ name, category, stock, price, image, productIsNew, description, allergies, features }));
     }
   };
 
@@ -153,6 +166,44 @@ const AddNewProduct = () => {
             >
               {allergy}
               <IconButton icon={<FaTimes />} size="xs" colorScheme="red" onClick={() => handleAllergyDelete(allergy)} />
+            </Box>
+          ))}
+        </SimpleGrid>
+      </Td>
+      <Td>
+        <VStack>
+          <Select value={selectedFeatures} onChange={(e) => setSelectedFeature(e.target.value)} width={60}>
+            <option value="" disabled>
+              Select an option
+            </option>
+            <option value="Meat">Meat</option>
+            <option value="Fish">Fish</option>
+            <option value="Meatless">Meatless</option>
+            <option value="Vegetable">Vegetable</option>
+            <option value="Fruit">Fruit</option>
+            <option value="Cheese">Cheese</option>
+            <option value="Spicy">Spicy</option>
+            <option value="Sweet">Sweet</option>
+          </Select>
+          <Button colorScheme="orange" onClick={handleFeatureSubmit}>
+            Submit
+          </Button>
+        </VStack>
+        <SimpleGrid columns={4} spacing={1}>
+          {features.map((feature) => (
+            <Box
+              key={feature}
+              bg="blue.50"
+              height="30px"
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+              px="2"
+              borderRadius="md"
+              color="black"
+            >
+              {feature}
+              <IconButton icon={<FaTimes />} size="xs" colorScheme="red" onClick={() => handleFeatureDelete(feature)} />
             </Box>
           ))}
         </SimpleGrid>

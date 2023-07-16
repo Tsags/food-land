@@ -25,12 +25,12 @@ const loginUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ name });
 
   if (user && (await user.matchPasswords(password))) {
-    const customerIdFromCookie = req.cookies.customerId;
+    let customerIdFromCookie = req.cookies ? req.cookies.customerId : undefined;
     console.log(customerIdFromCookie);
 
     let customer = await Customer.findOne({ customerId: customerIdFromCookie });
 
-    if (!customer) {
+    if (!customerIdFromCookie) {
       const fingerprint =
         req.headers["user-agent"] +
         req.headers["accept-language"] +
@@ -45,24 +45,33 @@ const loginUser = asyncHandler(async (req, res) => {
         secure: true, // Serve the cookie only over HTTPS if your application uses SSL/TLS
       });
 
-      // Create a new customer entry if it doesn't exist
-      customer = await Customer.create({ customerId: customerIdFromCookie, session: [{ table: name }] });
+      // Create a new customer entry
+      customer = await Customer.create({ customerId: customerId, session: [{ table: name }] });
+      customerIdFromCookie = customerId; // Update the customerIdFromCookie variable
     } else {
-      // Check if the desired session exists
-      // const sessionExists = customer.session.some((s) => s.table === name);
-      const latestSession = customer.session[customer.session.length - 1];
+      if (!customer || !customer.session) {
+        customer = await Customer.findOneAndUpdate(
+          { customerId: customerIdFromCookie },
+          { $setOnInsert: { session: [{ table: name }] } },
+          { new: true, upsert: true }
+        );
+      } else {
+        // Check if the desired session exists
+        // const sessionExists = customer.session.some((s) => s.table === name);
+        const latestSession = customer.session[customer.session.length - 1];
 
-      const sessionExists =
-        customer.session.length > 0 &&
-        latestSession &&
-        latestSession.table === name &&
-        Date.now() - latestSession.createdAt.getTime() <= 6 * 60 * 60 * 1000; // 6 ωρες
-      console.log(Date.now() - latestSession.createdAt.getTime());
-      if (!sessionExists) {
-        // Create a new session object in the session array
-        customer.session.push({ table: name, items: [], otherCustomers: [] });
-        customer.isPresent = true;
-        await customer.save();
+        const sessionExists =
+          customer.session.length > 0 &&
+          latestSession &&
+          latestSession.table === name &&
+          Date.now() - latestSession.createdAt.getTime() <= 6 * 60 * 60 * 1000; // 6 ωρες
+        console.log(Date.now() - latestSession.createdAt.getTime());
+        if (!sessionExists) {
+          // Create a new session object in the session array
+          customer.session.push({ table: name, items: [], otherCustomers: [] });
+          customer.isPresent = true;
+          await customer.save();
+        }
       }
     }
 
@@ -73,36 +82,6 @@ const loginUser = asyncHandler(async (req, res) => {
       "session.table": { $eq: name },
       isPresent: true,
     });
-
-    // const otherCustomers = await Customer.aggregate([
-    //   {
-    //     $match: {
-    //       customerId: { $ne: customerIdFromCookie },
-    //       "session.table": name,
-    //       isPresent: true,
-    //     },
-    //   },
-    //   {
-    //     $addFields: {
-    //       lastSession: {
-    //         $arrayElemAt: [
-    //           {
-    //             $filter: {
-    //               input: "$session",
-    //               cond: { $eq: ["$$this.table", name] },
-    //             },
-    //           },
-    //           -1,
-    //         ],
-    //       },
-    //     },
-    //   },
-    //   {
-    //     $project: {
-    //       otherCustomers: "$lastSession.otherCustomers",
-    //     },
-    //   },
-    // ]);
 
     for (const otherCustomer of otherCustomers) {
       const otherCustomerId = otherCustomer.customerId.toString(); // Ensure it's a string

@@ -101,6 +101,7 @@ const ProductsTab = () => {
                 <Th>Name</Th>
                 <Th>Description</Th>
                 <Th>Allergies</Th>
+                <Th>Features</Th>
                 <Th>Category & Price</Th>
                 <Th>Stock & New Badge</Th>
               </Tr>

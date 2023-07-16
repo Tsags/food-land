@@ -39,11 +39,15 @@ const ProductTableItem = ({ product }) => {
   const [description, setDescription] = useState(product.description);
   const [image, setImage] = useState(product.image.substring(8));
   const [allergies, setAllergies] = useState(product.allergies);
+  const [features, setFeatures] = useState(product.features);
+  const [selectedFeatures, setSelectedFeature] = useState("");
   const [selectedAllergy, setSelectedAllergy] = useState("");
   const dispatch = useDispatch();
-
+console.log(selectedFeatures)
   const onSaveProduct = () => {
-    dispatch(updateProduct(name, category, stock, price, product._id, productIsNew, description, image, allergies));
+    dispatch(
+      updateProduct(name, category, stock, price, product._id, productIsNew, description, image, allergies, features)
+    );
   };
   const handleAllergyDelete = (allergy) => {
     setAllergies((prevAllergies) => prevAllergies.filter((a) => a !== allergy));
@@ -52,6 +56,16 @@ const ProductTableItem = ({ product }) => {
     if (selectedAllergy !== "" && !allergies.includes(selectedAllergy)) {
       setAllergies((prevAllergies) => [...prevAllergies, selectedAllergy]);
       setSelectedAllergy("");
+    }
+  };
+
+  const handleFeatureDelete = (feature) => {
+    setFeatures((prevFeatures) => prevFeatures.filter((a) => a !== feature));
+  };
+  const handleFeatureSubmit = () => {
+    if (selectedFeatures !== "" && !features.includes(selectedFeatures)) {
+      setFeatures((prevFeatures) => [...prevFeatures, selectedFeatures]);
+      setSelectedFeature("");
     }
   };
 
@@ -118,6 +132,49 @@ const ProductTableItem = ({ product }) => {
                   size="xs"
                   colorScheme="red"
                   onClick={() => handleAllergyDelete(allergy)}
+                />
+              </Box>
+            ))}
+          </SimpleGrid>
+        </Td>
+        <Td>
+          <VStack>
+            <Select value={selectedFeatures} onChange={(e) => setSelectedFeature(e.target.value)} width={60}>
+              <option value="" disabled>
+                Select an option
+              </option>
+              <option value="Meat">Meat</option>
+              <option value="Fish">Fish</option>
+              <option value="Meatless">Meatless</option>
+              <option value="Vegetable">Vegetable</option>
+              <option value="Fruit">Fruit</option>
+              <option value="Cheese">Cheese</option>
+              <option value="Spicy">Spicy</option>
+              <option value="Sweet">Sweet</option>
+            </Select>
+            <Button colorScheme="orange" onClick={handleFeatureSubmit}>
+              Submit
+            </Button>
+          </VStack>
+          <SimpleGrid columns={4} spacing={1}>
+            {features.map((feature) => (
+              <Box
+                key={feature}
+                bg="blue.50"
+                height="30px"
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+                px="2"
+                borderRadius="md"
+                color="black"
+              >
+                {feature}
+                <IconButton
+                  icon={<FaTimes />}
+                  size="xs"
+                  colorScheme="red"
+                  onClick={() => handleFeatureDelete(feature)}
                 />
               </Box>
             ))}

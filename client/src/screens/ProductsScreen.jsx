@@ -24,7 +24,7 @@ const ProductsScreen = () => {
   const dispatch = useDispatch();
   const productList = useSelector((state) => state.products);
   const { loading, error, products } = productList;
-  const customOrder = ["burgers", "bbq", "sandwiches", "desserts", "drinks"];
+  const customOrder = ["appetizers", "salads", "mains", "desserts"];
   const uniqueCategories = [...new Set(products.map((product) => product.category))].sort((a, b) => {
     return customOrder.indexOf(a) - customOrder.indexOf(b);
   });

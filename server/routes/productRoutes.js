@@ -21,7 +21,7 @@ const getProduct = async (req, res) => {
 };
 
 const createNewProduct = asyncHandler(async (req, res) => {
-  const { name, category, stock, price, image, productIsNew, description, allergies } = req.body;
+  const { name, category, stock, price, image, productIsNew, description, allergies, features } = req.body;
   const newProduct = await Product.create({
     name,
     category,
@@ -31,6 +31,7 @@ const createNewProduct = asyncHandler(async (req, res) => {
     productIsNew,
     description,
     allergies,
+    features,
   });
   await newProduct.save();
   const products = await Product.find();
@@ -53,7 +54,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
 });
 
 const updateProduct = asyncHandler(async (req, res) => {
-  const { name, image, category, stock, price, id, productIsNew, description, allergies } = req.body;
+  const { name, image, category, stock, price, id, productIsNew, description, allergies, features } = req.body;
   const product = await Product.findById(id);
   if (product) {
     product.name = name;
@@ -64,6 +65,7 @@ const updateProduct = asyncHandler(async (req, res) => {
     product.stock = stock;
     product.productIsNew = productIsNew;
     product.allergies = allergies;
+    product.features = features;
     const updatedProduct = await product.save();
     res.json(updatedProduct);
   } else {
