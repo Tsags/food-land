@@ -23,6 +23,7 @@ export const login = (name, password) => async (dispatch) => {
     localStorage.setItem("customerId", JSON.stringify(customerId));
 
     socket.emit("user/connected", name);
+    await axios.get("/api/data");
   } catch (error) {
     dispatch(
       setError(

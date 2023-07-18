@@ -97,9 +97,11 @@ function findSimilarCustomers(targetCustomerId, similarityMatrix, threshold = 0.
 }
 
 // Generate item recommendations for a target customer
-function generateRecommendations(targetCustomer, similarCustomers, customers) {
+function generateRecommendations(targetCustomer, similarCustomers, customers, products) {
   const recommendations = {};
   const itemsTaken = [];
+  const targetCustomerAllergies = targetCustomer.allergies;
+
   targetCustomer.session.forEach((session) => {
     itemsTaken.push(...session.items);
   });
@@ -120,19 +122,46 @@ function generateRecommendations(targetCustomer, similarCustomers, customers) {
 
   // Sort recommendations based on the number of similar customers who have taken the item
   const sortedRecommendations = Object.entries(recommendations).sort((a, b) => b[1] - a[1]);
-  return sortedRecommendations.map((entry) => entry[0]);
+  // return sortedRecommendations.map((entry) => entry[0]);
+
+  const recommendationsCollab = sortedRecommendations.filter(([productName]) => {
+    // Exclude recommendations with zero similarity score
+
+    // Exclude recommendations that contain any of the customer's allergies
+    const productAllergies = products.find((product) => product.name === productName).allergies;
+
+    if (productAllergies.some((allergy) => targetCustomerAllergies.includes(allergy))) {
+      return false;
+    }
+
+    // Exclude recommendations that are in itemsTaken
+    // if (itemsTaken.includes(productName)) {
+    //   return false;
+    // }
+
+    return true;
+  });
+  // console.log(recommendationsCollab);
+  return recommendationsCollab;
 }
 
-export async function collaborativeFiltering() {
+async function collaborativeFiltering(targetCustomerId) {
   try {
     const customers = await retrieveCustomersData();
     const products = await retrieveProductsData();
     const similarityMatrix = calculateSimilarity(customers, products);
-    const targetCustomerId = "f953cff8edb5dc9ec71b141713f3a6e9e3655ec1e469f0cd111fd1e805974ad2";
+    // const targetCustomerId = "f953cff8edb5dc9ec71b141713f3a6e9e3655ec1e469f0cd111fd1e805974ad2";
     const targetCustomer = customers.find((c) => c.customerId === targetCustomerId);
 
     const similarCustomers = findSimilarCustomers(targetCustomerId, similarityMatrix);
-    const recommendations = generateRecommendations(targetCustomer, similarCustomers, customers);
+    const collaborativeRecommendations = generateRecommendations(
+      targetCustomer,
+      similarCustomers,
+      customers,
+      products
+    ).map((item) => item[0]);
+
+    return collaborativeRecommendations;
   } catch (error) {
     console.error("Error running content-based filtering:", error);
   }
@@ -144,14 +173,15 @@ export async function collaborativeFiltering() {
 async function similarityCalculation(customers, products) {
   const customerPreferences = [];
   for (const customer of customers) {
-    const itemsTaken = [];
     const customerFeatures = [];
+    const itemsTaken = [];
     customer.session.forEach((session) => {
       const sessionItems = session.items;
       itemsTaken.push(...sessionItems);
     });
     for (const itemTaken of itemsTaken) {
-      const product = await Product.findOne({ name: itemTaken });
+      const product = products.find((p) => p.name === itemTaken);
+
       const features = product.features;
       for (const feature of features) {
         if (!customerFeatures.includes(feature)) {
@@ -176,23 +206,88 @@ async function similarityCalculation(customers, products) {
     customerPreferences.push(customerPreference);
   }
 
-  // console.log(customerPreferences);
   return customerPreferences;
 }
 
-export async function contentBasedFiltering() {
+function getRecommendationsForCustomer(customerPreferences, targetCustomerId, products, customers) {
+  // Find the target customer's preferences
+  const targetCustomerPreferences = customerPreferences.find((customer) => customer.customerId === targetCustomerId);
+  const targetCustomer = customers.find((c) => c.customerId === targetCustomerId);
+
+  const targetCustomerAllergies = targetCustomer.allergies;
+  const itemsTaken = [];
+  targetCustomer.session.forEach((session) => {
+    const sessionItems = session.items;
+    itemsTaken.push(...sessionItems);
+  });
+
+  if (!targetCustomerPreferences) {
+    console.log("Target customer not found.");
+    return [];
+  }
+
+  // Sort the preferences by similarity in descending order
+  const sortedPreferences = Object.entries(targetCustomerPreferences.preferences).sort((a, b) => b[1] - a[1]);
+
+  // Get the top N recommendations
+  const recommendations = sortedPreferences.filter(([productName, similarity]) => {
+    // Exclude recommendations with zero similarity score
+    if (similarity === 0) {
+      return false;
+    }
+
+    // Exclude recommendations that contain any of the customer's allergies
+    const productAllergies = products.find((product) => product.name === productName).allergies;
+    if (productAllergies.some((allergy) => targetCustomerAllergies.includes(allergy))) {
+      return false;
+    }
+
+    // Exclude recommendations that are in itemsTaken
+    if (itemsTaken.includes(productName)) {
+      return false;
+    }
+
+    return true;
+  });
+
+  return recommendations;
+}
+
+async function contentBasedFiltering(targetCustomerId) {
   try {
     const customers = await retrieveCustomersData();
     const products = await retrieveProductsData();
     const customerPreferences = await similarityCalculation(customers, products);
-  console.log(customerPreferences)
+    // const targetCustomerId = "f953cff8edb5dc9ec71b141713f3a6e9e3655ec1e469f0cd111fd1e805974ad2";
+    const contentBasedRecommendations = getRecommendationsForCustomer(
+      customerPreferences,
+      targetCustomerId,
+      products,
+      customers
+    ).map((item) => item[0]);
+
+    return contentBasedRecommendations;
   } catch (error) {
     console.error("Error running content-based filtering:", error);
   }
 }
 
+export async function hybridFiltering(targetCustomerId) {
+  try {
+    const results1 = await collaborativeFiltering(targetCustomerId);
+    const results2 = await contentBasedFiltering(targetCustomerId);
 
+    const intersection = results1.filter((value) => results2.includes(value));
 
+    console.log(intersection);
+
+    const union = Array.from(new Set(results1.concat(results2)));
+
+    console.log(union);
+  } catch (error) {
+    console.error("Error running Hybrid filtering:", error);
+  }
+}
 
 // async function findProductFeatures(products) {
 //   const customerPreferences = {};

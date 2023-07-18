@@ -13,17 +13,7 @@ import uploadRoutes from "./routes/uploadRoutes.js";
 import completedOrderRoutes from "./routes/completedOrderRoutes.js";
 import customerRoutes from "./routes/customerRoutes.js";
 
-import {
-  collaborativeFiltering,
-  contentBasedFiltering,
-
-  // calculateWeights,
-  // retrieveProductData,
-  // extractProductFeatures,
-  // aggregateAndExtractFeatures,
-  // calculateSimilarity,
-  // generateRecommendations,
-} from "./recommendation.js";
+import { hybridFiltering } from "./recommendation.js";
 
 dotenv.config();
 connectToDatabase();
@@ -41,6 +31,11 @@ app.use("/api/uploads", uploadRoutes);
 app.use("/api/completedOrders", completedOrderRoutes);
 app.use("/api/customers", customerRoutes);
 
+app.get("/api/data", (req, res) => {
+  const targetCustomerId = req.cookies.customerId;
+  hybridFiltering(targetCustomerId);
+});
+
 const expressServer = app.listen(port, () => {
   console.log(`Server runs on port ${port}.`);
 });
@@ -50,8 +45,6 @@ const io = new Server(expressServer, {
     origin: "http://localhost:3000",
   },
 });
-collaborativeFiltering();
-contentBasedFiltering();
 
 let carts = {};
 let orders = [];
