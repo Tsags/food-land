@@ -13,7 +13,7 @@ import uploadRoutes from "./routes/uploadRoutes.js";
 import completedOrderRoutes from "./routes/completedOrderRoutes.js";
 import customerRoutes from "./routes/customerRoutes.js";
 
-import { hybridFiltering } from "./recommendation.js";
+import { hybridFiltering, retrieveProductsData } from "./recommendation.js";
 
 dotenv.config();
 connectToDatabase();
@@ -31,10 +31,17 @@ app.use("/api/uploads", uploadRoutes);
 app.use("/api/completedOrders", completedOrderRoutes);
 app.use("/api/customers", customerRoutes);
 
-app.get("/api/data", (req, res) => {
-  const targetCustomerId = req.cookies.customerId;
-  hybridFiltering(targetCustomerId);
-});
+// app.get("/api/data", (req, res) => {
+// const targetCustomerId = req.cookies.customerId;
+// const targetCustomerId = "cac34352-8936-435f-aa32-f0f0df193776";
+// const recommendations = await hybridFiltering(targetCustomerId);
+// const products = await retrieveProductsData();
+// const recommendedProducts = products.filter((product) =>
+//   recommendations.includes(product.name)
+// );
+// console.log(recommendedProducts);
+// res.json(recommendations);
+// });
 
 const expressServer = app.listen(port, () => {
   console.log(`Server runs on port ${port}.`);

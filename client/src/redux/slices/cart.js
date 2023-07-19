@@ -15,7 +15,7 @@ export const initialState = {
 
 const updateLocalStorage = (cart) => {
   localStorage.setItem("cartItems", JSON.stringify(cart));
-  console.log(JSON.parse(localStorage.getItem("cartItems")));
+
   localStorage.setItem("total", JSON.stringify(calculateTotal(cart)));
 };
 
@@ -52,7 +52,7 @@ export const cartSlice = createSlice({
     cartItemAdd: (state, action) => {
       const payload = action.payload;
       const existingItem = state.cart.find((item) => item.id === payload.id);
-      console.log(payload.customerId);
+
       if (existingItem) {
         existingItem.qty++;
         const customerId = JSON.parse(localStorage.getItem("customerId"));
@@ -64,7 +64,7 @@ export const cartSlice = createSlice({
       }
       updateLocalStorage(state.cart);
       state.total = calculateTotal(state.cart);
-      console.log(JSON.parse(localStorage.getItem("cartItems")));
+
       state.loading = false;
       state.error = null;
     },

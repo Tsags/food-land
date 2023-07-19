@@ -8,7 +8,7 @@ const CartOrderSummary = () => {
   const [buttonLoading, setButtonLoading] = useState();
   const cartItems = useSelector((state) => state.cart);
   const { total } = cartItems;
-  const navigate = useNavigate;
+  const navigate = useNavigate();
 
   const checkoutHandler = () => {
     setButtonLoading(true);

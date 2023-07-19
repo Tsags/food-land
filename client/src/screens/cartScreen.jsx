@@ -26,7 +26,7 @@ const CartScreen = () => {
   const user = useSelector((state) => state.user);
   const { userInfo } = user;
   const { loading, error, cart } = cartInfo;
-  console.log(cart);
+  
 
   return userInfo ? (
     <Wrap spacing="30px" justify="center" minHeight="100vh">

@@ -81,7 +81,7 @@ export const adminSlice = createSlice({
     setNotifications: (state, { payload }) => {
       const newNotification = { ...payload, read: false };
       state.notifications.push(newNotification);
-      console.log(newNotification);
+
       state.error = null;
       state.loading = false;
     },

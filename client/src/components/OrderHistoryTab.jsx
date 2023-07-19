@@ -1,21 +1,19 @@
 import {
-  TableContainer,
-  Table,
-  Td,
   Stack,
   Spinner,
   Alert,
   AlertIcon,
   AlertTitle,
-  Th,
-  Tbody,
-  Tr,
-  Thead,
-  ListItem,
-  UnorderedList,
   Wrap,
-  Flex,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  Box,
 } from "@chakra-ui/react";
+import CompletedOrdersTab from "./CompletedOrdersTab";
+import AnalyticsTab from "./AnalyticsTab";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllCompletedOrders } from "../redux/actions/adminActions";
 import { useEffect } from "react";
@@ -46,44 +44,20 @@ const OrderHistoryTab = () => {
           <AlertTitle>{error}..</AlertTitle>
         </Alert>
       ) : (
-        completedOrders && (
-          <TableContainer minHeight="108vh">
-            <Table variant="striped">
-              <Thead>
-                <Tr>
-                  <Th>Table</Th>
-                  <Th>Order Date</Th>
-                  <Th>Paid Total</Th>
-                  <Th>Items</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {completedOrders.map((order) => (
-                  <Tr key={order._id}>
-                    <Td>{order.username}</Td>
-                    <Td>
-                      {" "}
-                      {new Date(order.createdAt).toLocaleString("el-GR", {
-                        dateStyle: "short",
-                        timeStyle: "short",
-                      })}
-                    </Td>
-                    <Td>{parseFloat(order.totalPrice).toFixed(2)}€</Td>
-                    <Td>
-                      {order.orderItems.map((item) => (
-                        <UnorderedList key={item._id}>
-                          <ListItem>
-                            {item.qty} x {item.name} ({item.price.toFixed(2)}€ each)
-                          </ListItem>
-                        </UnorderedList>
-                      ))}
-                    </Td>
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
-          </TableContainer>
-        )
+        <Box>
+          <Tabs size="md" variant="enclosed" colorScheme="orange">
+            <TabList>
+              <Tab fontWeight="bold">Orders</Tab>
+              <Tab fontWeight="bold" marginLeft="auto">
+                Analytics
+              </Tab>
+            </TabList>
+            <TabPanels>
+              <TabPanel><CompletedOrdersTab completedOrders={completedOrders} /></TabPanel>
+              <TabPanel><AnalyticsTab completedOrders={completedOrders}/></TabPanel>
+            </TabPanels>
+          </Tabs>
+        </Box>
       )}
     </>
   );

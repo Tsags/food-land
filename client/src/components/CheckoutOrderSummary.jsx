@@ -9,6 +9,11 @@ import {
   Link,
   Divider,
   useDisclosure,
+  Wrap,
+  Spinner,
+  Alert,
+  AlertIcon,
+  AlertTitle,
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link as ReactLink } from "react-router-dom";
@@ -25,7 +30,7 @@ const CheckoutOrderSummary = () => {
   const cartItems = useSelector((state) => state.cart);
   const { cart, total } = cartItems;
   const user = useSelector((state) => state.user);
-  const { userInfo } = user;
+  const { userInfo, loading, error } = user;
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const dispatch = useDispatch();
 
@@ -52,46 +57,61 @@ const CheckoutOrderSummary = () => {
   const money = JSON.parse(moneyFromLocalStorage);
 
   return (
-    <Stack spacing="4" rounded="xl" padding="8" width="full">
-      <Heading size="md">Order Summary</Heading>
-      {order.map((item) => (
-        <CheckoutItem key={item.id} orderItem={item} />
-      ))}
-      <Stack spacing="6">
-        <Flex justify="space-between">
-          <Text fontSize="lg" fontWeight="semibold">
-            Total
-          </Text>
-          <Text fontSize="xl" fontWeight="extrabold">
-            {money}€
-          </Text>
-        </Flex>
-      </Stack>
-      <Box align="center">
-        <Text fontSize="sm">Have questions? or need help to complete your order?</Text>
-        <Flex justifyContent="center" color={mode("orange.500", "orange.100")}>
-          <Flex align="center">
-            <ChatIcon />
-            <Text m="2">Live Chat</Text>
+    <Box>
+      {loading ? (
+        <Wrap justify="center" direction="column" align="center" mt="20px" minH="100vh">
+          <Stack direction="row" spacing={4}>
+            <Spinner mt={20} thickness="5px" speed="0.65s" emptyColor="gray.200" color="orange.500" size="xl" />
+          </Stack>
+        </Wrap>
+      ) : error ? (
+        <Alert status="error">
+          <AlertIcon />
+          <AlertTitle>{error}..</AlertTitle>
+        </Alert>
+      ) : (
+        <Stack spacing="4" rounded="xl" padding="8" width="full">
+          <Heading size="md">Order Summary</Heading>
+          {order.map((item) => (
+            <CheckoutItem key={item.id} orderItem={item} />
+          ))}
+          <Stack spacing="6">
+            <Flex justify="space-between">
+              <Text fontSize="lg" fontWeight="semibold">
+                Total
+              </Text>
+              <Text fontSize="xl" fontWeight="extrabold">
+                {money}€
+              </Text>
+            </Flex>
+          </Stack>
+          <Box align="center">
+            <Text fontSize="sm">Have questions? or need help to complete your order?</Text>
+            <Flex justifyContent="center" color={mode("orange.500", "orange.100")}>
+              <Flex align="center">
+                <ChatIcon />
+                <Text m="2">Live Chat</Text>
+              </Flex>
+              <Flex align="center">
+                <PhoneIcon />
+                <Text m="2">Phone</Text>
+              </Flex>
+              <Flex align="center">
+                <EmailIcon />
+                <Text m="2">Email</Text>
+              </Flex>
+            </Flex>
+          </Box>
+          <Divider bg={mode("gray.400", "gray.800")} />
+          <Flex justifyContent="center" my="6" fontWeight="semibold">
+            <p>or</p>
+            <Link as={ReactLink} to="/products" ml="1">
+              Continue Shopping
+            </Link>
           </Flex>
-          <Flex align="center">
-            <PhoneIcon />
-            <Text m="2">Phone</Text>
-          </Flex>
-          <Flex align="center">
-            <EmailIcon />
-            <Text m="2">Email</Text>
-          </Flex>
-        </Flex>
-      </Box>
-      <Divider bg={mode("gray.400", "gray.800")} />
-      <Flex justifyContent="center" my="6" fontWeight="semibold">
-        <p>or</p>
-        <Link as={ReactLink} to="/products" ml="1">
-          Continue Shopping
-        </Link>
-      </Flex>
-    </Stack>
+        </Stack>
+      )}
+    </Box>
   );
 };
 

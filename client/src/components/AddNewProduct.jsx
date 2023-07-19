@@ -73,13 +73,12 @@ const AddNewProduct = () => {
   const createNewProduct = () => {
     if (image) {
       const formData = new FormData();
-      console.log(image);
+
       formData.append("image", image);
 
       axios
         .post("/api/uploads", formData)
         .then((response) => {
-          console.log(response.data);
           dispatch(
             uploadProduct({
               name,

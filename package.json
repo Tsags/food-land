@@ -39,6 +39,7 @@
     "util": "^0.12.5"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.0.2",
     "webpack": "^5.82.1"
   }
 }

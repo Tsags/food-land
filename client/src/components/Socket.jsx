@@ -45,7 +45,6 @@ const Socket = () => {
 
   useEffect(() => {
     socket.on("user/update", (name) => {
-      console.log(name);
       dispatch(setNotifications(name));
     });
 

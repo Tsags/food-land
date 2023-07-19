@@ -6,7 +6,7 @@ const socket = io("/");
 
 export const createOrder = (order) => async (dispatch, getState) => {
   dispatch(setLoading(true));
-  console.log(order.orderItems);
+
   const {
     user: { userInfo },
   } = getState();
@@ -26,7 +26,7 @@ export const createOrder = (order) => async (dispatch, getState) => {
     const currentDate = new Date();
 
     const updatedOrder = { ...order, _id: orderId, createdAt: currentDate };
-    console.log(updatedOrder);
+
     await axios.post("/api/orders", updatedOrder, config);
     socket.emit("order/create", updatedOrder);
   } catch (error) {

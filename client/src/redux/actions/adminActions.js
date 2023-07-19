@@ -126,7 +126,6 @@ export const deleteOrder = (id) => async (dispatch, getState) => {
 };
 
 export const setDelivered = (id) => async (dispatch, getState) => {
-  console.log(id);
   dispatch(setLoading(true));
 
   const {

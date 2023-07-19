@@ -19,11 +19,11 @@ export const login = (name, password) => async (dispatch) => {
     localStorage.removeItem("orders");
     localStorage.removeItem("allergies");
     localStorage.removeItem("customerInfo");
+    localStorage.removeItem("recommendations");
     localStorage.setItem("userInfo", JSON.stringify(data));
     localStorage.setItem("customerId", JSON.stringify(customerId));
 
     socket.emit("user/connected", name);
-    await axios.get("/api/data");
   } catch (error) {
     dispatch(
       setError(
@@ -44,7 +44,7 @@ export const logout = () => (dispatch) => {
 
 export const register = (name, password, qrCodeData) => async (dispatch) => {
   dispatch(setLoading(true));
-  console.log(qrCodeData);
+
   try {
     const config = {
       headers: {
@@ -88,6 +88,25 @@ export const getUserOrders = () => async (dispatch, getState) => {
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message || "An unexpected error has occurred. Please try again later."
+      )
+    );
+  }
+};
+
+export const getRecommendationsForCustomer = () => async (dispatch) => {
+  setLoading(true);
+
+  try {
+    const recommendations = await axios.get("/api/data");
+    localStorage.setItem("recommendations", JSON.stringify(recommendations));
+  } catch (error) {
+    dispatch(
+      setError(
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+          ? error.message
+          : "Something unexpected happened!!"
       )
     );
   }

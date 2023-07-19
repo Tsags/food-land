@@ -43,7 +43,7 @@ const ProductTableItem = ({ product }) => {
   const [selectedFeatures, setSelectedFeature] = useState("");
   const [selectedAllergy, setSelectedAllergy] = useState("");
   const dispatch = useDispatch();
-console.log(selectedFeatures)
+
   const onSaveProduct = () => {
     dispatch(
       updateProduct(name, category, stock, price, product._id, productIsNew, description, image, allergies, features)

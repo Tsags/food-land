@@ -1,10 +1,62 @@
 import mongoose from "mongoose";
+import { faker } from "@faker-js/faker";
 import CustomerModel from "./models/Customer.js";
 import ProductModel from "./models/Product.js";
 import cosineSimilarity from "compute-cosine-similarity";
 
 const Customer = mongoose.model("Customer", CustomerModel.CustomerSchema);
 const Product = mongoose.model("Product", ProductModel.ProductSchema);
+
+async function populateCustomerData(products) {
+  try {
+    // Connect to your MongoDB database
+
+    // Retrieve data from the Product model
+
+    // Generate random data for the customerSchema
+    const customerData = [];
+    const numCustomers = 10; // Change this as per your requirement
+
+    for (let i = 0; i < numCustomers; i++) {
+      const customer = {
+        customerId: faker.string.uuid(),
+        allergies: faker.helpers.arrayElements(
+          ["Fish", "Wheat", "Nuts", "Shellfish", "Milk", "Eggs"],
+          { min: 0, max: 4 }
+        ),
+        session: [
+          {
+            table: faker.helpers.arrayElement(["Table1", "Table2", "Table3"]),
+            items: faker.helpers.arrayElements(
+              products.map((product) => product.name),
+              { min: 1, max: 6 }
+            ),
+            otherCustomers: [
+              {
+                otherCustomerId: faker.string.uuid(),
+                otherCustomerItems: faker.helpers.arrayElements(
+                  products.map((product) => product.name),
+                  { min: 0, max: 3 }
+                ),
+              },
+            ],
+          },
+        ],
+        isPresent: faker.datatype.boolean(),
+      };
+      customerData.push(customer);
+    }
+
+    // Populate the Customer model with generated data
+    await Customer.insertMany(customerData);
+
+    console.log("Data successfully populated.");
+
+    // Disconnect from the database
+  } catch (error) {
+    console.error("Error populating data:", error);
+  }
+}
 
 async function retrieveCustomersData() {
   try {
@@ -16,10 +68,10 @@ async function retrieveCustomersData() {
   }
 }
 
-async function retrieveProductsData() {
+export async function retrieveProductsData() {
   try {
     const products = await Product.find().lean();
-
+    // populateCustomerData(products);
     return products;
   } catch (error) {
     console.error("Error retrieving products data:", error);
@@ -77,27 +129,53 @@ function calculateSimilarity(customers, products) {
       const vector2 = Object.values(matrix[customerId2]);
 
       const similarity = cosineSimilarity(vector1, vector2);
+
       similarityMatrix[customerId1][customerId2] = similarity;
+
+      function sortByValueDescending(obj) {
+        return Object.entries(obj)
+          .sort(([, a], [, b]) => b - a)
+          .reduce((sortedObj, [key, value]) => {
+            sortedObj[key] = value;
+            return sortedObj;
+          }, {});
+      }
+      Object.keys(similarityMatrix).forEach((customerId1) => {
+        similarityMatrix[customerId1] = sortByValueDescending(
+          similarityMatrix[customerId1]
+        );
+      });
     });
   });
 
   return similarityMatrix;
 }
 
-function findSimilarCustomers(targetCustomerId, similarityMatrix, threshold = 0.5) {
+function findSimilarCustomers(
+  targetCustomerId,
+  similarityMatrix,
+  threshold = 0.5
+) {
   const similarCustomers = [];
 
-  Object.entries(similarityMatrix[targetCustomerId]).forEach(([otherCustomerId, similarity]) => {
-    if (otherCustomerId !== targetCustomerId && similarity >= threshold) {
-      similarCustomers.push(otherCustomerId);
+  Object.entries(similarityMatrix[targetCustomerId]).forEach(
+    ([otherCustomerId, similarity]) => {
+      if (otherCustomerId !== targetCustomerId && similarity >= threshold) {
+        similarCustomers.push(otherCustomerId);
+      }
     }
-  });
+  );
 
   return similarCustomers;
 }
 
 // Generate item recommendations for a target customer
-function generateRecommendations(targetCustomer, similarCustomers, customers, products) {
+function generateRecommendations(
+  targetCustomer,
+  similarCustomers,
+  customers,
+  products
+) {
   const recommendations = {};
   const itemsTaken = [];
   const targetCustomerAllergies = targetCustomer.allergies;
@@ -121,26 +199,36 @@ function generateRecommendations(targetCustomer, similarCustomers, customers, pr
   });
 
   // Sort recommendations based on the number of similar customers who have taken the item
-  const sortedRecommendations = Object.entries(recommendations).sort((a, b) => b[1] - a[1]);
+  const sortedRecommendations = Object.entries(recommendations).sort(
+    (a, b) => b[1] - a[1]
+  );
   // return sortedRecommendations.map((entry) => entry[0]);
 
-  const recommendationsCollab = sortedRecommendations.filter(([productName]) => {
-    // Exclude recommendations with zero similarity score
+  const recommendationsCollab = sortedRecommendations.filter(
+    ([productName]) => {
+      // Exclude recommendations with zero similarity score
 
-    // Exclude recommendations that contain any of the customer's allergies
-    const productAllergies = products.find((product) => product.name === productName).allergies;
+      // Exclude recommendations that contain any of the customer's allergies
+      const productAllergies = products.find(
+        (product) => product.name === productName
+      ).allergies;
 
-    if (productAllergies.some((allergy) => targetCustomerAllergies.includes(allergy))) {
-      return false;
+      if (
+        productAllergies.some((allergy) =>
+          targetCustomerAllergies.includes(allergy)
+        )
+      ) {
+        return false;
+      }
+
+      // Exclude recommendations that are in itemsTaken
+      // if (itemsTaken.includes(productName)) {
+      //   return false;
+      // }
+
+      return true;
     }
-
-    // Exclude recommendations that are in itemsTaken
-    // if (itemsTaken.includes(productName)) {
-    //   return false;
-    // }
-
-    return true;
-  });
+  );
   // console.log(recommendationsCollab);
   return recommendationsCollab;
 }
@@ -151,9 +239,14 @@ async function collaborativeFiltering(targetCustomerId) {
     const products = await retrieveProductsData();
     const similarityMatrix = calculateSimilarity(customers, products);
     // const targetCustomerId = "f953cff8edb5dc9ec71b141713f3a6e9e3655ec1e469f0cd111fd1e805974ad2";
-    const targetCustomer = customers.find((c) => c.customerId === targetCustomerId);
+    const targetCustomer = customers.find(
+      (c) => c.customerId === targetCustomerId
+    );
 
-    const similarCustomers = findSimilarCustomers(targetCustomerId, similarityMatrix);
+    const similarCustomers = findSimilarCustomers(
+      targetCustomerId,
+      similarityMatrix
+    );
     const collaborativeRecommendations = generateRecommendations(
       targetCustomer,
       similarCustomers,
@@ -195,8 +288,12 @@ async function similarityCalculation(customers, products) {
     };
     for (const product of products) {
       const productFeatures = product.features;
-      const commonFeatures = customerFeatures.filter((feature) => productFeatures.includes(feature));
-      const totalFeatures = [...new Set([...customerFeatures, ...productFeatures])];
+      const commonFeatures = customerFeatures.filter((feature) =>
+        productFeatures.includes(feature)
+      );
+      const totalFeatures = [
+        ...new Set([...customerFeatures, ...productFeatures]),
+      ];
 
       // Jaccard similarity coefficient
       const similarity = commonFeatures.length / totalFeatures.length;
@@ -209,10 +306,19 @@ async function similarityCalculation(customers, products) {
   return customerPreferences;
 }
 
-function getRecommendationsForCustomer(customerPreferences, targetCustomerId, products, customers) {
+function getRecommendationsForCustomer(
+  customerPreferences,
+  targetCustomerId,
+  products,
+  customers
+) {
   // Find the target customer's preferences
-  const targetCustomerPreferences = customerPreferences.find((customer) => customer.customerId === targetCustomerId);
-  const targetCustomer = customers.find((c) => c.customerId === targetCustomerId);
+  const targetCustomerPreferences = customerPreferences.find(
+    (customer) => customer.customerId === targetCustomerId
+  );
+  const targetCustomer = customers.find(
+    (c) => c.customerId === targetCustomerId
+  );
 
   const targetCustomerAllergies = targetCustomer.allergies;
   const itemsTaken = [];
@@ -227,28 +333,37 @@ function getRecommendationsForCustomer(customerPreferences, targetCustomerId, pr
   }
 
   // Sort the preferences by similarity in descending order
-  const sortedPreferences = Object.entries(targetCustomerPreferences.preferences).sort((a, b) => b[1] - a[1]);
-
+  const sortedPreferences = Object.entries(
+    targetCustomerPreferences.preferences
+  ).sort((a, b) => b[1] - a[1]);
   // Get the top N recommendations
-  const recommendations = sortedPreferences.filter(([productName, similarity]) => {
-    // Exclude recommendations with zero similarity score
-    if (similarity === 0) {
-      return false;
-    }
+  const recommendations = sortedPreferences.filter(
+    ([productName, similarity]) => {
+      // Exclude recommendations with zero similarity score
+      if (similarity === 0) {
+        return false;
+      }
 
-    // Exclude recommendations that contain any of the customer's allergies
-    const productAllergies = products.find((product) => product.name === productName).allergies;
-    if (productAllergies.some((allergy) => targetCustomerAllergies.includes(allergy))) {
-      return false;
-    }
+      // Exclude recommendations that contain any of the customer's allergies
+      const productAllergies = products.find(
+        (product) => product.name === productName
+      ).allergies;
+      if (
+        productAllergies.some((allergy) =>
+          targetCustomerAllergies.includes(allergy)
+        )
+      ) {
+        return false;
+      }
 
-    // Exclude recommendations that are in itemsTaken
-    if (itemsTaken.includes(productName)) {
-      return false;
-    }
+      // Exclude recommendations that are in itemsTaken
+      if (itemsTaken.includes(productName)) {
+        return false;
+      }
 
-    return true;
-  });
+      return true;
+    }
+  );
 
   return recommendations;
 }
@@ -257,7 +372,10 @@ async function contentBasedFiltering(targetCustomerId) {
   try {
     const customers = await retrieveCustomersData();
     const products = await retrieveProductsData();
-    const customerPreferences = await similarityCalculation(customers, products);
+    const customerPreferences = await similarityCalculation(
+      customers,
+      products
+    );
     // const targetCustomerId = "f953cff8edb5dc9ec71b141713f3a6e9e3655ec1e469f0cd111fd1e805974ad2";
     const contentBasedRecommendations = getRecommendationsForCustomer(
       customerPreferences,
@@ -279,11 +397,11 @@ export async function hybridFiltering(targetCustomerId) {
 
     const intersection = results1.filter((value) => results2.includes(value));
 
-    console.log(intersection);
+    // console.log(intersection);
 
     const union = Array.from(new Set(results1.concat(results2)));
 
-    console.log(union);
+    return union;
   } catch (error) {
     console.error("Error running Hybrid filtering:", error);
   }
