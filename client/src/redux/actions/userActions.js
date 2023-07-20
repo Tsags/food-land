@@ -97,8 +97,9 @@ export const getRecommendationsForCustomer = () => async (dispatch) => {
   setLoading(true);
 
   try {
-    const recommendations = await axios.get("/api/data");
-    localStorage.setItem("recommendations", JSON.stringify(recommendations));
+    const { data } = await axios.get("/api/data");
+    console.log(data);
+    localStorage.setItem("recommendations", JSON.stringify(data));
   } catch (error) {
     dispatch(
       setError(

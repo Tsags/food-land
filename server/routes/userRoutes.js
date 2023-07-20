@@ -65,7 +65,7 @@ const loginUser = asyncHandler(async (req, res) => {
           latestSession &&
           latestSession.table === name &&
           Date.now() - latestSession.createdAt.getTime() <= 6 * 60 * 60 * 1000; // 6 ωρες
-        console.log(Date.now() - latestSession.createdAt.getTime());
+        // console.log(Date.now() - latestSession.createdAt.getTime());
         if (!sessionExists) {
           // Create a new session object in the session array
           customer.session.push({ table: name, items: [], otherCustomers: [] });

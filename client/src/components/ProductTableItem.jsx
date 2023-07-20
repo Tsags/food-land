@@ -103,9 +103,8 @@ const ProductTableItem = ({ product }) => {
                 Select an option
               </option>
               <option value="Nuts">Nuts</option>
-              <option value="Wheat">Wheat</option>
-              <option value="Milk">Milk</option>
-              <option value="Eggs">Eggs</option>
+              <option value="Gluten">Gluten</option>
+              <option value="Dairy">Dairy</option>
               <option value="Fish">Fish</option>
               <option value="Shellfish">Shellfish</option>
             </Select>

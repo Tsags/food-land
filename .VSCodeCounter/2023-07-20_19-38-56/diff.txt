@@ -1,0 +1,66 @@
+Date : 2023-07-20 19:38:56
+Directory : c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client
+Total : 30 files,  20470 codes, 41 comments, 119 blanks, all 20630 lines
+
+Languages
++----------------+------------+------------+------------+------------+------------+
+| language       | files      | code       | comment    | blank      | total      |
++----------------+------------+------------+------------+------------+------------+
+| JSON           |          3 |     19,752 |          0 |          3 |     19,755 |
+| JavaScript JSX |         18 |        549 |         28 |         52 |        629 |
+| JavaScript     |          7 |        115 |         13 |         28 |        156 |
+| Markdown       |          1 |         38 |          0 |         33 |         71 |
+| HTML           |          1 |         16 |          0 |          3 |         19 |
++----------------+------------+------------+------------+------------+------------+
+
+Directories
++----------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                         | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                            |         30 |     20,470 |         41 |        119 |     20,630 |
+| . (Files)                                                                                    |          3 |     19,775 |          0 |         35 |     19,810 |
+| public                                                                                       |          2 |         31 |          0 |          4 |         35 |
+| src                                                                                          |         25 |        664 |         41 |         80 |        785 |
+| src\components                                                                               |         11 |        463 |         27 |         45 |        535 |
+| src\redux                                                                                    |          7 |        115 |         13 |         28 |        156 |
+| src\redux\actions                                                                            |          4 |         80 |         -1 |         19 |         98 |
+| src\redux\slices                                                                             |          3 |         35 |         14 |          9 |         58 |
+| src\screens                                                                                  |          7 |         86 |          1 |          7 |         94 |
++----------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++----------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
+| filename                                                                                     | language       | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\README.md                               | Markdown       |         38 |          0 |         33 |         71 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\package-lock.json                       | JSON           |     19,676 |          0 |          1 |     19,677 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\package.json                            | JSON           |         61 |          0 |          1 |         62 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\public\index.html                       | HTML           |         16 |          0 |          3 |         19 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\public\manifest.json                    | JSON           |         15 |          0 |          1 |         16 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\components\AddNewProduct.jsx        | JavaScript JSX |         48 |          0 |          2 |         50 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\components\Allergies.jsx            | JavaScript JSX |          3 |          0 |          0 |          3 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\components\AnalyticsTab.jsx         | JavaScript JSX |        171 |         22 |         28 |        221 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\components\CheckoutOrderSummary.jsx | JavaScript JSX |         20 |          0 |          0 |         20 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\components\CompletedOrdersTab.jsx   | JavaScript JSX |         46 |          0 |          3 |         49 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\components\Navbar.jsx               | JavaScript JSX |          2 |          0 |          0 |          2 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\components\OrderDetails.jsx         | JavaScript JSX |         44 |          5 |          6 |         55 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\components\OrderHistoryTab.jsx      | JavaScript JSX |         62 |          0 |          5 |         67 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\components\OrdersTab.jsx            | JavaScript JSX |         10 |          0 |          0 |         10 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\components\ProductTableItem.jsx     | JavaScript JSX |         56 |          0 |          1 |         57 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\components\ProductsTab.jsx          | JavaScript JSX |          1 |          0 |          0 |          1 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\redux\actions\adminActions.js       | JavaScript     |         59 |         -1 |          9 |         67 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\redux\actions\cartActions.js        | JavaScript     |          3 |          0 |          2 |          5 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\redux\actions\orderActions.js       | JavaScript     |         -2 |          0 |          2 |          0 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\redux\actions\userActions.js        | JavaScript     |         20 |          0 |          6 |         26 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\redux\slices\admin.js               | JavaScript     |         32 |          0 |          3 |         35 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\redux\slices\cart.js                | JavaScript     |          4 |         14 |          6 |         24 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\redux\slices\user.js                | JavaScript     |         -1 |          0 |          0 |         -1 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\screens\AdminScreen.jsx             | JavaScript JSX |         -1 |          0 |          1 |          0 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\screens\CartScreen.jsx              | JavaScript JSX |         -1 |          0 |          1 |          0 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\screens\LandingScreen.jsx           | JavaScript JSX |         -1 |          0 |          1 |          0 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\screens\LoginScreen.jsx             | JavaScript JSX |          4 |          0 |          0 |          4 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\screens\ProductsScreen.jsx          | JavaScript JSX |          2 |          0 |          0 |          2 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\screens\RequestsScreen.jsx          | JavaScript JSX |         48 |          1 |          4 |         53 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\screens\ServicesScreen.jsx          | JavaScript JSX |         35 |          0 |          0 |         35 |
+| Total                                                                                        |                |     20,470 |         41 |        119 |     20,630 |
++----------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+

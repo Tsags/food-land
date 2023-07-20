@@ -62,6 +62,7 @@ const moveOrder = asyncHandler(async (req, res) => {
 
 const getOrders = async (req, res) => {
   const orders = await CompletedOrder.find({});
+
   res.json(orders);
 };
 

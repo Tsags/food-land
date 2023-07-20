@@ -14,7 +14,7 @@ import completedOrderRoutes from "./routes/completedOrderRoutes.js";
 import customerRoutes from "./routes/customerRoutes.js";
 
 import { hybridFiltering, retrieveProductsData } from "./recommendation.js";
-
+import { generateCompletedOrders, populateCustomerData } from "./populationScripts.js";
 dotenv.config();
 connectToDatabase();
 const app = express();
@@ -31,18 +31,23 @@ app.use("/api/uploads", uploadRoutes);
 app.use("/api/completedOrders", completedOrderRoutes);
 app.use("/api/customers", customerRoutes);
 
-// app.get("/api/data", (req, res) => {
-// const targetCustomerId = req.cookies.customerId;
-// const targetCustomerId = "cac34352-8936-435f-aa32-f0f0df193776";
-// const recommendations = await hybridFiltering(targetCustomerId);
-// const products = await retrieveProductsData();
-// const recommendedProducts = products.filter((product) =>
-//   recommendations.includes(product.name)
-// );
-// console.log(recommendedProducts);
-// res.json(recommendations);
-// });
-
+app.get("/api/data", (req, res) => {
+  if (req.cookies.customerId) {
+    const targetCustomerId = req.cookies.customerId;
+    (async () => {
+      try {
+        const recommendations = await hybridFiltering(targetCustomerId);
+        // console.log(recommendations);
+        const products = await retrieveProductsData();
+        const recommendedProducts = products.filter((product) => recommendations.includes(product.name));
+        res.json(recommendedProducts);
+      } catch (error) {}
+      // console.log(recommendedProducts);
+    })();
+  }
+});
+// generateCompletedOrders();
+// populateCustomerData();
 const expressServer = app.listen(port, () => {
   console.log(`Server runs on port ${port}.`);
 });

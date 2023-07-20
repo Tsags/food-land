@@ -1,0 +1,32 @@
+"filename", "language", "JavaScript JSX", "JavaScript", "JSON", "HTML", "Markdown", "comment", "blank", "total"
+"c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\README.md", "Markdown", 0, 0, 0, 0, 38, 0, 33, 71
+"c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\package-lock.json", "JSON", 0, 0, 19676, 0, 0, 0, 1, 19677
+"c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\package.json", "JSON", 0, 0, 61, 0, 0, 0, 1, 62
+"c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\public\index.html", "HTML", 0, 0, 0, 16, 0, 0, 3, 19
+"c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\public\manifest.json", "JSON", 0, 0, 15, 0, 0, 0, 1, 16
+"c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\components\AddNewProduct.jsx", "JavaScript JSX", 48, 0, 0, 0, 0, 0, 2, 50
+"c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\components\Allergies.jsx", "JavaScript JSX", 3, 0, 0, 0, 0, 0, 0, 3
+"c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\components\AnalyticsTab.jsx", "JavaScript JSX", 171, 0, 0, 0, 0, 22, 28, 221
+"c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\components\CheckoutOrderSummary.jsx", "JavaScript JSX", 20, 0, 0, 0, 0, 0, 0, 20
+"c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\components\CompletedOrdersTab.jsx", "JavaScript JSX", 46, 0, 0, 0, 0, 0, 3, 49
+"c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\components\Navbar.jsx", "JavaScript JSX", 2, 0, 0, 0, 0, 0, 0, 2
+"c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\components\OrderDetails.jsx", "JavaScript JSX", 44, 0, 0, 0, 0, 5, 6, 55
+"c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\components\OrderHistoryTab.jsx", "JavaScript JSX", 62, 0, 0, 0, 0, 0, 5, 67
+"c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\components\OrdersTab.jsx", "JavaScript JSX", 10, 0, 0, 0, 0, 0, 0, 10
+"c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\components\ProductTableItem.jsx", "JavaScript JSX", 56, 0, 0, 0, 0, 0, 1, 57
+"c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\components\ProductsTab.jsx", "JavaScript JSX", 1, 0, 0, 0, 0, 0, 0, 1
+"c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\redux\actions\adminActions.js", "JavaScript", 0, 59, 0, 0, 0, -1, 9, 67
+"c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\redux\actions\cartActions.js", "JavaScript", 0, 3, 0, 0, 0, 0, 2, 5
+"c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\redux\actions\orderActions.js", "JavaScript", 0, -2, 0, 0, 0, 0, 2, 0
+"c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\redux\actions\userActions.js", "JavaScript", 0, 20, 0, 0, 0, 0, 6, 26
+"c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\redux\slices\admin.js", "JavaScript", 0, 32, 0, 0, 0, 0, 3, 35
+"c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\redux\slices\cart.js", "JavaScript", 0, 4, 0, 0, 0, 14, 6, 24
+"c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\redux\slices\user.js", "JavaScript", 0, -1, 0, 0, 0, 0, 0, -1
+"c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\screens\AdminScreen.jsx", "JavaScript JSX", -1, 0, 0, 0, 0, 0, 1, 0
+"c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\screens\CartScreen.jsx", "JavaScript JSX", -1, 0, 0, 0, 0, 0, 1, 0
+"c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\screens\LandingScreen.jsx", "JavaScript JSX", -1, 0, 0, 0, 0, 0, 1, 0
+"c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\screens\LoginScreen.jsx", "JavaScript JSX", 4, 0, 0, 0, 0, 0, 0, 4
+"c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\screens\ProductsScreen.jsx", "JavaScript JSX", 2, 0, 0, 0, 0, 0, 0, 2
+"c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\screens\RequestsScreen.jsx", "JavaScript JSX", 48, 0, 0, 0, 0, 1, 4, 53
+"c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\client\src\screens\ServicesScreen.jsx", "JavaScript JSX", 35, 0, 0, 0, 0, 0, 0, 35
+"Total", "-", 549, 115, 19752, 16, 38, 41, 119, 20630

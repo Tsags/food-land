@@ -14,11 +14,17 @@ import {
 import { FaArrowRight } from "react-icons/fa";
 import { Link as ReactLink } from "react-router-dom";
 import { MdFastfood } from "react-icons/md";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
 import Allergies from "../components/Allergies";
+import { getRecommendationsForCustomer } from "../redux/actions/userActions";
 
 export const LandingScreen = () => {
+  const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user.userInfo);
+  useEffect(() => {
+    dispatch(getRecommendationsForCustomer());
+  }, [dispatch]);
 
   return (
     <Box maxW="8xl" mx="auto" px={{ base: "0", lg: "12" }} py={{ base: "0", lg: "12" }} minH="5xl" mt="5">
