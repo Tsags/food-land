@@ -24,6 +24,7 @@ export const login = (name, password) => async (dispatch) => {
     localStorage.setItem("customerId", JSON.stringify(customerId));
 
     socket.emit("user/connected", name);
+    dispatch(getRecommendationsForCustomer());
   } catch (error) {
     dispatch(
       setError(

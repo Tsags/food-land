@@ -16,47 +16,36 @@ const User = mongoose.model("User", UserModel.UserSchema);
 
 export async function generateCompletedOrders() {
   try {
-    // Get all customers and products
     const customers = await Customer.find();
     const products = await Product.find();
     const users = await User.find();
-    // Generate a random timestamp
     function getRandomDateWithTime() {
-      // Get a random number of days between 1 and 365 (for simplicity, assuming each year has 365 days)
       const randomDays = Math.floor(Math.random() * 365) + 1;
-
-      // Get the current date and time
       const currentDate = new Date();
-
-      // Calculate the random date by adding the random number of days to the current date
       const randomDate = new Date(currentDate.getTime() + randomDays * 24 * 60 * 60 * 1000);
-
-      // Generate a random hour between 8 and 23 (11 PM in 24-hour format)
       const randomHour = Math.floor(Math.random() * (23 - 8 + 1)) + 8;
-
-      // Set the random time to the generated date
       randomDate.setHours(randomHour, 0, 0, 0);
 
       return randomDate;
     }
-    // Example usage:
 
     // Create completed orders
-    const numOrders = 100; // Adjust the number of orders you want to generate
+    const numOrders = 60;
     for (let i = 0; i < numOrders; i++) {
       const randomUser = faker.helpers.arrayElement(users);
       const randomCustomer = faker.helpers.arrayElement(customers);
+      const customerId = [randomCustomer.customerId];
       const orderItems = [];
-      const numItems = faker.number.int({ min: 1, max: 6 }); // Random number of items per order
+      const numItems = faker.number.int({ min: 1, max: 6 });
       for (let j = 0; j < numItems; j++) {
         const randomProduct = faker.helpers.arrayElement(products);
         orderItems.push({
           name: randomProduct.name,
-          qty: faker.number.int({ min: 1, max: 3 }), // Random quantity per item
+          qty: faker.number.int({ min: 1, max: 3 }),
           image: randomProduct.image,
           price: randomProduct.price,
-          customerId: faker.helpers.arrayElement(randomCustomer.customerId), // Assuming the customer ID is stored in _id field
-          id: randomProduct._id, // Assuming the product ID is stored in _id field
+          customerId: customerId,
+          id: randomProduct._id,
         });
       }
 
@@ -89,16 +78,12 @@ export async function populateCustomerData() {
     const products = await Product.find();
     const users = await User.find();
     const customerData = [];
-    const numCustomers = 30; // Change this as per your requirement
+    const numCustomers = 40; // Change this as per your requirement
     const randomUser = faker.helpers.arrayElement(users);
     for (let i = 0; i < numCustomers; i++) {
       const customer = {
         customerId: faker.string.uuid(),
         allergies: faker.helpers.arrayElements(["Fish", "Gluten", "Nuts", "Shellfish", "Dairy"], { min: 0, max: 2 }),
-        // allergies: faker.helpers.arrayElements(["Fish", "Gluten", "Nuts", "Shellfish", "Dairy"], {
-        //   min: 0,
-        //   max: 2,
-        // }),
         session: [
           {
             table: faker.helpers.arrayElement(randomUser.name),

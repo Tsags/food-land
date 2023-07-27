@@ -18,7 +18,8 @@ import {
 import ProductCard from "../components/ProductCard";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../redux/actions/productActions";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import Recommendations from "../components/Recommendations";
 
 const ProductsScreen = () => {
   const dispatch = useDispatch();
@@ -28,7 +29,7 @@ const ProductsScreen = () => {
   const uniqueCategories = [...new Set(products.map((product) => product.category))].sort((a, b) => {
     return customOrder.indexOf(a) - customOrder.indexOf(b);
   });
-
+  const [showModal, setShowModal] = useState(false);
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
@@ -36,6 +37,14 @@ const ProductsScreen = () => {
   function CapitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
+
+  useEffect(() => {
+    setShowModal(true);
+  }, []);
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
 
   return (
     <Wrap spacing="30px" justify="center" minHeight="79vh">
@@ -50,6 +59,7 @@ const ProductsScreen = () => {
         </Alert>
       ) : (
         <Box width="100%">
+          <Recommendations isOpen={showModal} onClose={closeModal} />
           <Tabs variant="soft-rounded" isFitted scrollbuttons="auto" size={{ base: "lg", md: "md" }}>
             <TabList
               overflowX="auto"

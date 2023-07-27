@@ -40,9 +40,9 @@ const loginUser = asyncHandler(async (req, res) => {
       const customerId = generateHash(fingerprint);
 
       res.cookie("customerId", customerId, {
-        expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // Cookie expiration (30 days)
-        httpOnly: true, // Make the cookie inaccessible from JavaScript
-        secure: true, // Serve the cookie only over HTTPS if your application uses SSL/TLS
+        expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+        httpOnly: true,
+        secure: true,
       });
 
       // Create a new customer entry

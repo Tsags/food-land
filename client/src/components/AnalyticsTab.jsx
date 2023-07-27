@@ -58,15 +58,7 @@ const AnalyticsTab = ({ completedOrders }) => {
     const dayOfWeek2 = createdAtDate.getDay();
 
     // For better chart visualization, you can convert the dayOfWeek to its name
-    const daysOfWeekNames = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
+    const daysOfWeekNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const dayName = daysOfWeekNames[dayOfWeek2];
 
     if (ordersPerDay[dayName]) {
@@ -77,18 +69,8 @@ const AnalyticsTab = ({ completedOrders }) => {
   });
 
   // Sort the days of the week in chronological order
-  const daysOfWeek2 = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday",
-  ];
-  const sortedDaysOfWeek = Object.keys(ordersPerDay).sort(
-    (a, b) => daysOfWeek2.indexOf(a) - daysOfWeek2.indexOf(b)
-  );
+  const daysOfWeek2 = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  const sortedDaysOfWeek = Object.keys(ordersPerDay).sort((a, b) => daysOfWeek2.indexOf(a) - daysOfWeek2.indexOf(b));
 
   const orderCounts = sortedDaysOfWeek.map((day) => ordersPerDay[day]);
 
@@ -126,23 +108,13 @@ const AnalyticsTab = ({ completedOrders }) => {
   //----------------------------------------------------CHART 3
   //-------------------------------------------------------------------------------------------------------------------------------------------------------------------
   // console.log(ordersPerDay);
-  const daysOfWeek = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday",
-  ];
+  const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
   const HoursOfDay = Array.from({ length: 24 }, (_, index) => {
     const hour = (index + 7) % 24;
     return hour < 12 ? `${hour} AM` : hour === 12 ? `12 PM` : `${hour - 12} PM`;
   });
 
-  const ordersPerDayandHour = Array.from({ length: 7 }, () =>
-    Array.from({ length: 24 }, () => 0)
-  );
+  const ordersPerDayandHour = Array.from({ length: 7 }, () => Array.from({ length: 24 }, () => 0));
 
   completedOrders.forEach((order) => {
     const createdAtDate = new Date(order.createdAt);
@@ -187,18 +159,8 @@ const AnalyticsTab = ({ completedOrders }) => {
   return (
     <Box>
       <Flex id="chart" justifyContent="space-between">
-        <ReactApexChart
-          options={options}
-          series={series}
-          type="pie"
-          width={580}
-        />
-        <ReactApexChart
-          options={options2}
-          series={series2}
-          type="bar"
-          width={580}
-        />
+        <ReactApexChart options={options} series={series} type="pie" width={580} />
+        <ReactApexChart options={options2} series={series2} type="bar" width={580} />
       </Flex>
       <Tabs index={selectedTab} onChange={handleChangeTab}>
         <TabList>
@@ -207,12 +169,7 @@ const AnalyticsTab = ({ completedOrders }) => {
           ))}
         </TabList>
       </Tabs>
-      <ReactApexChart
-        options={options3}
-        series={series3}
-        type="line"
-        height={350}
-      />
+      <ReactApexChart options={options3} series={series3} type="line" height={350} />
     </Box>
   );
 };

@@ -129,13 +129,13 @@ const OrderDetails = ({ orders, user, orderRemoval, deliveredFlag, orderSetCompl
                                   <span>
                                     {item.qty} x {item.name}
                                   </span>
-                                  <Checkbox
+                                  {/* <Checkbox
                                     colorScheme="green"
                                     ml={2}
                                     onChange={() => handleCheckboxClick(order._id, item.id)}
                                     isChecked={item.isDelivered}
                                     isDisabled={item.isDelivered}
-                                  />
+                                  /> */}
                                 </ListItem>
                               </UnorderedList>
                             ))}

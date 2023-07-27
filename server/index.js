@@ -36,11 +36,16 @@ app.get("/api/data", (req, res) => {
     const targetCustomerId = req.cookies.customerId;
     (async () => {
       try {
+        const empty = [];
         const recommendations = await hybridFiltering(targetCustomerId);
         // console.log(recommendations);
         const products = await retrieveProductsData();
-        const recommendedProducts = products.filter((product) => recommendations.includes(product.name));
-        res.json(recommendedProducts);
+        if (recommendations !== null) {
+          const recommendedProducts = products.filter((product) => recommendations.includes(product.name));
+          res.json(recommendedProducts);
+        } else {
+          res.json(empty);
+        }
       } catch (error) {}
       // console.log(recommendedProducts);
     })();

@@ -101,7 +101,7 @@ const UsersTab = () => {
                           onClick={() => openDeleteConfirmBox(user)}
                         >
                           <DeleteIcon mr="5px" />
-                          Remove User
+                          Remove Table
                         </Button>
                       </Td>
                       <Td>

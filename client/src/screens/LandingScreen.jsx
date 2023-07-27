@@ -15,17 +15,16 @@ import { FaArrowRight } from "react-icons/fa";
 import { Link as ReactLink } from "react-router-dom";
 import { MdFastfood } from "react-icons/md";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Allergies from "../components/Allergies";
-import { getRecommendationsForCustomer } from "../redux/actions/userActions";
+
+
 
 export const LandingScreen = () => {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user.userInfo);
-  useEffect(() => {
-    dispatch(getRecommendationsForCustomer());
-  }, [dispatch]);
-
+  
+ 
   return (
     <Box maxW="8xl" mx="auto" px={{ base: "0", lg: "12" }} py={{ base: "0", lg: "12" }} minH="5xl" mt="5">
       <Stack direction={{ base: "column-reverse", lg: "row" }} spacing={{ base: "0", lg: "20" }}>
@@ -33,7 +32,10 @@ export const LandingScreen = () => {
           <Box
             width={{ lg: "sm" }}
             transform={{ base: "translateY(-50%)", lg: "none" }}
-            bg={{ base: useColorModeValue("red.50", "gray.700"), lg: "transparent" }}
+            bg={{
+              base: useColorModeValue("red.50", "gray.700"),
+              lg: "transparent",
+            }}
             mx={{ base: "10", md: "8", lg: "0" }}
             my={{ base: "20", md: "0", lg: "0" }}
             px={{ base: "5", md: "8", lg: "0" }}
@@ -47,6 +49,9 @@ export const LandingScreen = () => {
                     FoodLand
                   </Text>
                 </Flex>
+                <Box>
+                
+                </Box>
                 <Heading size="xl" fontWeight="normal">
                   Trust your palate.
                 </Heading>

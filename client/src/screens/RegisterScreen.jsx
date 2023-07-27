@@ -1,4 +1,4 @@
-import { useState} from "react";
+import { useState } from "react";
 import {
   Flex,
   Box,
@@ -40,7 +40,8 @@ function RegisterScreen() {
 
   const handleRegister = async (values) => {
     try {
-      const randomPassword = randomstring.generate(10);
+      const randomPassword = "123";
+      // randomstring.generate(10);
       const url = `http://192.168.68.52:3000/login?username=${values.name}&password=${randomPassword}`;
       const qrCodeInfo = await QRCode.toDataURL(url);
       setQRCodeData(qrCodeInfo);

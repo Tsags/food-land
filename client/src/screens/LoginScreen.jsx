@@ -22,8 +22,8 @@ import TextField from "../components/TextField";
 import PasswordTextField from "../components/PasswordTextField";
 import { login } from "../redux/actions/userActions";
 import { fetchCart } from "../redux/actions/cartActions";
-import axios from "axios";
 import { getAllOrders } from "../redux/actions/adminActions";
+import { getRecommendationsForCustomer } from "../redux/actions/userActions";
 
 //TODO: redefine password length
 const LoginScreen = () => {
@@ -58,6 +58,7 @@ const LoginScreen = () => {
           dispatch(getAllOrders());
         }
         dispatch(fetchCart());
+        dispatch(getRecommendationsForCustomer());
         navigate("/");
       }
       // window.location.reload();

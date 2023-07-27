@@ -113,7 +113,10 @@ function findSimilarCustomers(targetCustomerId, similarityMatrix, threshold = 0.
 function generateRecommendations(targetCustomer, similarCustomers, customers, products) {
   const recommendations = {};
   const itemsTaken = [];
-  const targetCustomerAllergies = targetCustomer.allergies;
+  let targetCustomerAllergies = [];
+  if (targetCustomer.allergies.length > 0) {
+    targetCustomerAllergies = targetCustomer.allergies;
+  }
 
   targetCustomer.session.forEach((session) => {
     itemsTaken.push(...session.items);
@@ -226,8 +229,10 @@ function getRecommendationsForCustomer(customerPreferences, targetCustomerId, pr
   // Find the target customer's preferences
   const targetCustomerPreferences = customerPreferences.find((customer) => customer.customerId === targetCustomerId);
   const targetCustomer = customers.find((c) => c.customerId === targetCustomerId);
-
-  const targetCustomerAllergies = targetCustomer.allergies;
+  let targetCustomerAllergies = [];
+  if (targetCustomer.allergies.length > 0) {
+    targetCustomerAllergies = targetCustomer.allergies;
+  }
   const itemsTaken = [];
   targetCustomer.session.forEach((session) => {
     const sessionItems = session.items;
@@ -261,7 +266,7 @@ function getRecommendationsForCustomer(customerPreferences, targetCustomerId, pr
 
     return true;
   });
-
+  console.log(recommendations);
   return recommendations;
 }
 
@@ -289,13 +294,14 @@ export async function hybridFiltering(targetCustomerId) {
     const results1 = await collaborativeFiltering(targetCustomerId);
     const results2 = await contentBasedFiltering(targetCustomerId);
 
-    const intersection = results1.filter((value) => results2.includes(value));
-
-    // console.log(intersection);
-
+    if (results1.length > 0 && results2.length > 0) {
+      const intersection = results1.filter((value) => results2.includes(value));
+      return intersection;
+      // console.log(intersection);
+    } else {
+      return null;
+    }
     const union = Array.from(new Set(results1.concat(results2)));
-
-    return intersection;
   } catch (error) {
     console.error("Error running Hybrid filtering:", error);
   }
