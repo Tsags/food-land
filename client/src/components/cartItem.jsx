@@ -11,7 +11,6 @@ import {
 } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
 import { addCartItem, removeCartItem, updateCartItemQuantity } from "../redux/actions/cartActions";
-import {} from "../redux/actions/cartActions";
 
 const CartItem = ({ cartItem }) => {
   const dispatch = useDispatch();

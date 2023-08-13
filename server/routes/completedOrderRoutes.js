@@ -13,7 +13,7 @@ const moveOrder = asyncHandler(async (req, res) => {
 
   // Find the order in the Order schema
   const order = await Order.findById(id);
-
+  const customerIds = [];
   if (order) {
     // Move the order to the CompletedOrder schema
     const completedOrder = new CompletedOrder(order.toObject());
@@ -25,8 +25,14 @@ const moveOrder = asyncHandler(async (req, res) => {
     for (const item of items) {
       for (const customer of customers) {
         const customerItems = customer.session[customer.session.length - 1].items;
-        if (item.customerId.includes(customer.customerId) && !customerItems.includes(item.name)) {
-          customerItems.push(item.name);
+        for (const id of item.customerId) {
+          if (!customerIds.includes(id)) {
+            customerIds.push(id);
+          }
+        }
+        if (item.customerId.includes(customer.customerId) && !customerItems.some((e) => e.name === item.name)) {
+          customerItems.push({ name: item.name, rating: 0 }); // Assuming 0 as default rating
+
           customer.isPresent = false;
           for (let i = 0; i < customer.session[customer.session.length - 1].otherCustomers.length; i++) {
             const associatedCustomersId =
@@ -40,9 +46,9 @@ const moveOrder = asyncHandler(async (req, res) => {
         for (const otherCustomer of otherCustomers) {
           if (
             item.customerId.includes(otherCustomer.otherCustomerId) &&
-            !otherCustomer.otherCustomerItems.includes(item.name)
+            !otherCustomer.otherCustomerItems.some((e) => e.name === item.name)
           ) {
-            otherCustomer.otherCustomerItems.push(item.name);
+            otherCustomer.otherCustomerItems.push(item.name); // Assuming 0 as default rating
           }
         }
 
@@ -52,8 +58,7 @@ const moveOrder = asyncHandler(async (req, res) => {
 
     // Delete the order from the Order schema
     await Order.findByIdAndDelete(id);
-
-    res.json({ message: "Order moved and deleted successfully." });
+    res.json({ customerIds: customerIds });
   } else {
     res.status(404);
     throw new Error("Order not found.");

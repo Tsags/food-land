@@ -2,11 +2,8 @@ import { useState } from "react";
 import {
   Flex,
   Box,
-  Container,
   FormControl,
-  Heading,
   Stack,
-  useBreakpointValue,
   useColorModeValue as mode,
   Alert,
   AlertIcon,
@@ -22,15 +19,13 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "../redux/actions/userActions";
 import QRcodeGenerator from "../components/QRcodeGenerator";
-import randomstring from "randomstring";
+
 import QRCode from "qrcode";
 
 function RegisterScreen() {
   const dispatch = useDispatch();
 
   const toast = useToast();
-  const headingBR = useBreakpointValue({ base: "xs", md: "sm" });
-  const boxBR = useBreakpointValue({ base: "transparent", md: "bg-surface" });
 
   const user = useSelector((state) => state.user);
   const { loading, error, userInfo } = user;

@@ -17,7 +17,6 @@ export const login = (name, password) => async (dispatch) => {
     dispatch(userLogin(data));
     localStorage.removeItem("cartItems");
     localStorage.removeItem("orders");
-    localStorage.removeItem("allergies");
     localStorage.removeItem("customerInfo");
     localStorage.removeItem("recommendations");
     localStorage.setItem("userInfo", JSON.stringify(data));

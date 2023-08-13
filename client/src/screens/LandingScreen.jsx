@@ -14,17 +14,9 @@ import {
 import { FaArrowRight } from "react-icons/fa";
 import { Link as ReactLink } from "react-router-dom";
 import { MdFastfood } from "react-icons/md";
-import { useSelector, useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
 import Allergies from "../components/Allergies";
 
-
-
 export const LandingScreen = () => {
-  const dispatch = useDispatch();
-  const userInfo = useSelector((state) => state.user.userInfo);
-  
- 
   return (
     <Box maxW="8xl" mx="auto" px={{ base: "0", lg: "12" }} py={{ base: "0", lg: "12" }} minH="5xl" mt="5">
       <Stack direction={{ base: "column-reverse", lg: "row" }} spacing={{ base: "0", lg: "20" }}>
@@ -49,9 +41,7 @@ export const LandingScreen = () => {
                     FoodLand
                   </Text>
                 </Flex>
-                <Box>
-                
-                </Box>
+                <Box></Box>
                 <Heading size="xl" fontWeight="normal">
                   Trust your palate.
                 </Heading>

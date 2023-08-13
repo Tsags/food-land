@@ -1,4 +1,4 @@
-import QRCode from "qrcode";
+
 import { useState, useEffect, useRef } from "react";
 import { Box, Image, Text, Stack, Button } from "@chakra-ui/react";
 import ReactToPrint from "react-to-print";

@@ -15,6 +15,7 @@ import Socket from "./components/Socket";
 import YourOrdersScreen from "./screens/YourOrdersScreen";
 import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
 import ServicesScreen from "./screens/ServicesScreen";
+import ReviewsScreen from "./screens/ReviewsScreen";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route path="/reviews" element={<ReviewsScreen />} />
             <Route
               path="/register"
               element={
@@ -73,7 +75,14 @@ function App() {
               }
             />
             <Route path="/login" element={<LoginScreen />} />
-            <Route path="/services" element={<ServicesScreen />} />
+            <Route
+              path="/services"
+              element={
+                <ProtectedRoute>
+                  <ServicesScreen />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/admin"
               element={
@@ -82,7 +91,14 @@ function App() {
                 </ProtectedAdminRoute>
               }
             />
-            <Route path="/checkout" element={<CheckoutScreen />} />
+            <Route
+              path="/checkout"
+              element={
+                <ProtectedRoute>
+                  <CheckoutScreen />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
         </main>
         <Footer />

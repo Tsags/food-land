@@ -144,7 +144,8 @@ function generateRecommendations(targetCustomer, similarCustomers, customers, pr
     // Exclude recommendations with zero similarity score
 
     // Exclude recommendations that contain any of the customer's allergies
-    const productAllergies = products.find((product) => product.name === productName).allergies;
+    const product = products.find((product) => product.name === productName);
+    const productAllergies = product && product.allergies ? product.allergies : [];
 
     if (productAllergies.some((allergy) => targetCustomerAllergies.includes(allergy))) {
       return false;
@@ -198,7 +199,7 @@ async function similarityCalculation(customers, products) {
     for (const itemTaken of itemsTaken) {
       const product = products.find((p) => p.name === itemTaken);
 
-      const features = product.features;
+      const features = product && product.features ? product.features : [];
       for (const feature of features) {
         if (!customerFeatures.includes(feature)) {
           customerFeatures.push(feature);

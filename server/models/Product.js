@@ -39,6 +39,18 @@ const productSchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
+    rating: {
+      type: Number,
+      default: 0,
+    },
+    totalRating: {
+      type: Number,
+      default: 0,
+    },
+    numRatings: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamp: true }
 );

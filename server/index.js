@@ -122,4 +122,9 @@ io.on("connection", (socket) => {
   socket.on("user/connected", (name) => {
     io.emit("user/update", { name: name });
   });
+  socket.on("force/redirect", (customers) => {
+    
+    console.log(customers);
+    io.emit("redirectUser", customers);
+  });
 });

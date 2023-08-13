@@ -18,7 +18,16 @@ const customerSchema = new mongoose.Schema(
           default: "",
         },
         items: {
-          type: [String],
+          type: [
+            {
+              name: {
+                type: String,
+              },
+              rating: {
+                type: Number,
+              },
+            },
+          ],
           required: true,
           default: [],
         },

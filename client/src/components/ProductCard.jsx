@@ -14,13 +14,12 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { GiNotebook } from "react-icons/gi";
+
 import { Link as ReactLink } from "react-router-dom";
 import { StarIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addCartItem } from "../redux/actions/cartActions";
-import { useEffect } from "react";
 
 const Rating = ({ rating, numberOfReviews }) => {
   const { iconSize } = useState("14px");

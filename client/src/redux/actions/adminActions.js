@@ -14,6 +14,9 @@ import {
 } from "../slices/admin.js";
 import { setProducts, setProductUpdateFlag } from "../slices/products.js";
 
+import { io } from "socket.io-client";
+const socket = io("http://localhost:5000");
+
 export const getAllUsers = () => async (dispatch, getState) => {
   const {
     user: { userInfo },
@@ -280,8 +283,11 @@ export const setCompleted = (id) => async (dispatch, getState) => {
         "Content-Type": "application/json",
       },
     };
-    const { data } = await axios.put(`/api/completedOrders/${id}`, config);
 
+    const { data } = await axios.put(`/api/completedOrders/${id}`, config);
+    socket.emit("force/redirect",  data);
+   console.log(data)
+    // const getResponse = await axios.get(`/api/customers/`, config)
     dispatch(orderSetCompleted(data));
   } catch (error) {
     dispatch(

@@ -40,3 +40,5 @@ export const getProduct = (id) => async (dispatch) => {
 export const resetProductError = () => async (dispatch) => {
   dispatch(resetError());
 };
+
+

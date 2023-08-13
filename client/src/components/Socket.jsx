@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { io } from "socket.io-client";
 import { setCart } from "../redux/slices/cart";
 import { orderUpdate, setRequests, setNotifications } from "../redux/slices/admin";
-
-const socket = io("/");
+import { useSocket } from "./useSocket"; // Προσθήκη αυτής της γραμμής
+import { useNavigate } from "react-router-dom";
 
 const Socket = () => {
+  const navigate = useNavigate();
+  const socket = useSocket(); // Καλέστε το custom hook εδώ
   const dispatch = useDispatch();
   const currentUserId = useSelector((state) => state.user.userInfo?._id);
   const currentCustomerId = JSON.parse(localStorage.getItem("customerId"));
@@ -21,7 +22,7 @@ const Socket = () => {
     return () => {
       socket.off("cart/update");
     };
-  }, [dispatch, currentUserId, currentCustomerId]);
+  }, [dispatch, currentUserId, currentCustomerId, socket]);
 
   useEffect(() => {
     socket.on("order/update", (order) => {
@@ -31,7 +32,7 @@ const Socket = () => {
     return () => {
       socket.off("order/update");
     };
-  }, [dispatch]);
+  }, [dispatch, socket]);
 
   useEffect(() => {
     socket.on("admin-notification", ({ request, userInfo }) => {
@@ -41,7 +42,7 @@ const Socket = () => {
     return () => {
       socket.off("admin-notification");
     };
-  }, [dispatch]);
+  }, [dispatch, socket]);
 
   useEffect(() => {
     socket.on("user/update", (name) => {
@@ -51,12 +52,25 @@ const Socket = () => {
     return () => {
       socket.off("user/update");
     };
-  }, [dispatch]);
+  }, [dispatch, socket]);
 
   useEffect(() => {
     // Associate the user ID or session ID with the socket connection
     socket.emit("user/connect", { userId: currentUserId });
-  }, [currentUserId]);
+  }, [currentUserId, socket]);
+
+  useEffect(() => {
+    socket.on("redirectUser", (customers) => {
+      console.log(customers);
+      if (customers.customerIds.includes(currentCustomerId)) {
+        navigate("/reviews");
+      }
+    });
+
+    return () => {
+      socket.off("redirectUser");
+    };
+  }, [dispatch, socket, currentCustomerId, navigate]);
 };
 
 export default Socket;

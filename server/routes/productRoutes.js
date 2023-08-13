@@ -74,8 +74,33 @@ const updateProduct = asyncHandler(async (req, res) => {
   }
 });
 
+const saveRating = asyncHandler(async (req, res) => {
+  try {
+    const { rating } = req.body;
+
+    // Ανακτήστε το προϊόν
+    const product = await Product.findById(req.params.id);
+
+    if (!product) {
+      return res.status(404).send("Product not found");
+    }
+
+    // Ενημέρωση των πεδίων
+    product.totalRating += rating;
+    product.numRatings += 1;
+    product.rating = product.totalRating / product.numRatings; // Update average rating
+
+    await product.save();
+
+    res.send({ averageRating: product.rating });
+  } catch (error) {
+    res.status(500).send("Server error");
+  }
+});
+
 productRoutes.route("/").get(getProducts);
 productRoutes.route("/:id").get(getProduct);
+productRoutes.route("/:id/rating").post(saveRating);
 productRoutes.route("/").post(protectRoute, admin, createNewProduct);
 productRoutes.route("/").put(protectRoute, admin, updateProduct);
 productRoutes.route("/:id").delete(protectRoute, admin, deleteProduct);

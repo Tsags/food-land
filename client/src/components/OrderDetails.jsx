@@ -46,6 +46,7 @@ const OrderDetails = ({ orders, user, orderRemoval, deliveredFlag, orderSetCompl
     setCompletedOrders([...completedOrders, ...completed]);
     completed.forEach((order) => {
       // Dispatch an action for each completed order
+  console.log(order)
       dispatch(renamedSetCompleted(order._id));
     });
   };

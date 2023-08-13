@@ -13,9 +13,7 @@ import {
   Flex,
   Badge,
   Heading,
-  HStack,
   Button,
-  SimpleGrid,
   useToast,
 } from "@chakra-ui/react";
 import { MinusIcon, AddIcon } from "@chakra-ui/icons";
