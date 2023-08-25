@@ -43,18 +43,28 @@ const findCustomer = async (req, res) => {
 
 const saveRating = asyncHandler(async (req, res) => {
   try {
-    const { rating, customerId } = req.body;
+    const { rating, customerId, productName } = req.body;
 
-    // Ανακτήστε το προϊόν
-    const customer = await Customer.find({ customerId: customerId });
-    console.log(rating);
+    // Retrieve the customer
+    const customers = await Customer.find({ customerId: customerId });
 
-    if (!customer) {
-      return res.status(404).send("Product not found");
+    if (!customers || customers.length === 0) {
+      return res.status(404).send("Customer not found");
     }
-    const items = customer?.session?.[customer.session.length - 1]?.items || [];
-    console.log(items);
+
+    const customer = customers[0]; // Get the first customer from the array
+
+    const items = customer.session[customer.session.length - 1]?.items;
+
+    for (let item of items) {
+      if (item.name === productName) {
+        item.rating = rating;
+      }
+    }
+
     await customer.save();
+
+    res.status(200).send("Rating updated successfully");
   } catch (error) {
     res.status(500).send("Server error");
   }
