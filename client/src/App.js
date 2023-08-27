@@ -33,7 +33,14 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route path="/reviews" element={<ReviewsScreen />} />
+            <Route
+              path="/reviews"
+              element={
+                <ProtectedRoute>
+                  <ReviewsScreen />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/register"
               element={

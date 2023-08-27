@@ -18,32 +18,55 @@ import {
   Text,
   useColorModeValue,
   Image,
+  Button,
+  Icon,
 } from "@chakra-ui/react";
 
 import { StarIcon } from "@chakra-ui/icons";
+import { FiCheckCircle } from "react-icons/fi";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { getProducts } from "../redux/actions/productActions";
 import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../redux/actions/userActions";
 
 const saveRating = async (productId, rating, customerId, productName) => {
   await axios.post(`/api/products/${productId}/rating`, { rating: rating });
   await axios.post(`/api/customers`, { rating: rating, product: productName, customerId: customerId });
 };
 
+const getRatingDescription = (rating) => {
+  switch (rating) {
+    case 1:
+      return { word: "Bad", color: "red.500" };
+    case 2:
+      return { word: "Below Average", color: "orange.400" };
+    case 3:
+      return { word: "Average", color: "yellow.500" };
+    case 4:
+      return { word: "Good", color: "cyan.500" };
+    case 5:
+      return { word: "Perfect", color: "green.500" };
+    default:
+      return { word: "", color: "black" };
+  }
+};
+
 const Rating = ({ onRate }) => {
   const [rating, setRating] = useState(0);
+  const [description, setDescription] = useState(getRatingDescription(0));
   const iconSize = "14px";
 
   const handleStarClick = (starNumber) => {
     setRating(starNumber);
+    setDescription(getRatingDescription(starNumber));
     if (onRate) {
       onRate(starNumber);
     }
   };
 
   return (
-    <Flex>
+    <Flex flexDirection="column" alignItems="center">
       <HStack spacing="2px">
         {Array.from({ length: 5 }).map((_, index) => (
           <StarIcon
@@ -56,6 +79,9 @@ const Rating = ({ onRate }) => {
           />
         ))}
       </HStack>
+      <Text mt={2} as="b" fontSize="lg" color={description.color}>
+        {description.word}
+      </Text>
     </Flex>
   );
 };
@@ -94,9 +120,17 @@ const ReviewsScreen = () => {
 
     fetchData();
   }, [customerId]);
+  const handleThankYouClick = () => {
+    dispatch(logout());
+  };
 
   return (
     <Wrap spacing="30px" justify="center" minHeight="79vh">
+      <Center w="100%" mb="20px">
+        <Text fontWeight="bold" fontSize="lg" textAlign="center" mt="10">
+          Please rate us to help us improve. Your ratings remain anonymous.
+        </Text>
+      </Center>
       {relevantProducts.map((product) => (
         <WrapItem key={product._id}>
           <Center w="250" h="550px">
@@ -112,12 +146,12 @@ const ReviewsScreen = () => {
             >
               <Image src={product.image} alt={product.name} rounded="lg" h="250px" w="250px" alignSelf="center" />
 
-              <Flex mt="1" justifyContent="space-between" alignContent="center">
+              <Flex mt="1" justifyContent="center" alignContent="center">
                 <Box fontSize="2x1" fontWeight="semibold" lineHeight="tight">
                   {product.name}
                 </Box>
               </Flex>
-              <Flex justifyContent="space-between" alignContent="center" py="2">
+              <Flex justifyContent="center" alignItems="center" py="2" flexDirection="column" flexGrow="1">
                 <Rating
                   onRate={(rating) => {
                     // Εδώ, μπορείτε να καλέσετε μια συνάρτηση για να αποθηκεύσετε τη βαθμολογία στη βάση δεδομένων.
@@ -126,6 +160,7 @@ const ReviewsScreen = () => {
                   }}
                 />
               </Flex>
+
               <Flex justify="space-between">
                 {/* <Tooltip label="Add to Cart" bg="white" placement="top" color="gray.800" fontSize="1.2em">
         <Button variant="ghost" display="flex" disabled={product.stock <= 0} onClick={() => addItem(product._id)}>
@@ -137,6 +172,11 @@ const ReviewsScreen = () => {
           </Center>
         </WrapItem>
       ))}
+      <Center w="100%" mt="20px" mb="5">
+        <Button colorScheme="green" onClick={handleThankYouClick}>
+          <Icon as={FiCheckCircle} mr="1"></Icon> Thank you
+        </Button>
+      </Center>
     </Wrap>
   );
 };

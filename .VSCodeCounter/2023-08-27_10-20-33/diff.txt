@@ -1,0 +1,39 @@
+Date : 2023-08-27 10:20:33
+Directory : c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\server
+Total : 12 files,  89 codes, -38 comments, 15 blanks, all 66 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| JavaScript |         12 |         89 |        -38 |         15 |         66 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++-------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                | files      | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                   |         12 |         89 |        -38 |         15 |         66 |
+| . (Files)                                                                           |          4 |          7 |        -43 |         -6 |        -42 |
+| models                                                                              |          4 |         33 |          0 |          2 |         35 |
+| routes                                                                              |          4 |         49 |          5 |         19 |         73 |
++-------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                            | language   | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\server\database.js                    | JavaScript |          0 |          0 |          3 |          3 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\server\index.js                       | JavaScript |          9 |          4 |          0 |         13 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\server\models\Customer.js             | JavaScript |          9 |          0 |          0 |          9 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\server\models\Order.js                | JavaScript |          6 |          0 |          2 |          8 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\server\models\Product.js              | JavaScript |         12 |          0 |          0 |         12 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\server\models\completedOrder.js       | JavaScript |          6 |          0 |          0 |          6 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\server\populationScripts.js           | JavaScript |         79 |        -41 |          3 |         41 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\server\recommendation.js              | JavaScript |        -81 |         -6 |        -12 |        -99 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\server\routes\completedOrderRoutes.js | JavaScript |        -12 |          0 |          0 |        -12 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\server\routes\customerRoutes.js       | JavaScript |         45 |          2 |         13 |         60 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\server\routes\productRoutes.js        | JavaScript |         17 |          2 |          6 |         25 |
+| c:\Users\Tsags\OneDrive\Υπολογιστής\techlines\server\routes\userRoutes.js           | JavaScript |         -1 |          1 |          0 |          0 |
+| Total                                                                               |            |         89 |        -38 |         15 |         66 |
++-------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+

@@ -36,6 +36,8 @@ export const addCartItem = (id, qty) => async (dispatch, getState) => {
       qty,
       isDelivered: false,
       customerId: [customerId],
+      rating: data.rating,
+      numRatings: data.numRatings,
     };
 
     dispatch(cartItemAdd(itemToAdd));

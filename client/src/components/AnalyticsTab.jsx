@@ -1,10 +1,19 @@
-import { useState } from "react";
 import ReactApexChart from "react-apexcharts";
 import { Tab, TabList, TabPanel, Tabs, Flex, Box } from "@chakra-ui/react";
+import { getProducts } from "../redux/actions/productActions";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 
 const AnalyticsTab = ({ completedOrders }) => {
-  const itemQuantities = {};
+  const dispatch = useDispatch();
+  const productList = useSelector((state) => state.products);
+  const { loading, error, products } = productList;
+  useEffect(() => {
+    dispatch(getProducts());
+  }, [dispatch]);
 
+  const itemQuantities = {};
+  console.log(products);
   // console.log(completedOrders);
   // Iterate through each order and update itemQuantities
 
@@ -156,6 +165,75 @@ const AnalyticsTab = ({ completedOrders }) => {
     },
   ];
 
+  //-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  //----------------------------------------------------CHART 4: Products and their Ratings
+  //-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+  const productNames = products.map((product) => product.name);
+  const productRatings = products.map((product) => product.rating);
+  const productNumRatings = products.map((product) => product.numRatings);
+
+  const productOptions = {
+    chart: {
+      type: "bar",
+      height: 350,
+      toolbar: {
+        show: true,
+      },
+    },
+    plotOptions: {
+      bar: {
+        dataLabels: {
+          position: "top", // top, center, bottom
+        },
+      },
+    },
+    dataLabels: {
+      enabled: true,
+      formatter: function (val) {
+        return val.toFixed(1); // To display ratings with two decimal points
+      },
+      offsetY: -20,
+      style: {
+        fontSize: "12px",
+        colors: ["#304758"],
+      },
+    },
+    xaxis: {
+      categories: productNames,
+      title: {
+        text: "Product",
+      },
+    },
+    yaxis: {
+      title: {
+        text: "Rating",
+      },
+      min: 0,
+      max: 5,
+      labels: {
+        formatter: function (val) {
+          return val.toFixed(1); // Show one decimal place
+        },
+      },
+    },
+
+    tooltip: {
+      y: {
+        formatter: function (val, { series, seriesIndex, dataPointIndex, w }) {
+          return `${val} (Ratings: ${productNumRatings[dataPointIndex]})`;
+        },
+      },
+    },
+  };
+
+  const productSeries = [
+    {
+      name: "Product Rating",
+      data: productRatings,
+    },
+  ];
+
   return (
     <Box>
       <Flex id="chart" justifyContent="space-between">
@@ -170,6 +248,7 @@ const AnalyticsTab = ({ completedOrders }) => {
         </TabList>
       </Tabs>
       <ReactApexChart options={options3} series={series3} type="line" height={350} />
+      <ReactApexChart options={productOptions} series={productSeries} type="bar" height={350} />
     </Box>
   );
 };
