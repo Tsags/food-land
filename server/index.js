@@ -123,7 +123,6 @@ io.on("connection", (socket) => {
     io.emit("user/update", { name: name });
   });
   socket.on("force/redirect", (customers) => {
-    
     console.log(customers);
     io.emit("redirectUser", customers);
   });

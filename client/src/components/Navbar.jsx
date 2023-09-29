@@ -117,7 +117,7 @@ const Navbar = () => {
 
   return (
     <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
-      <Flex h={16} alignItems="center" justifyContent="space-between">
+      <Flex h={16} alignItems="center" justifyContent="space-between" width="100%">
         <IconButton
           size="md"
           icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
@@ -187,7 +187,7 @@ const Navbar = () => {
             </Menu>
           ) : (
             <>
-              <Button as={ReactLink} to="/login" p={2} fontSize="sm" fontWeight={400} variant="link">
+              {/* <Button as={ReactLink} to="/login" p={2} fontSize="sm" fontWeight={400} variant="link">
                 Sign In
               </Button>
               <Button
@@ -202,7 +202,7 @@ const Navbar = () => {
                 color="white"
               >
                 Sign Up
-              </Button>
+              </Button> */}
             </>
           )}
         </HStack>

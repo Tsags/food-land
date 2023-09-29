@@ -172,7 +172,7 @@ const ReviewsScreen = () => {
           </Center>
         </WrapItem>
       ))}
-      <Center w="100%" mt="20px" mb="5">
+      <Center w="100%" mt="20px" mb="5"  pb="20px">
         <Button colorScheme="green" onClick={handleThankYouClick}>
           <Icon as={FiCheckCircle} mr="1"></Icon> Thank you
         </Button>

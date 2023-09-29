@@ -13,7 +13,7 @@ const AnalyticsTab = ({ completedOrders }) => {
   }, [dispatch]);
 
   const itemQuantities = {};
-  console.log(products);
+
   // console.log(completedOrders);
   // Iterate through each order and update itemQuantities
 

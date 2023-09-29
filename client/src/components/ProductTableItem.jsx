@@ -136,7 +136,7 @@ const ProductTableItem = ({ product }) => {
             ))}
           </SimpleGrid>
         </Td>
-        <Td>
+        {/* <Td>
           <VStack>
             <Select value={selectedFeatures} onChange={(e) => setSelectedFeature(e.target.value)} width={60}>
               <option value="" disabled>
@@ -178,14 +178,14 @@ const ProductTableItem = ({ product }) => {
               </Box>
             ))}
           </SimpleGrid>
-        </Td>
+        </Td> */}
         <Td>
           <Flex direction="column" gap="2">
             <Input size="sm" value={category} onChange={(e) => setCategory(e.target.value)} />
             <Input size="sm" value={price} onChange={(e) => setPrice(e.target.value)} />
           </Flex>
         </Td>
-        <Td>
+        {/* <Td>
           <Flex direction="column" gap="2">
             <Input size="sm" value={stock} onChange={(e) => setStock(e.target.value)} />
             <FormControl display="flex" alignItems="center">
@@ -199,7 +199,7 @@ const ProductTableItem = ({ product }) => {
               <Switch id="productIsNewFlag" onChange={() => setProductIsNew(!productIsNew)} isChecked={productIsNew} />
             </FormControl>
           </Flex>
-        </Td>
+        </Td> */}
         <Td>
           <VStack>
             <Button colorScheme="red" w="160px" variant="outline" onClick={openDeleteConfirmBox}>

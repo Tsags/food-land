@@ -285,10 +285,10 @@ export const setCompleted = (id) => async (dispatch, getState) => {
     };
 
     const { data } = await axios.put(`/api/completedOrders/${id}`, config);
-    socket.emit("force/redirect",  data);
-   console.log(data)
+    socket.emit("force/redirect", data);
+
     // const getResponse = await axios.get(`/api/customers/`, config)
-    dispatch(orderSetCompleted(data));
+    dispatch(orderSetCompleted(id));
   } catch (error) {
     dispatch(
       setError(

@@ -110,7 +110,8 @@ export const adminSlice = createSlice({
       state.loading = false;
     },
     orderSetCompleted: (state, { payload }) => {
-      state.orders = state.orders.filter((order) => order.orderId !== payload._id);
+      state.orders = state.orders.filter((order) => order._id !== payload);
+
       state.orderSetCompleted = true;
       state.loading = false;
       state.error = null;

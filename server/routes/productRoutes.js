@@ -78,7 +78,7 @@ const saveRating = asyncHandler(async (req, res) => {
   try {
     const { rating } = req.body;
 
-    // Ανακτήστε το προϊόν
+    
     const product = await Product.findById(req.params.id);
 
     if (!product) {

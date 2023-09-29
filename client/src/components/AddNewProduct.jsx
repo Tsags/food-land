@@ -168,7 +168,7 @@ const AddNewProduct = () => {
           ))}
         </SimpleGrid>
       </Td>
-      <Td>
+      {/* <Td>
         <VStack>
           <Select value={selectedFeatures} onChange={(e) => setSelectedFeature(e.target.value)} width={60}>
             <option value="" disabled>
@@ -205,14 +205,14 @@ const AddNewProduct = () => {
             </Box>
           ))}
         </SimpleGrid>
-      </Td>
+      </Td> */}
       <Td>
         <Text fontSize="sm">Category</Text>
         <Input size="sm" value={category} onChange={(e) => setCategory(e.target.value)} placeholder="drinks" />
         <Text fontSize="sm">Price</Text>
         <Input size="sm" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="0.00" />
       </Td>
-      <Td>
+      {/* <Td>
         <Text fontSize="sm">Stock</Text>
         <Input size="sm" value={stock} onChange={(e) => setStock(e.target.value)} />
         <Text fontSize="sm">New badge shown on product card</Text>
@@ -226,7 +226,7 @@ const AddNewProduct = () => {
           </FormLabel>
           <Switch id="productIsNewFlag" onChange={() => setProductIsNew(!productIsNew)} isChecked={productIsNew} />
         </FormControl>
-      </Td>
+      </Td> */}
       <Td>
         <VStack>
           <Button variant="outline" w="160px" colorScheme="orange" onClick={createNewProduct}>

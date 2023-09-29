@@ -36,7 +36,7 @@ const OrdersTab = ({ data }) => {
   const handleItemClick = (user) => {
     setSelectedUser(user);
   };
-
+  // console.log(orders);
   return (
     <Box>
       {error && (

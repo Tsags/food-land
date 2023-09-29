@@ -79,7 +79,7 @@ const LoginScreen = () => {
       {(formik) => (
         <Container>
           <Stack justifyContent="center" textAlign="center">
-            <Heading size={headingBR}>Login Table</Heading>
+            <Heading size={headingBR}>Login Form</Heading>
             <Box py={{ base: "0", md: "8" }} px={{ base: "4", md: "10" }} bg={{ boxBR }}>
               <Stack spacing="6" as="form" onSubmit={formik.handleSubmit}>
                 {error && (
