@@ -32,7 +32,8 @@ import { logout } from "../redux/actions/userActions";
 
 const saveRating = async (productId, rating, customerId, productName) => {
   await axios.post(`/api/products/${productId}/rating`, { rating: rating });
-  await axios.post(`/api/customers`, { rating: rating, product: productName, customerId: customerId });
+  await axios.post(`/api/customers`, { rating: rating, productName: productName, customerId: customerId });
+  console.log(productName);
 };
 
 const getRatingDescription = (rating) => {
@@ -98,7 +99,7 @@ const ReviewsScreen = () => {
   const relevantProducts = products
     ? products.filter((product) => items.some((item) => item.name === product.name))
     : [];
-  console.log(relevantProducts);
+
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
@@ -172,7 +173,7 @@ const ReviewsScreen = () => {
           </Center>
         </WrapItem>
       ))}
-      <Center w="100%" mt="20px" mb="5"  pb="20px">
+      <Center w="100%" mt="20px" mb="5" pb="20px">
         <Button colorScheme="green" onClick={handleThankYouClick}>
           <Icon as={FiCheckCircle} mr="1"></Icon> Thank you
         </Button>

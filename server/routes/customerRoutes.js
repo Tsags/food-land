@@ -44,7 +44,8 @@ const findCustomer = async (req, res) => {
 const saveRating = asyncHandler(async (req, res) => {
   try {
     const { rating, customerId, productName } = req.body;
-
+    console.log(rating);
+    console.log(productName);
     // Retrieve the customer
     const customers = await Customer.find({ customerId: customerId });
 
