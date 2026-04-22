@@ -10,8 +10,13 @@ const protectRoute = asyncHandler(async (req, res, next) => {
       token = req.headers.authorization.split(" ")[1];
       const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
 
-      const user = await User.findById(decoded.id);
-      req.user = user;
+  const user = await User.findById(decoded.id);
+  if (!user) {
+  res.status(401);
+  throw new Error("User not found");
+  }
+  req.user = user;
+  next();
 
       next();
     } catch (error) {
