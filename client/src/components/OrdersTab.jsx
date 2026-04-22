@@ -28,7 +28,7 @@ const OrdersTab = ({ data }) => {
 
  useEffect(() => {
   dispatch(getAllOrders());
-}, [dispatch, orderRemoval, deliveredFlag, orderSetCompleted]);
+}, [dispatch, orderRemoval, deliveredFlag, orderSetCompleted, orders.length]);
   
   useEffect(() => {
     if (data && data.data) {
