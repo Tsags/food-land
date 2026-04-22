@@ -20,7 +20,7 @@
     "bcrypt": "^5.1.0",
     "bcryptjs": "^2.4.3",
     "buffer": "^6.0.3",
-    "compute-cosine-similarity": "^1.0.0",
+    "compute-cosine-similarity": "^1.1.0",
     "concurrently": "^8.0.1",
     "cookie-parser": "^1.4.6",
     "crypto-browserify": "^3.12.0",
@@ -39,7 +39,7 @@
     "util": "^0.12.5"
   },
   "devDependencies": {
-    "@faker-js/faker": "^8.0.2",
+    "@faker-js/faker": "^8.4.1",
     "webpack": "^5.82.1"
   }
 }
