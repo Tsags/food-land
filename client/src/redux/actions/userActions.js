@@ -1,4 +1,4 @@
-import axios from "../../axios";
+import axios from "../../axios.js"
 import { setLoading, setError, userLogin, userLogout, setUserOrders } from "../slices/user";
 import { io } from "socket.io-client";
 const socket = io("/");

@@ -1,4 +1,4 @@
-import axios from "../../axios";
+import axios from "../../axios.js"
 
 import { setProducts, setLoading, setError, setProduct, resetError } from "../slices/products";
 
