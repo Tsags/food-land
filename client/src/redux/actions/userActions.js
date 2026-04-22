@@ -1,7 +1,7 @@
 import axios from "../../axios.js"
 import { setLoading, setError, userLogin, userLogout, setUserOrders } from "../slices/user";
 import { io } from "socket.io-client";
-const socket = io("/");
+const socket = io(process.env.REACT_APP_API_URL || "http://localhost:5000");
 
 export const login = (name, password) => async (dispatch) => {
   dispatch(setLoading(true));
