@@ -19,7 +19,7 @@ import { generateCompletedOrders, populateCustomerData } from "./populationScrip
 import { createAdminUser } from "./createAdmin.js";
 dotenv.config();
 connectToDatabase();
-// createAdminUser();
+createAdminUser();
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
