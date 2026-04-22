@@ -17,7 +17,7 @@ import {
 
 import { useColorModeValue as mode } from "@chakra-ui/react";
 
-import CartItem from "../components/CartItem";
+import CartItem from "../components/cartItem";
 import CartOrderSummary from "../components/CartOrderSummary";
 
 const CartScreen = () => {
