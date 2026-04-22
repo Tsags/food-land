@@ -4,10 +4,10 @@ export async function createAdminUser() {
   const exists = await User.findOne({ name: "mayonko" });
   if (!exists) {
     await User.create({
-      name: "mayonko",
-      password: "mayonko",
+      name: "admin",
+      password: "admin",
       isAdmin: true,
-      qrCodeData: "mayonko",
+      qrCodeData: "admin",
     });
     console.log("Admin user created!");
   }
