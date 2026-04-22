@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../../axios";
 import {
   getUsers,
   userDelete,
@@ -37,9 +37,9 @@ export const getAllUsers = () => async (dispatch, getState) => {
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message
-          ? error.message
-          : "Users could not be fetched"
-      )
+            ? error.message
+            : "Users could not be fetched",
+      ),
     );
   }
 };
@@ -66,8 +66,8 @@ export const getAllOrders = () => async (dispatch, getState) => {
       setError(
         error.response && error.response.data.message
           ? error.response.data.message
-          : error.message || "Orders could not be fetched."
-      )
+          : error.message || "Orders could not be fetched.",
+      ),
     );
   }
 };
@@ -93,9 +93,9 @@ export const deleteUser = (id) => async (dispatch, getState) => {
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message
-          ? error.message
-          : "Users could not be fetched."
-      )
+            ? error.message
+            : "Users could not be fetched.",
+      ),
     );
   }
 };
@@ -121,9 +121,9 @@ export const deleteOrder = (id) => async (dispatch, getState) => {
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message
-          ? error.message
-          : "Order could not be removed."
-      )
+            ? error.message
+            : "Order could not be removed.",
+      ),
     );
   }
 };
@@ -151,9 +151,9 @@ export const setDelivered = (id) => async (dispatch, getState) => {
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message
-          ? error.message
-          : "Order could not be updated."
-      )
+            ? error.message
+            : "Order could not be updated.",
+      ),
     );
   }
 };
@@ -189,7 +189,7 @@ export const updateProduct =
           allergies,
           features,
         },
-        config
+        config,
       );
 
       dispatch(setProducts(data));
@@ -200,9 +200,9 @@ export const updateProduct =
           error.response && error.response.data.message
             ? error.response.data.message
             : error.message
-            ? error.message
-            : "Product could not be updated."
-        )
+              ? error.message
+              : "Product could not be updated.",
+        ),
       );
     }
   };
@@ -230,9 +230,9 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message
-          ? error.message
-          : "Product could not be removed."
-      )
+            ? error.message
+            : "Product could not be removed.",
+      ),
     );
   }
 };
@@ -259,9 +259,9 @@ export const uploadProduct = (newProduct) => async (dispatch, getState) => {
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message
-          ? error.message
-          : "Product could not be uploaded."
-      )
+            ? error.message
+            : "Product could not be uploaded.",
+      ),
     );
   }
 };
@@ -295,9 +295,9 @@ export const setCompleted = (id) => async (dispatch, getState) => {
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message
-          ? error.message
-          : "Order could not be removed."
-      )
+            ? error.message
+            : "Order could not be removed.",
+      ),
     );
   }
 };
@@ -325,8 +325,8 @@ export const getAllCompletedOrders = () => async (dispatch, getState) => {
       setError(
         error.response && error.response.data.message
           ? error.response.data.message
-          : error.message || "Orders could not be fetched."
-      )
+          : error.message || "Orders could not be fetched.",
+      ),
     );
   }
 };

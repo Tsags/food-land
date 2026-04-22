@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../../axios";
 import {
   setLoading,
   setCart,
@@ -50,9 +50,9 @@ export const addCartItem = (id, qty) => async (dispatch, getState) => {
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message
-          ? error.message
-          : "Something unexpected happened!!"
-      )
+            ? error.message
+            : "Something unexpected happened!!",
+      ),
     );
   }
 };
@@ -78,8 +78,8 @@ export const removeCartItem = (itemId) => async (dispatch, getState) => {
       setError(
         error.response && error.response.data.message
           ? error.response.data.message
-          : error.message || "Something unexpected happened!"
-      )
+          : error.message || "Something unexpected happened!",
+      ),
     );
   }
 };
@@ -103,8 +103,8 @@ export const resetCart = () => async (dispatch, getState) => {
       setError(
         error.response && error.response.data.message
           ? error.response.data.message
-          : error.message || "Something unexpected happened!"
-      )
+          : error.message || "Something unexpected happened!",
+      ),
     );
   }
 };
@@ -135,9 +135,9 @@ export const updateCartItemQuantity = (id, qty) => async (dispatch, getState) =>
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message
-          ? error.message
-          : "Something unexpected happened!!"
-      )
+            ? error.message
+            : "Something unexpected happened!!",
+      ),
     );
   }
 };
@@ -171,9 +171,9 @@ export const fetchCart = () => async (dispatch, getState) => {
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message
-          ? error.message
-          : "Something unexpected happened!!"
-      )
+            ? error.message
+            : "Something unexpected happened!!",
+      ),
     );
   }
 };

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../../axios";
 import { setLoading, clearOrder, setError, orderCreate } from "../slices/order";
 import randomstring from "randomstring";
 import { io } from "socket.io-client";
@@ -35,9 +35,9 @@ export const createOrder = (order) => async (dispatch, getState) => {
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message
-          ? error.message
-          : "Something unexpected happened!!"
-      )
+            ? error.message
+            : "Something unexpected happened!!",
+      ),
     );
   }
 };

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../../axios";
 import { setLoading, setError, userLogin, userLogout, setUserOrders } from "../slices/user";
 import { io } from "socket.io-client";
 const socket = io("/");
@@ -30,9 +30,9 @@ export const login = (name, password) => async (dispatch) => {
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message
-          ? error.message
-          : "Something unexpected happened!!"
-      )
+            ? error.message
+            : "Something unexpected happened!!",
+      ),
     );
   }
 };
@@ -58,9 +58,9 @@ export const register = (name, password, qrCodeData) => async (dispatch) => {
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message
-          ? error.message
-          : "Something unexpected happened!!"
-      )
+            ? error.message
+            : "Something unexpected happened!!",
+      ),
     );
   }
 };
@@ -87,8 +87,8 @@ export const getUserOrders = () => async (dispatch, getState) => {
       setError(
         error.response && error.response.data.message
           ? error.response.data.message
-          : error.message || "An unexpected error has occurred. Please try again later."
-      )
+          : error.message || "An unexpected error has occurred. Please try again later.",
+      ),
     );
   }
 };
@@ -106,9 +106,9 @@ export const getRecommendationsForCustomer = () => async (dispatch) => {
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message
-          ? error.message
-          : "Something unexpected happened!!"
-      )
+            ? error.message
+            : "Something unexpected happened!!",
+      ),
     );
   }
 };

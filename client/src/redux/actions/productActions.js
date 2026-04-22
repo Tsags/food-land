@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../../axios";
 
 import { setProducts, setLoading, setError, setProduct, resetError } from "../slices/products";
 
@@ -13,9 +13,9 @@ export const getProducts = () => async (dispatch) => {
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message
-          ? error.message
-          : "Something unexpected happened!!"
-      )
+            ? error.message
+            : "Something unexpected happened!!",
+      ),
     );
   }
 };
@@ -30,9 +30,9 @@ export const getProduct = (id) => async (dispatch) => {
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message
-          ? error.message
-          : "Something unexpected happened!!"
-      )
+            ? error.message
+            : "Something unexpected happened!!",
+      ),
     );
   }
 };
@@ -40,5 +40,3 @@ export const getProduct = (id) => async (dispatch) => {
 export const resetProductError = () => async (dispatch) => {
   dispatch(resetError());
 };
-
-
