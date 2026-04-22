@@ -56,10 +56,20 @@ app.get("/api/data", (req, res) => {
 const expressServer = app.listen(port, () => {
   console.log(`Server runs on port ${port}.`);
 });
+
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "https://food-land-nine.vercel.app");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization");
+  next();
+});
+
 const io = new Server(expressServer, {
   pingTimeout: 60000,
   cors: {
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "https://food-land-nine.vercel.app"],
+    credentials: true,
   },
 });
 
