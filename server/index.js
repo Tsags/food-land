@@ -18,8 +18,11 @@ import { hybridFiltering, retrieveProductsData } from "./recommendation.js";
 import { generateCompletedOrders, populateCustomerData } from "./populationScripts.js";
 import { createAdminUser } from "./createAdmin.js";
 dotenv.config();
-connectToDatabase();
-createAdminUser();
+// connectToDatabase();
+// createAdminUser();
+connectToDatabase().then(() => {
+  createAdminUser();
+});
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
