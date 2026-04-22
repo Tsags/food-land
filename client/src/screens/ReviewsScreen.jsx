@@ -25,7 +25,7 @@ import {
 import { StarIcon } from "@chakra-ui/icons";
 import { FiCheckCircle } from "react-icons/fi";
 import React, { useEffect, useState } from "react";
-import axios from "../../axios";
+import axios from "../axios";
 import { getProducts } from "../redux/actions/productActions";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/actions/userActions";

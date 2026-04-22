@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { FaTimes } from "react-icons/fa";
 import { addAllergy, removeAllergy } from "../redux/slices/user";
 import { useDispatch } from "react-redux";
-import axios from "../../axios";
+import axios from "../axios";
 
 const Allergies = () => {
   const dispatch = useDispatch();
