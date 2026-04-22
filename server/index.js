@@ -22,6 +22,11 @@ const app = express();
 app.use(cookieParser());
 app.use(express.json());
 
+app.use(cors({
+  origin: ["http://localhost:3000", "https://food-land-nine.vercel.app"],
+  credentials: true,
+}));
+
 const port = process.env.PORT || 5000;
 
 app.use("/api/products", productRoutes);
@@ -58,13 +63,13 @@ const expressServer = app.listen(port, () => {
   console.log(`Server runs on port ${port}.`);
 });
 
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "https://food-land-nine.vercel.app");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization");
-  next();
-});
+// app.use((req, res, next) => {
+//   res.setHeader("Access-Control-Allow-Origin", "https://food-land-nine.vercel.app");
+//   res.setHeader("Access-Control-Allow-Credentials", "true");
+//   res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
+//   res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization");
+//   next();
+// });
 
 const io = new Server(expressServer, {
   pingTimeout: 60000,
