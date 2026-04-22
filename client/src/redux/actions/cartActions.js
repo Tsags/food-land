@@ -10,7 +10,7 @@ import {
 } from "../slices/cart.js";
 import { useState } from "react";
 import { io } from "socket.io-client";
-const socket = io("/");
+const socket = io(process.env.REACT_APP_API_URL || "http://localhost:5000");
 
 export const addCartItem = (id, qty) => async (dispatch, getState) => {
   dispatch(setLoading(true));
