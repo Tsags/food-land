@@ -17,8 +17,6 @@ const protectRoute = asyncHandler(async (req, res, next) => {
   }
   req.user = user;
   next();
-
-      next();
     } catch (error) {
       res.status(401);
       throw new Error("You are not a user");
