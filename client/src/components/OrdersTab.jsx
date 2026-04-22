@@ -26,6 +26,10 @@ const OrdersTab = ({ data }) => {
 
   const [selectedUser, setSelectedUser] = useState(null);
 
+ useEffect(() => {
+  dispatch(getAllOrders());
+}, [dispatch, orderRemoval, deliveredFlag, orderSetCompleted]);
+  
   useEffect(() => {
     if (data && data.data) {
       const userSelected = userList.find((user) => user._id === data.data._id);
