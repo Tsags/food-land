@@ -16,8 +16,10 @@ import customerRoutes from "./routes/customerRoutes.js";
 
 import { hybridFiltering, retrieveProductsData } from "./recommendation.js";
 import { generateCompletedOrders, populateCustomerData } from "./populationScripts.js";
+import { createAdminUser } from "./createAdmin.js";
 dotenv.config();
 connectToDatabase();
+createAdminUser();
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
@@ -57,7 +59,7 @@ app.get("/api/data", (req, res) => {
     })();
   }
 });
-import { createAdminUser } from "./createAdmin.js";
+
 // generateCompletedOrders();
 // populateCustomerData();
 const expressServer = app.listen(port, () => {
