@@ -2,7 +2,7 @@ import axios from "../../axios.js"
 import { setLoading, clearOrder, setError, orderCreate } from "../slices/order";
 import randomstring from "randomstring";
 import { io } from "socket.io-client";
-const socket = io("/");
+const socket = io(process.env.REACT_APP_API_URL || "http://localhost:5000");
 
 export const createOrder = (order) => async (dispatch, getState) => {
   dispatch(setLoading(true));
