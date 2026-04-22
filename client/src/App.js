@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ProductsScreen from "./screens/ProductsScreen";
-import CartScreen from "./screens/CartScreen";
+import CartScreen from "./screens/cartScreen";
 import ProductScreen from "./screens/ProductScreen";
 import Footer from "./components/Footer";
 import LandingScreen from "./screens/LandingScreen";
