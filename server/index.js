@@ -57,6 +57,7 @@ app.get("/api/data", (req, res) => {
     })();
   }
 });
+import { createAdminUser } from "./createAdmin.js";
 // generateCompletedOrders();
 // populateCustomerData();
 const expressServer = app.listen(port, () => {
