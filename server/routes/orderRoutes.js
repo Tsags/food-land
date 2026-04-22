@@ -30,10 +30,10 @@ const createOrder = asyncHandler(async (req, res) => {
   }
 });
 
-const getOrders = async (req, res) => {
+const getOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find({});
   res.json(orders);
-};
+});
 
 const deleteOrder = asyncHandler(async (req, res) => {
   const { id } = req.params;
