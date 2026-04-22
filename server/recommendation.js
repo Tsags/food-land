@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { faker } from "@faker-js/faker";
+// import { faker } from "@faker-js/faker";
 import CustomerModel from "./models/Customer.js";
 import ProductModel from "./models/Product.js";
 import cosineSimilarity from "compute-cosine-similarity";
@@ -175,7 +175,7 @@ async function collaborativeFiltering(targetCustomerId) {
       targetCustomer,
       similarCustomers,
       customers,
-      products
+      products,
     ).map((item) => item[0]);
 
     return collaborativeRecommendations;
@@ -281,7 +281,7 @@ async function contentBasedFiltering(targetCustomerId) {
       customerPreferences,
       targetCustomerId,
       products,
-      customers
+      customers,
     ).map((item) => item[0]);
 
     return contentBasedRecommendations;
