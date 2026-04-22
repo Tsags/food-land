@@ -1,4 +1,4 @@
-import axios from "../axios";
+import axios from "../../axios";
 import { setLoading, clearOrder, setError, orderCreate } from "../slices/order";
 import randomstring from "randomstring";
 import { io } from "socket.io-client";
