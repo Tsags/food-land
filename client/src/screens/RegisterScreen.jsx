@@ -37,7 +37,7 @@ function RegisterScreen() {
     try {
       const randomPassword = "123";
       // randomstring.generate(10);
-      const url = `http://192.168.68.52:3000/login?username=${values.name}&password=${randomPassword}`;
+      const url = `https://food-land-nine.vercel.app/login?username=${values.name}&password=${randomPassword}`;
       const qrCodeInfo = await QRCode.toDataURL(url);
       setQRCodeData(qrCodeInfo);
       dispatch(register(values.name, randomPassword, qrCodeInfo));
