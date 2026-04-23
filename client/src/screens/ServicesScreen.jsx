@@ -3,7 +3,7 @@ import { Box, Button, SimpleGrid, Divider } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 
 import { io } from "socket.io-client";
-const socket = io("/");
+socket = io(process.env.REACT_APP_API_URL || "http://localhost:5000");
 
 const ServicesScreen = () => {
   const user = useSelector((state) => state.user);

@@ -23,7 +23,7 @@ import { getAllOrders, deleteOrder, setDelivered, resetErrorAndRemoval } from ".
 import { CheckCircleIcon, DeleteIcon } from "@chakra-ui/icons";
 
 import { io } from "socket.io-client";
-const socket = io("/");
+socket = io(process.env.REACT_APP_API_URL || "http://localhost:5000");
 
 const RequestsScreen = () => {
   const user = useSelector((state) => state.user);
